@@ -9,7 +9,6 @@ lerna-debug.log*
 
 # Client
 client/node_modules
-server/node_modules
 client/dist
 client/.next
 client/.DS_Store
