@@ -6,6 +6,10 @@ const ENV = process.env
 
 export const port = Number(ENV.PORT)
 
+export default{
+  jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
+}
+
 export const dbConfig = {
   type: ENV.DB_TYPE as any,
   host: ENV.DB_HOST,
