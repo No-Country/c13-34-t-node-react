@@ -1,10 +1,15 @@
 import { config } from 'dotenv'
+import { User } from "../entities/index.js";
 
 config()
 
 const ENV = process.env
 
 export const port = Number(ENV.PORT)
+
+export const jwtConfig = {
+  jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
+}
 
 export const dbConfig = {
   type: ENV.DB_TYPE as any,
@@ -15,5 +20,5 @@ export const dbConfig = {
   database: ENV.DB_NAME,
   logging: true,
   synchronize: true,
-  entities: []
+  entities: ["./src/entities/*.js"]
 }
