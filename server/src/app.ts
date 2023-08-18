@@ -1,13 +1,7 @@
 import express from 'express'
-import { initializate } from './server'
-
-
-import   authRoutes from './routes/auth.routes'
+import { authRoutes } from './routes/auth.routes.js'
 //initializations
-const app = express()
-
-await initializate(app)
-
+export const app = express();
 
 //settings
 
@@ -22,4 +16,3 @@ app.get('/', (req, res)=>{
 })
 
 app.use(authRoutes)
-export default app
