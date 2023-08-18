@@ -1,9 +1,9 @@
+import { type Request, Response } from "express";
 
-
-export const signUp = (req, res) =>{
+export const signUp = (_req: Request, res: Response) =>{
     res.send('singup')
 }
 
-export const singIn = (req, res){
+export const singIn = (_req: Request, res: Response) => {
     res.send('singIn')
 }
