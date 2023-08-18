@@ -13,7 +13,6 @@ client/dist
 client/.next
 client/.DS_Store
 client/.env
-client/package-lock.json
 
 # Server
 server/dist
