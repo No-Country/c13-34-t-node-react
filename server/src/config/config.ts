@@ -1,11 +1,8 @@
-import { config } from 'dotenv'
-import { User } from "../entities/index.js";
-
-config()
+import 'dotenv/config'
 
 const ENV = process.env
 
-export const port = Number(ENV.PORT)
+export const port = ENV.PORT || 4444
 
 export const jwtConfig = {
   jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
@@ -20,5 +17,5 @@ export const dbConfig = {
   database: ENV.DB_NAME,
   logging: true,
   synchronize: true,
-  entities: ["./src/entities/*.js"]
+  entities: ['./src/entities/*.js']
 }

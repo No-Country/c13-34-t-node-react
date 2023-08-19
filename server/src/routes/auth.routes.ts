@@ -1,8 +1,7 @@
-import { Router } from "express";
-import { signUp } from '../controllers/user.controllers.js';
-import { singIn } from "../controllers/user.controllers.js";
+import { Router } from 'express'
+import { signUp, singIn } from '../controllers/user.controllers'
 
-export const authRoutes = Router();
+export const authRoutes = Router()
 
-authRoutes.post('/singup', signUp);
-authRoutes.post('/singin', singIn);
+authRoutes.post('/singup', signUp)
+authRoutes.post('/singin', singIn)

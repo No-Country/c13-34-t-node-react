@@ -1,12 +1,10 @@
-//en este archivo debe ir el schema del modelo de datos del usuarios, 
+//en este archivo debe ir el schema del modelo de datos del usuarios,
 //es decir qué tipo de datos guardaremos de los usuarios//
-
 
 // //export interface IUser extends Document {
 //     email: string;
 //     password: string
 // }
-
 
 // module.exports = (sequelize, Sequelize) => {
 //     const User = sequelize.define("users", {
@@ -20,7 +18,7 @@
 //         type: Sequelize.STRING
 //       }
 //     });
-  
+
 //     return User;
 //   };
 

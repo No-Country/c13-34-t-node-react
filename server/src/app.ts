@@ -1,18 +1,20 @@
-import express from 'express'
-import { authRoutes } from './routes/auth.routes.js'
-//initializations
-export const app = express();
+import express, { type Express } from 'express'
+import { port } from './config/config'
+import { AppDataSrc } from './services/database/database.config'
 
-//settings
+export const app: Express = express()
 
-
-//middlewares
-app.use(express.urlencoded({extended:false}))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-//routes
-app.get('/', (req, res)=>{
-    res.send(`La API esta en http://localhost:${app.get('port')}`)
-})
+const dbStartUp = async () => {
+  try {
+    await AppDataSrc.initialize()
+  } catch (error) {
+    console.log('❌ Error', error)
+  }
+}
 
-app.use(authRoutes)
+dbStartUp().then(() => console.log('All good'))
+
+app.listen(port, () => console.log('Server connected on port', port))

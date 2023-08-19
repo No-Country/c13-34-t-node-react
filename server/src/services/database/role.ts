@@ -10,6 +10,6 @@
 //         type: Sequelize.STRING
 //       }
 //     });
-  
+
 //     return Role;
 //   };

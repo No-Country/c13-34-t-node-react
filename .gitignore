@@ -20,6 +20,8 @@ server/node_modules
 server/.env
 server/.DS_Store
 server/package-lock.json
+server/docker-compose.yml
+server/postgres
 
 # Editor directories and files
 .vscode/*
