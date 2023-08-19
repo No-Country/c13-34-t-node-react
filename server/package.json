@@ -5,8 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "build": "tsc",
-    "start": "NODE_ENV=production concurrently \"tsc -w\" \"nodemon dist/js/app.js\"",
-    "dev": "NODE_ENV=development concurrently \"tsc -w\" \"nodemon dist/js/app.js\""
+    "prod": "concurrently \"tsc -w\" \"nodemon dist/js/app.js\"&NODE_ENV=production",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/js/app.js\"&NODE_ENV=development"
   },
   "keywords": [],
   "author": "",
