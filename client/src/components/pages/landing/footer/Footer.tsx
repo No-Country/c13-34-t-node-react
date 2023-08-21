@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export const Footer = () => {
   return (
     <footer className="p-5 bg-[#4FB783] text-white">
@@ -28,18 +30,10 @@ export const Footer = () => {
         <p className="font-medium text-sm">C/ Siempre viva 742, Springfield</p>
       </div>
       <div className="flex gap-4 place-content-center py-6">
-        <a href="http://#" rel="noopener noreferrer" className="cursor-pointer">
-          Acerca de nosotros
-        </a>
-        <a href="http://#" rel="noopener noreferrer" className="cursor-pointer">
-          Servicios
-        </a>
-        <a href="http://#" rel="noopener noreferrer" className="cursor-pointer">
-          Contacto
-        </a>
-        <a href="http://#" rel="noopener noreferrer" className="cursor-pointer">
-          Login
-        </a>
+        <NavLink to="/about">Acerca de nosotros</NavLink>
+        <NavLink to="/services">Servicios</NavLink>
+        <NavLink to="/contact">Contacto</NavLink>
+        <NavLink to="/acceso">Login</NavLink>
       </div>
       {/* Social media */}
       <div className="flex py-6 items-center text-white">
