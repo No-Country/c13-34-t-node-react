@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
+
 export const pathNotFound = (
   req: Request,
   res: Response,

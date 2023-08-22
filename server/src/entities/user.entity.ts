@@ -7,7 +7,7 @@ export class User extends BaseEntity {
   id: number
 
   @Column({ type: 'varchar', length: 50 })
-  name: string
+  firstName: string
 
   @Column({ type: 'varchar', length: 70, name: 'last_name' })
   lastName: string

@@ -1,19 +1,22 @@
-import { Response, type Request } from 'express'
+import { Response, type Request, NextFunction } from 'express'
 import { userService } from '../services/factory/entities.factory'
+import { AppError } from '../utils/app.error'
 
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const user = await userService.createUser(req.body)
+
     return res.status(201).json({
       status: 'success',
       user
     })
   } catch (e) {
-    console.error(e)
-    return res.status(500).json({
-      status: 'error',
-      message: 'El Usuario No Fue Creado.'
-    })
+    console.log(e)
+    next(new AppError('No Se Pudo Guardar El Usuario.', 500))
   }
 }
 

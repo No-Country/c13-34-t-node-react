@@ -1,5 +1,5 @@
-import { Repository } from 'typeorm'
-import { User } from '../entities'
+import { type Repository } from 'typeorm'
+import { type User } from '../entities'
 
 export enum UserRole {
   admin = 'admin',
