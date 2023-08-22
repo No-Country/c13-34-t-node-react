@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Provider routes
-import { AuthProvider } from "../context/auth";
+// import { AuthProvider } from "../context/auth";
+import { AuthProvider } from "../service/auth";
 
 // Landing Page
 import { PublicLayout } from "../components/pages/PublicLayout";
 import { Home } from "../components/pages/landing/home/Home";
+import { AboutUs } from "../components/pages/landing/about/AboutUs";
 
 // Authentication
 import { NoAuthenticated } from "../components/pages/NoAuthenticated";
@@ -17,6 +19,10 @@ import { DashboardLayout } from "../components/pages/dashboard/DashboardLayout";
 
 // Not Found
 import { NotFound } from "../components/pages/NotFound";
+import { DoctorPatientsPage } from "../components/pages/dashboard/doctor/patients/DoctorPatientsPage";
+import { DoctorAppointmentsPage } from "../components/pages/dashboard/doctor/appointments/DoctorAppointmentsPage";
+import { PatientAppointmentsPage } from "../components/pages/dashboard/patient/appointments/PatientAppointmentsPage";
+import { PatientHistoryPage } from "../components/pages/dashboard/patient/history/PatientHistoryPage";
 
 export const App = () => {
   return (
@@ -26,6 +32,7 @@ export const App = () => {
           <Routes>
             <Route path="" element={<PublicLayout />}>
               <Route path="" element={<Home />} />
+              <Route path="sobre-nosotros" element={<AboutUs />} />
 
               <Route element={<NoAuthenticated />}>
                 <Route path="acceso" element={<Login />} />
@@ -37,13 +44,13 @@ export const App = () => {
               <Route path="plataforma" element={<DashboardLayout />}>
                 {/* /plataforma/doctor/pacientes */}
                 <Route path="doctor">
-                  <Route path="pacientes" element={<Home />} />
-                  <Route path="citas" element={<Home />} />
+                  <Route path="pacientes" element={<DoctorPatientsPage />} />
+                  <Route path="citas" element={<DoctorAppointmentsPage />} />
                 </Route>
 
                 <Route path="paciente">
-                  <Route path="historial" element={<Home />} />
-                  <Route path="citas" element={<Home />} />
+                  <Route path="historial" element={<PatientHistoryPage />} />
+                  <Route path="citas" element={<PatientAppointmentsPage />} />
                 </Route>
               </Route>
             </Route>
