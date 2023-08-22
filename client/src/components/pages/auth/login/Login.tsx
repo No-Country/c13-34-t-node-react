@@ -1,8 +1,40 @@
-import { NavLink } from "react-router-dom";
+// import { useAuth } from "../../../../context/auth";
+import { useState } from "react";
+import { useAuth } from "../../../../service/auth";
+
+import { NavLink, Navigate } from "react-router-dom";
 
 export const Login = () => {
+  // const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const auth = useAuth();
+
+  if (auth.isAuthenticated) {
+    return <Navigate to="plataforma" />;
+  }
+
+  // const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
+  //   event.preventDefault();
+
+  //   const formData = new FormData(event.target as HTMLFormElement);
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+
+  //   try {
+  //     const success = await login(email, password);
+  //     if (success) {
+  //       console.log("Bienvenido");
+  //     } else {
+  //       console.log("Correo o contraseña inválidos");
+  //     }
+  //   } catch (error) {
+  //     console.log("No se pudo establecer conexión con el servidor");
+  //   }
+  // };
+
   return (
-    <div className="h-screen py-20 pl-0 pr-36">
+    <div className="h-full py-20 pl-0 pr-36">
       <div className="grid grid-cols-2 gap-24">
         <div className="flex flex-col justify-center items-center relative">
           <div className="absolute">
@@ -45,6 +77,8 @@ export const Login = () => {
             <label className="block">
               <span className="block">Correo Electrónico *</span>
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="text"
                 name=""
                 required
@@ -56,6 +90,8 @@ export const Login = () => {
             <label className="block">
               <span className="block">Contraseña *</span>
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 name=""
                 required
@@ -65,10 +101,14 @@ export const Login = () => {
             </label>
           </form>
           <div className="w-[360px] pt-2 grid grid-cols-2 justify-between text-primary-green">
-            <NavLink to="/">¿Has olvidado tu contraseña?</NavLink>
+            <NavLink to="/recuperar-contrasena">
+              ¿Has olvidado tu contraseña?
+            </NavLink>
 
             <div className="flex flex-col text-center">
-              <NavLink to="/">¿No tienes una cuenta? Regístrate ahora*</NavLink>
+              <NavLink to="/registro">
+                ¿No tienes una cuenta? Regístrate ahora*
+              </NavLink>
             </div>
           </div>
 

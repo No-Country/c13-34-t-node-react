@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Provider routes
-import { AuthProvider } from "../context/auth";
+// import { AuthProvider } from "../context/auth";
+import { AuthProvider } from "../service/auth";
 
 // Landing Page
 import { PublicLayout } from "../components/pages/PublicLayout";
 import { Home } from "../components/pages/landing/home/Home";
+import { AboutUs } from "../components/pages/landing/about/AboutUs";
 
 // Authentication
 import { NoAuthenticated } from "../components/pages/NoAuthenticated";
@@ -30,6 +32,7 @@ export const App = () => {
           <Routes>
             <Route path="" element={<PublicLayout />}>
               <Route path="" element={<Home />} />
+              <Route path="sobre-nosotros" element={<AboutUs />} />
 
               <Route element={<NoAuthenticated />}>
                 <Route path="acceso" element={<Login />} />
