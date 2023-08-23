@@ -51,7 +51,7 @@ export class EntityService {
     }
   }
 
-  async updateOne(data: EntitySchema): Promise<FindResult> {
+  async updateOne(data: object): Promise<FindResult> {
     return await this.entityRepository.save(data, { listeners: false })
   }
 }
