@@ -11,7 +11,7 @@ import {
 const ENV = process.env
 
 export const mode = ENV.NODE_ENV
-export const port = ENV.PORT || 4444
+export const port = ENV.PORT ?? 4444
 export const salt = Number(ENV.SALT)
 
 export const modes = Object.freeze({
@@ -19,8 +19,8 @@ export const modes = Object.freeze({
   prod: 'production'
 })
 export const jwtConfig = {
-  secret: ENV.JWT_SECRET || 'alguntokensecreto',
-  expiresIn: ENV.JWT_EXPIRES_IN || '2h'
+  secret: ENV.JWT_SECRET ?? 'alguntokensecreto',
+  expiresIn: ENV.JWT_EXPIRES_IN ?? '2h'
 }
 
 export const dbConfig = Object.freeze({

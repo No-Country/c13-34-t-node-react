@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express'
-import { AnyZodObject } from 'zod'
+import type { NextFunction, Request, Response } from 'express'
+import type { AnyZodObject } from 'zod'
 import { MESSAGES } from '../constants/msgs'
 import { AppError } from '../utils/app.error'
 
@@ -26,7 +26,8 @@ export const schemaValidator = (schema: AnyZodObject) => {
         }
       })
 
-      return next(new AppError(errors, 400))
+      next(new AppError(errors, 400))
+      return
     }
 
     req.safeData = results.data

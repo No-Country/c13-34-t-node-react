@@ -1,4 +1,4 @@
-import { Repository, ObjectLiteral } from 'typeorm'
+import type { ObjectLiteral, Repository } from 'typeorm'
 
 export type RepositoryType = Repository<ObjectLiteral>
 

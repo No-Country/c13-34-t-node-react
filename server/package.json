@@ -7,7 +7,12 @@
     "build": "tsc",
     "start": "node dist/js/server.js",
     "prod": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=production",
-    "dev": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=development"
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=development",
+    "check-types": "tsc --pretty --noEmit",
+    "check-format": "prettier --check .",
+    "check-lint": "eslint . --ext ts --ext tsx --ext js",
+    "format": "prettier --write .",
+    "test-all": "npm run check-format && npm run check-lint && npm run check-types && npm run build"
   },
   "keywords": [],
   "author": "",

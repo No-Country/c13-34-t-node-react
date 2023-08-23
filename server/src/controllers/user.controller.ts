@@ -1,8 +1,8 @@
-import { Response, Request, NextFunction, response } from 'express'
+import { type NextFunction, type Request, type Response } from 'express'
+import { type User } from '../entities/'
 import { userService } from '../services/factory/entities.factory'
-import { AppError } from '../utils/app.error'
-import { User } from '../entities/'
 import type { Login } from '../types/user.types'
+import { AppError } from '../utils/app.error'
 
 export const signUp = async (
   req: Request,
@@ -17,8 +17,10 @@ export const signUp = async (
       user
     })
   } catch (err) {
-    if (!(err instanceof AppError))
-      return next(new AppError('No Se Pudo Guardar El Usuario.', 500))
+    if (!(err instanceof AppError)) {
+      next(new AppError('No Se Pudo Guardar El Usuario.', 500))
+      return
+    }
     next(err)
   }
 }
@@ -39,8 +41,10 @@ export const singIn = async (
       user
     })
   } catch (err) {
-    if (!(err instanceof AppError))
-      return next(new AppError('No se pudo autenticar el usuario.', 500))
+    if (!(err instanceof AppError)) {
+      next(new AppError('No se pudo autenticar el usuario.', 500))
+      return
+    }
     next(err)
   }
 }
@@ -100,8 +104,10 @@ export const deleteUser = async (
       status: 'success'
     })
   } catch (err) {
-    if (!(err instanceof AppError))
-      return next(new AppError('No se pudo autenticar el usuario.', 500))
+    if (!(err instanceof AppError)) {
+      next(new AppError('No se pudo autenticar el usuario.', 500))
+      return
+    }
     next(err)
   }
 }

@@ -32,7 +32,7 @@ export interface Login {
   password: string
 }
 
-export type AuthenticatedUser = {
+export interface AuthenticatedUser {
   token: string
   user: UserDto
 }

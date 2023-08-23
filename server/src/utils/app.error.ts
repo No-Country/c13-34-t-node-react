@@ -2,9 +2,9 @@ export class AppError extends Error {
   statusCode: number
   status: string
   isOperational: boolean
-  errors: Array<any> | null
+  errors: any[] | null
 
-  constructor(message: string | Array<any>, statusCode: number) {
+  constructor(message: string | any[], statusCode: number) {
     super(Array.isArray(message) ? 'errors' : message)
 
     this.statusCode = statusCode

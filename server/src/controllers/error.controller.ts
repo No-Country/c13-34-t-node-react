@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import type { Response } from 'express'
 
 export const sendErrorDev = (err: any, res: Response) => {
   return res.status(err.statusCode).json({

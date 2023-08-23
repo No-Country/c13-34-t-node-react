@@ -1,19 +1,19 @@
 import { userDto } from '../dto/user.dto'
-import { User } from '../entities'
-import { FindResult } from '../types/entity.types'
+import type { User } from '../entities'
+import type { FindResult } from '../types/entity.types'
 import type {
   AuthenticatedUser,
   Login,
   UserDto,
   UserRepository
 } from '../types/user.types'
-import { hashPassword, comparePasswords } from '../utils/bcrypt'
+import { comparePasswords, hashPassword } from '../utils/bcrypt'
 import { generateJWT } from '../utils/jwt'
 import { EntityService } from './entity.service'
 
 export class UserService {
-  private userRepository: UserRepository
-  private entityService: EntityService
+  private readonly userRepository: UserRepository
+  private readonly entityService: EntityService
 
   constructor(userRepository: UserRepository) {
     this.userRepository = userRepository

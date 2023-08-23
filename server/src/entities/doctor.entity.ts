@@ -7,14 +7,14 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { User } from './user.entity'
 import { MedicalAppointment } from './medical.appointment.entity'
 import { MedicalRecord } from './medical.record.entity'
+import { User } from './user.entity'
 
 @Entity({ name: 'doctors' })
 export class Doctor extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  id: Number
+  id: number
 
   @OneToOne((_type) => User)
   @JoinColumn({ name: 'user_id' })
