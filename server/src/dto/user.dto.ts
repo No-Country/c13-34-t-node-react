@@ -2,11 +2,14 @@ import { ObjectLiteral } from 'typeorm'
 import { User } from '../entities'
 
 export const userDto = (user: User & ObjectLiteral) => {
+  const { firstName, lastName, telephone, dateOfBirth, genre, email } = user
+
   return {
-    name: user.name,
-    lastName: user.lastName,
-    telephone: user.telephone,
-    dateOfBirth: user.dateOfBirth,
-    genre: user.genre
+    firstName,
+    lastName,
+    email,
+    telephone,
+    dateOfBirth,
+    genre
   }
 }

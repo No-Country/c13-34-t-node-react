@@ -14,7 +14,9 @@ export const sendErrorProd = (err: any, res: Response) => {
   if (err.isOperational)
     return res.status(err.statusCode).json({
       status: err.status,
-      message: err.message
+      message: Array.isArray(err.message)
+        ? { errors: err.message }
+        : err.message
     })
 
   return res.status(500).json({
