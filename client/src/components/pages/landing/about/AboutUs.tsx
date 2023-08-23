@@ -1,3 +1,7 @@
 export const AboutUs = () => {
-  return <div>AboutUs</div>;
+  return (
+    <div className="min-h-screen">
+      <div className="text-center">Sobre Nosotros</div>
+    </div>
+  );
 };

@@ -5,7 +5,7 @@ export const Footer = () => {
     <footer className="p-8 bg-[#4FB783] text-white z-10">
       <div className="flex flex-col items-center py-4">
         <div>
-          <img src="/images/logo.png" alt="" className="mb-8" />
+          <img src="/images/logo.png" alt="logo" className="mb-8" />
         </div>
         <p className="font-bold text-lg text-center">
           Clínica Meddypluss <br />
