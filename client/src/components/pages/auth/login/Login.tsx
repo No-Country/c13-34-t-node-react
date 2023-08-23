@@ -4,35 +4,44 @@ import { useAuth } from "../../../../service/auth";
 
 import { NavLink, Navigate } from "react-router-dom";
 
+import { API_URL } from "../../../../constants/api";
+
 export const Login = () => {
   // const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const auth = useAuth();
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
+    event,
+  ) => {
+    event.preventDefault();
+    console.log("jaja");
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    try {
+      const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
+        method: "POST",
+        headers: [
+          ["Content-Type", "application/x-www-form-urlencoded"],
+          ["Content-Type", "multipart/form-data"],
+          ["Content-Type", "text/plain"],
+        ],
+        body: JSON.stringify({ email, password }),
+      });
+      console.log(response.json());
+      return response.json();
+    } catch (error) {
+      console.log("No se pudo establecer conexión con el servidor");
+    }
+  };
+
   if (auth.isAuthenticated) {
     return <Navigate to="plataforma" />;
   }
-
-  // const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
-  //   event.preventDefault();
-
-  //   const formData = new FormData(event.target as HTMLFormElement);
-  //   const email = formData.get("email") as string;
-  //   const password = formData.get("password") as string;
-
-  //   try {
-  //     const success = await login(email, password);
-  //     if (success) {
-  //       console.log("Bienvenido");
-  //     } else {
-  //       console.log("Correo o contraseña inválidos");
-  //     }
-  //   } catch (error) {
-  //     console.log("No se pudo establecer conexión con el servidor");
-  //   }
-  // };
-
   return (
     <div className="h-full py-20 pl-0 pr-36 bg-white">
       <div className="grid grid-cols-2 gap-24">
@@ -73,7 +82,10 @@ export const Login = () => {
             </div>
           </div>
 
-          <form className="w-[360px] flex flex-col gap-6">
+          <form
+            onSubmit={handleSubmit}
+            className="w-[360px] flex flex-col gap-6"
+          >
             <label className="block">
               <span className="block">Correo Electrónico *</span>
               <input
@@ -99,6 +111,12 @@ export const Login = () => {
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
               />
             </label>
+            <button
+              type="submit"
+              className="w-[360px] mt-14 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
+            >
+              Ingresar
+            </button>
           </form>
           <div className="w-[360px] pt-2 grid grid-cols-2 justify-between text-primary-green">
             <NavLink to="/recuperar-contrasena">
@@ -111,10 +129,6 @@ export const Login = () => {
               </NavLink>
             </div>
           </div>
-
-          <button className="w-[360px] mt-14 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300">
-            Ingresar
-          </button>
         </div>
       </div>
     </div>
