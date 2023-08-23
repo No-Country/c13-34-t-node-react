@@ -7,10 +7,11 @@ import { AuthProvider } from "../service/auth";
 import { PublicLayout } from "../components/pages/PublicLayout";
 import { Home } from "../components/pages/landing/home/Home";
 import { AboutUs } from "../components/pages/landing/about/AboutUs";
+import { ContactUs } from "../components/pages/landing/contact/ContactUs";
 // NoAuthenticated
 import { NoAuthenticated } from "../components/pages/NoAuthenticated";
-import { Login } from "../components/pages/auth/login/Login";
 import { Register } from "../components/pages/auth/register/Register";
+import { Login } from "../components/pages/auth/login/Login";
 
 // Authenticated
 import { Authenticated } from "../components/pages/Authenticated";
@@ -43,10 +44,11 @@ export const App = () => {
             <Route path="" element={<PublicLayout />}>
               <Route path="" element={<Home />} />
               <Route path="sobre-nosotros" element={<AboutUs />} />
+              <Route path="contacto" element={<ContactUs />} />
 
               <Route element={<NoAuthenticated />}>
-                <Route path="acceso" element={<Login />} />
                 <Route path="registro" element={<Register />} />
+                <Route path="acceso" element={<Login />} />
               </Route>
             </Route>
 

@@ -2,9 +2,8 @@ import { Welcome } from "./shared/Welcome";
 
 export const Home = () => {
   return (
-    <div className="h-full bg-[#EBFFF5]">
-      <section className="py-4 px-36">
-        {/* Reemplazar esta linea de abajo por el componente */}
+    <div className="h-full">
+      <section className="pt-24 px-36 bg-gradient-to-r from-yellow-50 to-green-100">
         <Welcome />
       </section>
       <section className="py-4 px-36">
