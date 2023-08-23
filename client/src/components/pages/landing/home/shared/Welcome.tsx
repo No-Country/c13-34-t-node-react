@@ -1,8 +1,8 @@
 export const Welcome = () => {
   return (
-    <div className="grid grid-cols-2 gap-24 h-[620px]">
-      <div className="flex flex-col gap-2 w-[800px]">
-        <h1 className="font-caudex text-5xl font-bold pt-14 mb-3 tracking-[1px]">
+    <div className="grid 2xl:grid-cols-2 gap-24 2xl:h-[620px]">
+      <div className="flex flex-col gap-2 sm:w-full 2xl:w-[800px]">
+        <h1 className="font-caudex sm:text-4xl 2xl:text-5xl font-bold sm:pt-4 2xl:pt-14 mb-3 tracking-[1px]">
           "Donde una revisión clara se une a una atención compasiva."
         </h1>
         <p className="w-[600px] font-opensans leading-1 pb-20">
