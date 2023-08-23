@@ -5,7 +5,8 @@ import { useAuth } from "../../../../service/auth";
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const auth = useAuth();
 
@@ -20,14 +21,14 @@ export const Register = () => {
   };
 
   return (
-    <div className="h-full py-20 pl-0 pr-36">
+    <div className="h-full py-20 pl-0 pr-36 bg-white">
       <div className="grid grid-cols-2 gap-24">
         <div className="flex flex-col justify-center items-center relative">
           <div className="absolute">
             <img
               src="/images/circles.png"
               alt="circles"
-              className="w-[840px] h-[1200px]"
+              className="w-[840px] h-[1480px]"
             />
           </div>
           <div className="text-center relative -left-28 -top-10">
@@ -89,10 +90,23 @@ export const Register = () => {
             </label>
 
             <label className="block">
-              <span className="block">Nombre completo *</span>
+              <span className="block">Nombre(s) *</span>
               <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                type="text"
+                name=""
+                required
+                placeholder="Ingrese su nombre"
+                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
+              />
+            </label>
+
+            <label className="block">
+              <span className="block">Apellido(s) *</span>
+              <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 name=""
                 required

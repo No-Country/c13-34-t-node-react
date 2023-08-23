@@ -34,7 +34,7 @@ export const Login = () => {
   // };
 
   return (
-    <div className="h-full py-20 pl-0 pr-36">
+    <div className="h-full py-20 pl-0 pr-36 bg-white">
       <div className="grid grid-cols-2 gap-24">
         <div className="flex flex-col justify-center items-center relative">
           <div className="absolute">
