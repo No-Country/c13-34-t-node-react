@@ -3,11 +3,11 @@ import { Sidebar } from "./Sidebar";
 
 export const DashboardLayout = () => {
   return (
-    <div className="min-h-screen grid grid-cols-[320px_1fr]">
-      <div className="bg-gray-400">
+    <div className="min-h-screen grid grid-cols-[350px_1fr]">
+      <div>
         <Sidebar />
       </div>
-      <div>
+      <div className="bg-primary-gray">
         <Outlet />
       </div>
     </div>
