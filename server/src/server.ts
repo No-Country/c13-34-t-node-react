@@ -1,15 +1,18 @@
-import { app } from "./app.js";
-import { port } from './config/config.js'
-import { AppDataSrc } from './services/database/database.config.js'
- 
-try {
-  await AppDataSrc.initialize()
-} catch (e) {
-  throw new Error('Ocurrio Un Error Con La Base De Datos.')
+import { app } from './app'
+import { port } from './config/config'
+import { AppDataSrc } from './services/database/database.config'
+
+const dbStartUp = async () => {
+  try {
+    await AppDataSrc.initialize()
+  } catch (error) {
+    console.log('❌ Error', error)
+  }
 }
 
-console.log('Base De Datos Inicializada 🔥')
+dbStartUp().then(() => console.log('All good'))
 
-app.listen(port, () =>
-  console.log(`Servidor Conectado En El Puerto : ${port}`)
+const server = app.listen(port, () =>
+  console.log('Server connected on port', port)
 )
+server.on('error', (e) => console.error(`Server error: ${e}`))

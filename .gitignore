@@ -13,7 +13,6 @@ client/dist
 client/.next
 client/.DS_Store
 client/.env
-client/package-lock.json
 
 # Server
 server/dist
@@ -21,6 +20,8 @@ server/node_modules
 server/.env
 server/.DS_Store
 server/package-lock.json
+server/docker-compose.yml
+server/postgres
 
 # Editor directories and files
 .vscode/*

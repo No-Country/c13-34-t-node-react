@@ -4,7 +4,7 @@ import { Footer } from "./landing/footer/Footer";
 
 export const PublicLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-full w-full flex flex-col">
       <Navbar />
       <Outlet />
       <Footer />

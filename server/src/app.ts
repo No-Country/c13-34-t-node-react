@@ -1,18 +1,12 @@
-import express from 'express'
-import { authRoutes } from './routes/auth.routes.js'
-//initializations
-export const app = express();
+import express, { type Express } from 'express'
+import { router } from './routes/index'
+import { globalErrorHandler } from './middlewares/error.middleware'
 
-//settings
+export const app: Express = express()
 
-
-//middlewares
-app.use(express.urlencoded({extended:false}))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-//routes
-app.get('/', (req, res)=>{
-    res.send(`La API esta en http://localhost:${app.get('port')}`)
-})
+app.use('/api/v1', router)
 
-app.use(authRoutes)
+app.use(globalErrorHandler)
