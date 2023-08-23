@@ -1,3 +1,4 @@
+import { MedicalSpecialties } from "./shared/MedicalSpecialties";
 import { Welcome } from "./shared/Welcome";
 
 export const Home = () => {
@@ -14,7 +15,7 @@ export const Home = () => {
         <div className="h-80">Section Home 3</div>
       </section>
       <section className="py-4 px-36">
-        <div className="h-80">Section Home 4</div>
+        <MedicalSpecialties />
       </section>
     </div>
   );
