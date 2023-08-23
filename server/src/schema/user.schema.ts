@@ -1,3 +1,4 @@
+import validator from 'validator'
 import z from 'zod'
 import { MESSAGES } from '../constants/msgs'
 import { userService } from '../services/factory/entities.factory'
@@ -10,19 +11,21 @@ export const userSchema = z.object({
         required_error: MESSAGES.FIRST_NAME_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.FIRST_NAME_TYPE_ERROR
       })
-      .min(2, { message: 'El nombre debe ser de mínimo 2 caracteres.' })
-      .max(50, { message: 'El nombre excede la longitud máxima.' })
+      .min(2, { message: MESSAGES.FIRST_NAME_MIN_LENGTH })
+      .max(50, { message: MESSAGES.FIRST_NAME_MAX_LENGTH })
       .trim()
-      .toLowerCase(),
+      .toLowerCase()
+      .regex(/^[^0-9]*$/, { message: MESSAGES.FIRST_NAME_PURE_STRING }),
     lastName: z
       .string({
         required_error: MESSAGES.LAST_NAME_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.LAST_NAME_TYPE_ERROR
       })
-      .min(3, { message: 'El apellido debe ser de mínimo 2 caracteres.' })
-      .max(70, { message: 'El apellido excede la longitud máxima.' })
+      .min(2, { message: MESSAGES.LAST_NAME_MIN_LENGTH })
+      .max(70, { message: MESSAGES.LAST_NAME_MAX_LENGTH })
       .trim()
-      .toLowerCase(),
+      .toLowerCase()
+      .regex(/^[^0-9]*$/, { message: MESSAGES.LAST_NAME_PURE_STRING }),
     email: z
       .string({
         required_error: MESSAGES.EMAIL_REQUIRED_ERROR,
@@ -45,7 +48,7 @@ export const userSchema = z.object({
         if (userExists)
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'El email ya esta registrado.'
+            message: MESSAGES.EMAIL_ALREADY_REGISTERED
           })
       }),
     genre: z.enum([UserGenre.female, UserGenre.male], {
@@ -64,13 +67,28 @@ export const userSchema = z.object({
         invalid_type_error: MESSAGES.TELEPHONE_TYPE_ERROR
       })
       .min(10, { message: MESSAGES.TELEPHONE_MIN_LENGTH })
-      .max(10, { message: MESSAGES.TELEPHONE_MAX_LENGTH }),
+      .max(10, { message: MESSAGES.TELEPHONE_MAX_LENGTH })
+      .superRefine((val, ctx) => {
+        if (!validator.isNumeric(val)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: MESSAGES.TELEPHONE_ONLY_NUMBERS
+          })
+        }
+      }),
     password: z
       .string({
         required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
       })
-      .min(5, { message: 'La contraseña debe ser de mínimo 5 caracteres' }),
+      .superRefine((val, ctx) => {
+        if (!validator.isStrongPassword(val)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: MESSAGES.PASSWORD_TOO_WEAK
+          })
+        }
+      }),
     dateOfBirth: z.coerce.date()
   })
 })

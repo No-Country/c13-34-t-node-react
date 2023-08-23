@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { AnyZodObject } from 'zod'
+import { MESSAGES } from '../constants/msgs'
 import { AppError } from '../utils/app.error'
 
 export const schemaValidator = (schema: AnyZodObject) => {
@@ -15,6 +16,9 @@ export const schemaValidator = (schema: AnyZodObject) => {
 
     if (!results.success) {
       const errors = results.error.issues.map((issue) => {
+        if (issue.message === MESSAGES.DATE_OF_BIRTH_DEFAULT_ERROR) {
+          issue.message = MESSAGES.DATE_OF_BIRTH_INVALID_DATE
+        }
         return {
           code: issue.code,
           path: issue.path,

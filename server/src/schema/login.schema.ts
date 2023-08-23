@@ -1,3 +1,4 @@
+import validator from 'validator'
 import z from 'zod'
 import { MESSAGES } from '../constants/msgs'
 import { userService } from '../services/factory/entities.factory'
@@ -33,6 +34,13 @@ export const loginSchema = z.object({
         required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
       })
-      .min(5, { message: MESSAGES.PASSWORD_MIN_LENGTH })
+      .superRefine((val, ctx) => {
+        if (!validator.isStrongPassword(val)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: MESSAGES.PASSWORD_TOO_WEAK
+          })
+        }
+      })
   })
 })
