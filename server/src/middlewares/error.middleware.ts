@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { mode, modes } from '../config/config'
 import { sendErrorDev, sendErrorProd } from '../controllers/error.controller'
 

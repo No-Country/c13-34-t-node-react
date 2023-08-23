@@ -10,9 +10,13 @@ const dbStartUp = async () => {
   }
 }
 
-dbStartUp().then(() => console.log('All good'))
+void dbStartUp().then(() => {
+  console.log('All good')
+})
 
-const server = app.listen(port, () =>
+const server = app.listen(port, () => {
   console.log('Server connected on port', port)
-)
-server.on('error', (e) => console.error(`Server error: ${e}`))
+})
+server.on('error', (e) => {
+  console.error('Server error', e)
+})
