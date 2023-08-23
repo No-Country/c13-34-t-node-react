@@ -1,3 +1,5 @@
+import { EspecialidadesMedicas } from "./shared/EspecialidadesMedicas";
+
 export const Home = () => {
   return (
     <div className="h-full bg-[#EBFFF5]">
@@ -12,7 +14,7 @@ export const Home = () => {
         <div className="h-80">Section Home 3</div>
       </section>
       <section className="py-4 px-36">
-        <div className="h-80">Section Home 4</div>
+        <EspecialidadesMedicas />
       </section>
     </div>
   );
