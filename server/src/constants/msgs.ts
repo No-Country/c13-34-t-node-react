@@ -3,10 +3,12 @@ export enum MESSAGES {
   FIRST_NAME_TYPE_ERROR = 'El nombre debe ser un texto.',
   FIRST_NAME_MIN_LENGTH = 'El nombre debe ser de mínimo 2 caracteres.',
   FIRST_NAME_MAX_LENGTH = 'El nombre excede la longitud máxima.',
+  FIRST_NAME_PURE_STRING = 'El nombre no debe contener números',
   LAST_NAME_REQUIRED_ERROR = 'El apellido es requerido.',
   LAST_NAME_TYPE_ERROR = 'El apellido debe ser un texto.',
   LAST_NAME_MIN_LENGTH = 'El apellido debe ser de mínimo 2 caracteres.',
   LAST_NAME_MAX_LENGTH = 'El apellido excede la longitud máxima.',
+  LAST_NAME_PURE_STRING = 'El apellido no debe contener números',
   EMAIL_REQUIRED_ERROR = 'El email es requerido.',
   EMAIL_TYPE_ERROR = 'El email debe ser un texto.',
   EMAIL_INVALID = 'El email es inválido.',
@@ -20,9 +22,11 @@ export enum MESSAGES {
   TELEPHONE_TYPE_ERROR = 'El teléfono debe ser un número.',
   TELEPHONE_MIN_LENGTH = 'El teléfono debe ser de 10 dígitos.',
   TELEPHONE_MAX_LENGTH = 'El teléfono debe ser de 10 dígitos.',
+  TELEPHONE_ONLY_NUMBERS = 'El teléfono debe contener solo números',
   PASSWORD_REQUIRED_ERROR = 'La contraseña es requerida.',
   PASSWORD_TYPE_ERROR = 'La contraseña debe ser un texto.',
   PASSWORD_MIN_LENGTH = 'La contraseña debe ser de mínimo 5 caracteres',
-  DATE_OF_BIRTH_REQUIRED_ERROR = 'La fecha de nacimiento es requerida.',
-  DATE_OF_BIRTH_TYPE_ERROR = 'La fecha de nacimiento debe ser un texto con formato de fecha'
+  PASSWORD_TOO_WEAK = 'La contraseña debe tener mínimo 8 caracteres, al menos 1 número, 1 mayúscula, 1 mínuscula y 1 caracter especial',
+  DATE_OF_BIRTH_INVALID_DATE = 'La fecha indicada no existe',
+  DATE_OF_BIRTH_DEFAULT_ERROR = 'Invalid date'
 }
