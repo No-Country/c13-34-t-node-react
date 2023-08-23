@@ -70,10 +70,6 @@ export const userSchema = z.object({
         required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
       })
-      .min(5, { message: MESSAGES.PASSWORD_MIN_LENGTH }),
-    dateOfBirth: z.coerce.date({
-      required_error: MESSAGES.DATE_OF_BIRTH_REQUIRED_ERROR,
-      invalid_type_error: MESSAGES.DATE_OF_BIRTH_TYPE_ERROR
-    })
+      .min(5, { message: MESSAGES.PASSWORD_MIN_LENGTH })
   })
 })
