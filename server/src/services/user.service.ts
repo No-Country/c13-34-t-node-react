@@ -1,6 +1,7 @@
 import { userDto } from '../dto/user.dto'
 import { User } from '../entities'
 import { UserRepository } from '../types/user.types'
+import { AppError } from '../utils/app.error'
 import { hashPassword } from '../utils/bcrypt'
 import { EntityService } from './entity.service'
 

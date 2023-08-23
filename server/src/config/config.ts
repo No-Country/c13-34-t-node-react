@@ -14,6 +14,10 @@ export const mode = ENV.NODE_ENV
 export const port = ENV.PORT || 4444
 export const salt = Number(ENV.SALT)
 
+export const modes = Object.freeze({
+  dev: 'development',
+  prod: 'production'
+})
 export const jwtConfig = {
   jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
 }
@@ -25,7 +29,7 @@ export const dbConfig = Object.freeze({
   username: ENV.DB_USER,
   password: ENV.DB_PASS,
   database: ENV.DB_NAME,
-  logging: true,
+  logging: false,
   synchronize: true,
   entities: [
     User,

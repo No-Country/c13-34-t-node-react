@@ -1,4 +1,4 @@
-import { Entity, EntitySchema, ObjectLiteral, ObjectType } from 'typeorm'
+import { EntitySchema, ObjectLiteral, ObjectType } from 'typeorm'
 import { RepositoryType, FindResults, FindResult } from '../types/entity.types'
 import { OptionalObjectType } from '../types/global.types'
 

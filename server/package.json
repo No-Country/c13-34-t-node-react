@@ -2,11 +2,11 @@
   "name": "server-test",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.ts",
+  "main": "src/server.ts",
   "scripts": {
     "build": "tsc",
-    "prod": "concurrently \"tsc -w\" \"nodemon dist/js/app.js\"&NODE_ENV=production",
-    "dev": "concurrently \"tsc -w\" \"nodemon dist/js/app.js\"&NODE_ENV=development"
+    "prod": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=production",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=development"
   },
   "keywords": [],
   "author": "",

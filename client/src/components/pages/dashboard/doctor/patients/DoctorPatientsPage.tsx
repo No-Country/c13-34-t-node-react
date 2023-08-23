@@ -1,3 +1,3 @@
 export const DoctorPatientsPage = () => {
-  return <div>Doctor: Mis Pacientes</div>;
+  return <div>Doctor: Pacientes</div>;
 };
