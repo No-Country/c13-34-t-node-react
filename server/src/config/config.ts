@@ -19,7 +19,8 @@ export const modes = Object.freeze({
   prod: 'production'
 })
 export const jwtConfig = {
-  jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
+  secret: ENV.JWT_SECRET || 'alguntokensecreto',
+  expiresIn: ENV.JWT_EXPIRES_IN || '2h'
 }
 
 export const dbConfig = Object.freeze({

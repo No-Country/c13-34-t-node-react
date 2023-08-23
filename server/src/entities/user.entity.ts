@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { UserRole, UserStatus, UserGenre } from '../types/user.types'
+import { email } from '../types/global.types'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -13,7 +14,7 @@ export class User extends BaseEntity {
   lastName: string
 
   @Column({ type: 'varchar', unique: true })
-  email: string
+  email: email
 
   @Column({ type: 'varchar' })
   password: string

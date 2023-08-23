@@ -5,6 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "build": "tsc",
+    "start": "node dist/js/server.js",
     "prod": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=production",
     "dev": "concurrently \"tsc -w\" \"nodemon dist/js/server.js\"&NODE_ENV=development"
   },

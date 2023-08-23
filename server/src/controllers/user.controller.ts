@@ -1,7 +1,8 @@
-import { Response, type Request, NextFunction } from 'express'
+import { Response, Request, NextFunction } from 'express'
 import { userService } from '../services/factory/entities.factory'
 import { AppError } from '../utils/app.error'
-import { User } from '../entities/'
+import type { User } from '../entities/'
+import type { Login } from '../types/user.types'
 
 export const signUp = async (
   req: Request,
@@ -15,13 +16,31 @@ export const signUp = async (
       status: 'success',
       user
     })
-  } catch (err: unknown) {
+  } catch (err) {
     if (!(err instanceof AppError))
       return next(new AppError('No Se Pudo Guardar El Usuario.', 500))
     next(err)
   }
 }
 
-export const singIn = (_req: Request, res: Response) => {
-  res.send('singIn')
+export const singIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { token, user } = await userService.signIn(
+      req.safeData?.body as Login
+    )
+
+    return res.status(200).json({
+      status: 'success',
+      token,
+      user
+    })
+  } catch (err) {
+    if (!(err instanceof AppError))
+      return next(new AppError('No se pudo autenticar el usuario.', 500))
+    next(err)
+  }
 }
