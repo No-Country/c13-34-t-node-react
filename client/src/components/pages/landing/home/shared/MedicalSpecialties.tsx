@@ -1,6 +1,6 @@
-import imageDiversitySpecialties from "/images/Doctora-paciente-consultorio.png";
+import imageDiversitySpecialties from "/images/doctora-home-4.png";
 
-export const EspecialidadesMedicas = () => {
+export const MedicalSpecialties = () => {
     return (
       <>
         <h2 className="text-center text-2xl text-other-blue font-bold ">Diversidad de especialidades médicas</h2>

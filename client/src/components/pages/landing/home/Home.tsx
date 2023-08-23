@@ -1,5 +1,5 @@
-import { EspecialidadesMedicas } from "./shared/EspecialidadesMedicas";
 import { Welcome } from "./shared/Welcome";
+import { MedicalSpecialties } from './shared/MedicalSpecialties';
 
 export const Home = () => {
   return (
@@ -15,7 +15,7 @@ export const Home = () => {
         <div className="h-80">Section Home 3</div>
       </section>
       <section className="py-4 px-36">
-        <EspecialidadesMedicas />
+        <MedicalSpecialties />
       </section>
     </div>
   );
