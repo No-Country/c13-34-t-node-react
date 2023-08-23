@@ -10,13 +10,11 @@ export const sendErrorDev = (err: any, res: Response) => {
 }
 
 export const sendErrorProd = (err: any, res: Response) => {
-  console.log(err)
   if (err.isOperational)
     return res.status(err.statusCode).json({
       status: err.status,
-      message: Array.isArray(err.message)
-        ? { errors: err.message }
-        : err.message
+      ...(err.message && { message: err.message }),
+      ...(err.errors && { errors: err.errors })
     })
 
   return res.status(500).json({

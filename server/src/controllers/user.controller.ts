@@ -15,9 +15,10 @@ export const signUp = async (
       status: 'success',
       user
     })
-  } catch (e) {
-    console.log(e)
-    next(new AppError('No Se Pudo Guardar El Usuario.', 500))
+  } catch (err: unknown) {
+    if (!(err instanceof AppError))
+      return next(new AppError('No Se Pudo Guardar El Usuario.', 500))
+    next(err)
   }
 }
 

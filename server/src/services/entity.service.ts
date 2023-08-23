@@ -1,6 +1,7 @@
 import { EntitySchema, ObjectLiteral, ObjectType } from 'typeorm'
 import { RepositoryType, FindResults, FindResult } from '../types/entity.types'
 import { OptionalObjectType } from '../types/global.types'
+import { AppError } from '../utils/app.error'
 
 export class EntityService {
   private entityRepository: RepositoryType
@@ -33,14 +34,21 @@ export class EntityService {
       ...(relationAttributes && { relations: relationAttributes })
     })
 
-    if (!entity && error) throw new Error('No Se Encontro El Recurso.')
+    if (!entity && error) throw new AppError('No Se Encontro El Recurso.', 404)
 
     return entity
   }
 
   async create(data: ObjectLiteral): Promise<ObjectLiteral> {
     const created = this.entityRepository.create(data)
-    return await this.entityRepository.save(created, { listeners: false })
+    try {
+      return await this.entityRepository.save(created, { listeners: false })
+    } catch (e) {
+      throw new AppError(
+        'No se pudo crear el recurso en la base de datos.',
+        500
+      )
+    }
   }
 
   async updateOne(data: EntitySchema): Promise<FindResult> {

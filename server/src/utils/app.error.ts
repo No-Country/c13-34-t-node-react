@@ -4,8 +4,8 @@ export class AppError extends Error {
   isOperational: boolean
   errors: Array<any> | null
 
-  constructor(message: string | object, statusCode: number) {
-    super(Array.isArray(message) ? 'errors' : '')
+  constructor(message: string | Array<any>, statusCode: number) {
+    super(Array.isArray(message) ? 'errors' : message)
 
     this.statusCode = statusCode
     this.status = `${statusCode}`.startsWith('4') ? 'error' : 'fail'

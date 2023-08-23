@@ -10,7 +10,7 @@ export const userSchema = z.object({
         invalid_type_error: 'El nombre debe ser un texto.'
       })
       .min(2, { message: 'El nombre debe ser de mínimo 2 caracteres.' })
-      .max(70, { message: 'El nombre excede la longitud máxima.' })
+      .max(50, { message: 'El nombre excede la longitud máxima.' })
       .trim()
       .toLowerCase(),
     lastName: z
@@ -18,7 +18,7 @@ export const userSchema = z.object({
         required_error: 'El apellido es requerido.',
         invalid_type_error: 'El apellido debe ser un texto.'
       })
-      .min(2, { message: 'El apellido debe ser de mínimo 2 caracteres.' })
+      .min(3, { message: 'El apellido debe ser de mínimo 2 caracteres.' })
       .max(70, { message: 'El apellido excede la longitud máxima.' })
       .trim()
       .toLowerCase(),
@@ -43,7 +43,7 @@ export const userSchema = z.object({
 
         if (userExists)
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: 'El email ya esta registrado.'
           })
       }),
@@ -69,10 +69,7 @@ export const userSchema = z.object({
         required_error: 'La contraseña es requerida.',
         invalid_type_error: 'La contraseña debe ser un texto.'
       })
-      .min(5, { message: 'La contraseña debe ser de mínimo 5 caracteres' })
-  }),
-  dateOfBirth: z.coerce.date({
-    required_error: 'La fecha es requerida.',
-    invalid_type_error: 'La fecha debe ser un texto con formato de fecha'
+      .min(5, { message: 'La contraseña debe ser de mínimo 5 caracteres' }),
+    dateOfBirth: z.coerce.date()
   })
 })
