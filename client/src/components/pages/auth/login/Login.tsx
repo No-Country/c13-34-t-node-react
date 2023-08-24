@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../../../../service/auth";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../../constants/api";
-import { AuthResponseError } from "../../../../types/types";
+import { AuthResponse, AuthResponseError } from "../../../../types/types";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +14,10 @@ export const Login = () => {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
@@ -28,10 +32,14 @@ export const Login = () => {
       });
 
       if (response.ok) {
-        console.log("Usuario se creo correctamente");
+        console.log("Usuario conectado correctamente");
         setErrorResponse("");
+        const json = (await response.json()) as AuthResponse;
 
-        goTo("/acceso");
+        if (json.body.accessToken && json.body.refreshToken) {
+          auth.saveUser(json);
+          goTo("/plataforma");
+        }
       } else {
         console.log("Algo salió mal");
         const json = (await response.json()) as AuthResponseError;
@@ -42,31 +50,6 @@ export const Login = () => {
       console.log(error);
     }
   };
-
-  // const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-  //   e.preventDefault();
-  //   console.log("jaja");
-
-  //   const formData = new FormData(e.target as HTMLFormElement);
-  //   const email = formData.get("email") as string;
-  //   const password = formData.get("password") as string;
-
-  //   try {
-  //     const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
-  //       method: "POST",
-  //       headers: [
-  //         ["Content-Type", "application/x-www-form-urlencoded"],
-  //         ["Content-Type", "multipart/form-data"],
-  //         ["Content-Type", "text/plain"],
-  //       ],
-  //       body: JSON.stringify({ email, password }),
-  //     });
-  //     console.log(response.json());
-  //     return response.json();
-  //   } catch (error) {
-  //     console.log("No se pudo establecer conexión con el servidor");
-  //   }
-  // };
 
   if (auth.isAuthenticated) {
     return <Navigate to="plataforma" />;
