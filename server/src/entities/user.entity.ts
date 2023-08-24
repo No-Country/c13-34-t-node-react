@@ -19,6 +19,9 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar' })
   password: string
 
+  @Column({ type: 'date', nullable: true, name: 'password_changed_at' })
+  passwordChangedAt: Date
+
   @Column({ type: 'date', name: 'date_of_birth' })
   dateOfBirth: Date
 

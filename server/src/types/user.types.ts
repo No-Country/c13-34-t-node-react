@@ -37,4 +37,9 @@ export interface AuthenticatedUser {
   user: UserDto
 }
 
+export type PasswordsType = {
+  currentPassword: string
+  newPassword: string
+}
+
 export type UserRepository = Repository<User>

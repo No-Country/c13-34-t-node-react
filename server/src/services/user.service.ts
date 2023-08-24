@@ -6,7 +6,8 @@ import {
   type AuthenticatedUser,
   type Login,
   type UserDto,
-  type UserRepository
+  type UserRepository,
+  PasswordsType
 } from '../types/user.types'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
 import { generateJWT } from '../utils/jwt'
@@ -52,6 +53,31 @@ export class UserService {
     return {
       token,
       user: userDto(user)
+    }
+  }
+
+  async updateUserPass(
+    userToUpdate: User,
+    passwords: PasswordsType
+  ): Promise<void> {
+    const { currentPassword, newPassword } = passwords
+
+    if (currentPassword === newPassword)
+      throw new AppError('Tu contraseña no puede ser la misma.', 400)
+
+    await comparePasswords(currentPassword, userToUpdate.password)
+
+    const encriptedPass = await hashPassword(newPassword)
+    const data = {
+      id: userToUpdate.id,
+      password: encriptedPass,
+      passwordChangedAt: new Date()
+    }
+
+    try {
+      await this.entityService.updateOne(data)
+    } catch (e) {
+      throw new AppError('No se pudo cambiar la contraseña.', 400)
     }
   }
 

@@ -26,7 +26,7 @@ export enum MESSAGES {
   PASSWORD_REQUIRED_ERROR = 'La contraseña es requerida.',
   PASSWORD_TYPE_ERROR = 'La contraseña debe ser un texto.',
   PASSWORD_MIN_LENGTH = 'La contraseña debe ser de mínimo 5 caracteres',
-  PASSWORD_TOO_WEAK = 'La contraseña debe tener mínimo 8 caracteres, al menos 1 número, 1 mayúscula, 1 mínuscula y 1 caracter especial',
+  PASSWORD_TOO_WEAK = 'La contraseña debe tener mínimo 8 caracteres, al menos un número, un mayúscula, un mínuscula y un caracter especial',
   DATE_OF_BIRTH_INVALID_DATE = 'La fecha indicada no existe',
   DATE_OF_BIRTH_DEFAULT_ERROR = 'Invalid date'
 }
