@@ -15,13 +15,21 @@ export interface AuthResponseError {
 }
 
 export interface User {
-  _id: string;
+  // _id: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  phone: number;
-  birthdate: number;
-  genero: "male" | "female";
+  telephone: number;
+  dateOfBirth: number;
+  genre: "male" | "female";
   role: TRole[];
+}
+
+export interface AccessTokenResponse {
+  statusCode: number;
+  body: {
+    accessToken: string;
+  };
+  error?: string;
 }
