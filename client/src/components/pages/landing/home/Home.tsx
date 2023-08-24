@@ -1,6 +1,7 @@
 import { MedicalSpecialties } from "./shared/MedicalSpecialties";
 import { Testimonials } from "./shared/Testimonials";
 import { Welcome } from "./shared/Welcome";
+import { Services } from "./shared/Services";
 
 export const Home = () => {
   return (
@@ -11,8 +12,8 @@ export const Home = () => {
       <section className="py-4 px-36">
         <div className="h-80">Section Home 2</div>
       </section>
-      <section className="py-4 px-36">
-        <div className="h-80">Section Home 3</div>
+      <section className="py-12 mb-12">
+        <Services />
       </section>
       <section className="py-4 px-36">
         <MedicalSpecialties />
