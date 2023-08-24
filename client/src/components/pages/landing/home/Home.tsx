@@ -1,4 +1,5 @@
 import { MedicalSpecialties } from "./shared/MedicalSpecialties";
+import { PatientTestimonials } from "./shared/PatientTestimonials";
 import { Welcome } from "./shared/Welcome";
 
 export const Home = () => {
@@ -15,6 +16,9 @@ export const Home = () => {
       </section>
       <section className="py-4 px-36">
         <MedicalSpecialties />
+      </section>
+      <section className="py-4 px-36">
+        <PatientTestimonials />
       </section>
     </div>
   );
