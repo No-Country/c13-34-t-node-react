@@ -23,7 +23,7 @@ export const Login = () => {
       const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
         method: "POST",
         headers: {
-          "Conten-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,

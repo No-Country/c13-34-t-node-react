@@ -25,7 +25,7 @@ export const Register = () => {
       const response = await fetch(`${API_URL}/api/v1/users/auth/signup`, {
         method: "POST",
         headers: {
-          "Conten-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           firstName,
@@ -184,8 +184,8 @@ export const Register = () => {
             <label className="block">
               <span className="block">Fecha de nacimiento *</span>
               <input
-                type="number"
-                name="number"
+                type="string"
+                name="text"
                 required
                 placeholder="Ingrese su fecha de nacimiento"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"

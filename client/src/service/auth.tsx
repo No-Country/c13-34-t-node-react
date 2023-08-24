@@ -14,6 +14,7 @@ const AuthContext = createContext({
   getAccessToken: () => {},
   saveUser: (userData: AuthResponse) => {},
   getRefreshToken: () => {},
+  getUser: () => ({}) as User | undefined,
 });
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -22,7 +23,9 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User>();
   // const [refreshToken, setRefreshToken] = useState<string>("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   async function requestNewAccessToken(refreshToken: string) {
     try {
@@ -66,7 +69,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         if (json.error) {
           throw new Error(json.error);
         }
-        return json;
+        return json.body;
       } else {
         throw new Error(response.statusText);
       }
@@ -87,15 +90,22 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         if (newAccessToken) {
           const userInfo = await getUserInfo(newAccessToken);
           if (userInfo) {
-            setAccessToken(accessToken);
-            // setRefreshToken(userData.body.refreshToken);
-            localStorage.setItem("token", JSON.stringify(token));
-            setIsAuthenticated(true);
-            setUser(userInfo);
+            saveSessionInfo(userInfo, newAccessToken, token);
           }
         }
       }
     }
+  }
+
+  function saveSessionInfo(
+    userInfo: User,
+    accessToken: string,
+    refreshToken: string,
+  ) {
+    setAccessToken(accessToken);
+    localStorage.setItem("token", JSON.stringify(refreshToken));
+    setIsAuthenticated(true);
+    setUser(userInfo);
   }
 
   function getAccessToken() {
@@ -103,25 +113,35 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   function getRefreshToken(): string | null {
-    const token = localStorage.getItem("token") || null;
-    if (token) {
-      const { refreshToken } = JSON.parse(token);
-      return refreshToken;
+    const tokenData = localStorage.getItem("token");
+    if (tokenData) {
+      const token = JSON.parse(tokenData);
+      return token;
     }
     return null;
   }
 
   function saveUser(userData: AuthResponse) {
-    setAccessToken(userData.body.accessToken);
-    // setRefreshToken(userData.body.refreshToken);
-    setUser(userData.body.user);
-    localStorage.setItem("token", JSON.stringify(userData.body.refreshToken));
-    setIsAuthenticated(true);
+    saveSessionInfo(
+      userData.body.user,
+      userData.body.accessToken,
+      userData.body.refreshToken,
+    );
+  }
+
+  function getUser() {
+    return user;
   }
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, getAccessToken, saveUser, getRefreshToken }}
+      value={{
+        isAuthenticated,
+        getAccessToken,
+        saveUser,
+        getRefreshToken,
+        getUser,
+      }}
     >
       {children}
     </AuthContext.Provider>
