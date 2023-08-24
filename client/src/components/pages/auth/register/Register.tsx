@@ -1,23 +1,69 @@
-import { NavLink, Navigate } from "react-router-dom";
-import { useState, ChangeEvent } from "react"; // Importa ChangeEvent
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { useState, ChangeEvent } from "react";
 import { useAuth } from "../../../../service/auth";
+import { API_URL } from "../../../../constants/api";
+import { AuthResponseError } from "../../../../types/types";
 
 export const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [genre, setGenre] = useState("");
+  const [charge, setCharge] = useState("");
+  const [errorResponse, setErrorResponse] = useState("");
 
   const auth = useAuth();
+  const goTo = useNavigate();
+
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    // auth.signup(firstName, lastName, email, password, phone, genre, charge);
+
+    try {
+      const response = await fetch(`${API_URL}/api/v1/users/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Conten-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          password,
+          phone,
+          genre,
+          charge,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("Usuario se creo correctamente");
+        setErrorResponse("");
+
+        goTo("/acceso");
+      } else {
+        console.log("Algo salió mal");
+        const json = (await response.json()) as AuthResponseError;
+        setErrorResponse(json.body.error);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   if (auth.isAuthenticated) {
     return <Navigate to="plataforma" />;
   }
 
-  const [userType, setUserType] = useState(""); // Estado para almacenar el tipo de usuario seleccionado
+  const genreChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setGenre(e.target.value);
+  };
 
-  const handleUserTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setUserType(event.target.value);
+  const chargeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCharge(e.target.value);
   };
 
   return (
@@ -45,49 +91,17 @@ export const Register = () => {
         </div>
 
         <div className="w-[502px] flex flex-col font-opensans">
-          <h1 className="font-caudex text-primary-green text-5xl pb-6">
-            Crea una cuenta
-          </h1>
+          <form
+            onSubmit={handleSubmit}
+            className="w-[360px] flex flex-col gap-6"
+          >
+            <h1 className="font-caudex text-primary-green text-5xl pb-2">
+              Crea una cuenta
+            </h1>
 
-          <form className="w-[360px] flex flex-col gap-6">
-            <label className="block">
-              <span className="block">Correo Electrónico *</span>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="text"
-                name=""
-                required
-                placeholder="Ingrese su correo electrónico"
-                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
-              />
-            </label>
-
-            <label className="block">
-              <span className="block">Contraseña *</span>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                name=""
-                required
-                placeholder="Ingrese su contraseña"
-                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
-              />
-            </label>
-
-            <label className="block">
-              <span className="block">Confirmar contraseña *</span>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                name=""
-                required
-                placeholder="Confirmar contraseña"
-                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
-              />
-            </label>
+            {!!errorResponse && (
+              <div className="errorMessage">{errorResponse}</div>
+            )}
 
             <label className="block">
               <span className="block">Nombre(s) *</span>
@@ -95,7 +109,7 @@ export const Register = () => {
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 type="text"
-                name=""
+                name="firstName"
                 required
                 placeholder="Ingrese su nombre"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
@@ -108,7 +122,7 @@ export const Register = () => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                name=""
+                name="lastName"
                 required
                 placeholder="Ingrese su nombre"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
@@ -116,26 +130,40 @@ export const Register = () => {
             </label>
 
             <label className="block">
-              <span className="block">Genero *</span>
-              <select
-                value={userType}
-                onChange={handleUserTypeChange}
-                // required
+              <span className="block">Correo Electrónico *</span>
+              <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                name="email"
+                required
+                placeholder="Ingrese su correo electrónico"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
-              >
-                <option value="">Selecciona un tipo</option>
-                <option value="doctor">Masculino</option>
-                <option value="paciente">Femenino</option>
-              </select>
+              />
             </label>
 
             <label className="block">
-              <span className="block">Fecha de nacimiento *</span>
+              <span className="block">Contraseña *</span>
               <input
-                type="text"
-                name=""
-                // required
-                placeholder="Ingrese su fecha de nacimiento"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
+                required
+                placeholder="Ingrese su contraseña"
+                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
+              />
+            </label>
+
+            <label className="block">
+              <span className="block">Confirmar contraseña *</span>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
+                required
+                placeholder="Confirmar contraseña"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
               />
             </label>
@@ -143,30 +171,59 @@ export const Register = () => {
             <label className="block">
               <span className="block">Número de teléfono *</span>
               <input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 type="number"
-                name=""
-                // required
+                name="number"
+                required
                 placeholder="Ingrese su número de teléfono"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
               />
             </label>
 
             <label className="block">
-              <span className="block">Cargo *</span>
+              <span className="block">Fecha de nacimiento *</span>
+              <input
+                type="number"
+                name="number"
+                required
+                placeholder="Ingrese su fecha de nacimiento"
+                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
+              />
+            </label>
+
+            <label className="block">
+              <span className="block">Genero *</span>
               <select
-                value={userType}
-                onChange={handleUserTypeChange}
-                // required
+                value={genre}
+                onChange={genreChange}
+                required
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
               >
-                <option value="">Selecciona un tipo</option>
-                <option value="paciente">Paciente</option>
-                <option value="doctor">Doctor</option>
-                <option value="administrador">Administrador</option>
+                <option value="">Seleccione un tipo</option>
+                <option value="male">Masculino</option>
+                <option value="female">Femenino</option>
               </select>
             </label>
 
-            <button className="w-[360px] mt-5 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300">
+            <label className="block">
+              <span className="block">Cargo *</span>
+              <select
+                value={charge}
+                onChange={chargeChange}
+                required
+                className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
+              >
+                <option value="">Seleccione un tipo</option>
+                <option value="patiente">Paciente</option>
+                <option value="doctor">Doctor</option>
+              </select>
+            </label>
+
+            <button
+              type="submit"
+              className="w-[360px] mt-5 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
+            >
               Enviar
             </button>
           </form>

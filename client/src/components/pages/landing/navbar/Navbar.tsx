@@ -11,6 +11,7 @@ export const Navbar = () => {
       <div className="flex relative gap-14 text-xl font-opensans tracking-wide">
         {navLinks.map((navLink) => (
           <NavLink
+            key={navLink.id}
             to={navLink.url}
             className={({ isActive }) =>
               isActive

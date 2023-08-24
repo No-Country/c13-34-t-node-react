@@ -1,47 +1,77 @@
 // import { useAuth } from "../../../../context/auth";
 import { useState } from "react";
 import { useAuth } from "../../../../service/auth";
-
-import { NavLink, Navigate } from "react-router-dom";
-
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import { API_URL } from "../../../../constants/api";
+import { AuthResponseError } from "../../../../types/types";
 
 export const Login = () => {
-  // const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorResponse, setErrorResponse] = useState("");
   const auth = useAuth();
+  const goTo = useNavigate();
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
-    event,
-  ) => {
-    event.preventDefault();
-    console.log("jaja");
-
-    const formData = new FormData(event.target as HTMLFormElement);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
 
     try {
       const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
         method: "POST",
-        headers: [
-          ["Content-Type", "application/x-www-form-urlencoded"],
-          ["Content-Type", "multipart/form-data"],
-          ["Content-Type", "text/plain"],
-        ],
-        body: JSON.stringify({ email, password }),
+        headers: {
+          "Conten-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       });
-      console.log(response.json());
-      return response.json();
+
+      if (response.ok) {
+        console.log("Usuario se creo correctamente");
+        setErrorResponse("");
+
+        goTo("/acceso");
+      } else {
+        console.log("Algo salió mal");
+        const json = (await response.json()) as AuthResponseError;
+        setErrorResponse(json.body.error);
+        return;
+      }
     } catch (error) {
-      console.log("No se pudo establecer conexión con el servidor");
+      console.log(error);
     }
   };
+
+  // const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  //   e.preventDefault();
+  //   console.log("jaja");
+
+  //   const formData = new FormData(e.target as HTMLFormElement);
+  //   const email = formData.get("email") as string;
+  //   const password = formData.get("password") as string;
+
+  //   try {
+  //     const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
+  //       method: "POST",
+  //       headers: [
+  //         ["Content-Type", "application/x-www-form-urlencoded"],
+  //         ["Content-Type", "multipart/form-data"],
+  //         ["Content-Type", "text/plain"],
+  //       ],
+  //       body: JSON.stringify({ email, password }),
+  //     });
+  //     console.log(response.json());
+  //     return response.json();
+  //   } catch (error) {
+  //     console.log("No se pudo establecer conexión con el servidor");
+  //   }
+  // };
 
   if (auth.isAuthenticated) {
     return <Navigate to="plataforma" />;
   }
+
   return (
     <div className="h-full py-20 pl-0 pr-36 bg-white">
       <div className="grid grid-cols-2 gap-24">
@@ -86,13 +116,17 @@ export const Login = () => {
             onSubmit={handleSubmit}
             className="w-[360px] flex flex-col gap-6"
           >
+            {!!errorResponse && (
+              <div className="errorMessage">{errorResponse}</div>
+            )}
+
             <label className="block">
               <span className="block">Correo Electrónico *</span>
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                type="text"
-                name=""
+                type="email"
+                name="email"
                 required
                 placeholder="Ingrese su correo electrónico"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
@@ -105,7 +139,7 @@ export const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
-                name=""
+                name="password"
                 required
                 placeholder="Ingrese su contraseña"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
@@ -113,7 +147,7 @@ export const Login = () => {
             </label>
             <button
               type="submit"
-              className="w-[360px] mt-14 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
+              className="w-[360px] mt-4 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
             >
               Ingresar
             </button>

@@ -1,7 +1,7 @@
 export const navLinks = [
-  { url: "/", name: "Inicio" },
-  { url: "/sobre-nosotros", name: "Sobre Nosotros" },
-  { url: "/contacto", name: "Contacto" },
-  { url: "/registro", name: "Registro" },
-  { url: "/acceso", name: "Acceso" },
+  { id: 1, url: "/", name: "Inicio" },
+  { id: 2, url: "/sobre-nosotros", name: "Sobre Nosotros" },
+  { id: 3, url: "/contacto", name: "Contacto" },
+  { id: 4, url: "/registro", name: "Registro" },
+  { id: 5, url: "/acceso", name: "Acceso" },
 ];
