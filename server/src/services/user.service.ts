@@ -1,15 +1,17 @@
 import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult } from '../types/entity.types'
-import type {
-  AuthenticatedUser,
-  Login,
-  UserDto,
-  UserRepository
+import {
+  UserStatus,
+  type AuthenticatedUser,
+  type Login,
+  type UserDto,
+  type UserRepository
 } from '../types/user.types'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
 import { generateJWT } from '../utils/jwt'
 import { EntityService } from './entity.service'
+import { AppError } from '../utils/app.error'
 
 export class UserService {
   private readonly userRepository: UserRepository
@@ -50,6 +52,15 @@ export class UserService {
     return {
       token,
       user: userDto(user)
+    }
+  }
+
+  async disableUser(id: number) {
+    const data = { id, status: UserStatus.disable }
+    try {
+      await this.entityService.updateOne(data)
+    } catch (e) {
+      throw new AppError('El usuario no pudo deshabilitarse.', 500)
     }
   }
 }

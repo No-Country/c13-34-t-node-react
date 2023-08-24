@@ -10,6 +10,7 @@ export const idSchema = z.object({
           code: z.ZodIssueCode.custom,
           message: 'El id debe ser un entero'
         })
+      return parsed
     })
   })
 })

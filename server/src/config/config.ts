@@ -22,7 +22,6 @@ export const jwtConfig = {
   secret: ENV.JWT_SECRET ?? 'alguntokensecreto',
   expiresIn: ENV.JWT_EXPIRES_IN ?? '2h'
 }
-
 export const dbConfig = Object.freeze({
   type: ENV.DB_TYPE as any,
   host: ENV.DB_HOST,
@@ -45,3 +44,4 @@ export const dbConfig = Object.freeze({
     PatientMedicalHistory
   ]
 })
+export const ACCEPTED_ORIGIN = 'http://localhost:3000'

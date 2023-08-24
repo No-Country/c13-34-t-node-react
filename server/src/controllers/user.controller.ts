@@ -95,10 +95,7 @@ export const deleteUser = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
-    const newId = Number(id)
-
-    await userService.disableUser(newId)
+    await userService.disableUser(req.safeData?.params)
 
     return res.status(204).json({
       status: 'success'
