@@ -15,20 +15,15 @@ export const Login = () => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target as HTMLFormElement);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const formData = Object.fromEntries(new FormData(e.target).entries());
 
     try {
       const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
         method: "POST",
         headers: {
-          "Conten-Type": "application/json",
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -36,7 +31,7 @@ export const Login = () => {
         setErrorResponse("");
         const json = (await response.json()) as AuthResponse;
 
-        if (json.body.accessToken && json.body.refreshToken) {
+        if (json.token) {
           auth.saveUser(json);
           goTo("/plataforma");
         }

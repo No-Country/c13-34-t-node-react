@@ -8,8 +8,12 @@ import {
   RiHistoryFill,
   RiSeoFill,
 } from "react-icons/ri";
+import { useAuth } from "../../../service/auth";
+import { User } from "../../../types/types";
 
 export const Sidebar = () => {
+  const auth = useAuth();
+  const user: User = auth.getUserInfo();
   // Traer al usuario
   // En base al Rol mostrar la navegación correspondiente
   return (
@@ -19,13 +23,19 @@ export const Sidebar = () => {
       </div>
 
       <div className="flex items-center justify-center">
-        <img src="/images/doctor.png" alt="" className="w-[130px] mb-6" />
+        <img
+          src="/images/oscar.jpg"
+          alt=""
+          className="w-[130px] mb-6 rounded-full"
+        />
       </div>
 
       <div className="flex flex-col">
         {/* administrador */}
-        <div className="text-center text-[#777777] mb-12">Administrador</div>
-        <div>
+        <div className="text-center font-bold text-[#777777] mb-12">
+          {user?.firstName.toUpperCase() + " " + user?.lastName.toUpperCase()}
+        </div>
+        {/*<div>
           <ul className="flex flex-col">
             <li>
               <NavLink
@@ -55,7 +65,7 @@ export const Sidebar = () => {
               </NavLink>
             </li>
           </ul>
-        </div>
+  </div>*/}
 
         {/* doctor */}
         <div className="text-center text-[#777777] mb-12">Doctor</div>
@@ -99,7 +109,7 @@ export const Sidebar = () => {
         </ul>
 
         {/* paciente */}
-        <div className="text-center text-[#777777]">
+        {/*<div className="text-center text-[#777777]">
           <p>Paciente</p>
         </div>
         <ul>
@@ -148,7 +158,7 @@ export const Sidebar = () => {
               <p>Registros Médicos</p>
             </NavLink>
           </li>
-        </ul>
+        </ul>*/}
       </div>
     </div>
   );

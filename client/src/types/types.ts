@@ -1,11 +1,9 @@
 type TRole = "client" | "doctor" | "admin";
 
 export interface AuthResponse {
-  body: {
-    user: User;
-    accessToken: string;
-    refreshToken: string;
-  };
+  user: User;
+  token: string;
+  refreshToken: string;
 }
 
 export interface AuthResponseError {

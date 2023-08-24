@@ -14,6 +14,7 @@ const AuthContext = createContext({
   getAccessToken: () => {},
   saveUser: (userData: AuthResponse) => {},
   getRefreshToken: () => {},
+  getUserInfo: () => {},
 });
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
@@ -50,30 +51,8 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }
 
-  async function getUserInfo(accessToken: string) {
-    try {
-      const response = await fetch(`${API_URL}/user`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (response.ok) {
-        const json = await response.json();
-
-        if (json.error) {
-          throw new Error(json.error);
-        }
-        return json;
-      } else {
-        throw new Error(response.statusText);
-      }
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+  function getUserInfo() {
+    return user;
   }
 
   async function checkAuth() {
@@ -112,16 +91,22 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   function saveUser(userData: AuthResponse) {
-    setAccessToken(userData.body.accessToken);
+    setAccessToken(userData.token);
     // setRefreshToken(userData.body.refreshToken);
-    setUser(userData.body.user);
-    localStorage.setItem("token", JSON.stringify(userData.body.refreshToken));
+    setUser(userData.user);
+    localStorage.setItem("token", JSON.stringify(userData.token));
     setIsAuthenticated(true);
   }
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, getAccessToken, saveUser, getRefreshToken }}
+      value={{
+        isAuthenticated,
+        getAccessToken,
+        saveUser,
+        getRefreshToken,
+        getUserInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>
