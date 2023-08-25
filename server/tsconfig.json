@@ -5,6 +5,7 @@
     "outDir": "dist/js",
     "moduleResolution": "nodenext",
     "rootDir": "src",
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,6 +13,6 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".eslintrc.js"],
   "exclude": ["src/types/*.ts", "node_modules"]
 }

@@ -1,9 +1,16 @@
-import { EntitySchema, ObjectLiteral, ObjectType } from 'typeorm'
-import { RepositoryType, FindResults, FindResult } from '../types/entity.types'
-import { OptionalObjectType } from '../types/global.types'
+import { type ObjectLiteral } from 'typeorm'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import {
+  type FindResult,
+  type FindResults,
+  type RepositoryType
+} from '../types/entity.types'
+import { type OptionalObjectType } from '../types/global.types'
+import { AppError } from '../utils/app.error'
 
 export class EntityService {
-  private entityRepository: RepositoryType
+  private readonly entityRepository: RepositoryType
 
   constructor(repository: RepositoryType) {
     this.entityRepository = repository
@@ -33,17 +40,25 @@ export class EntityService {
       ...(relationAttributes && { relations: relationAttributes })
     })
 
-    if (!entity && error) throw new Error('No Se Encontro El Recurso.')
+    if (!entity && error)
+      throw new AppError(ERROR_MSGS.RESOURCE_NOT_FOUND, HTTPCODES.NOT_FOUND)
 
     return entity
   }
 
   async create(data: ObjectLiteral): Promise<ObjectLiteral> {
     const created = this.entityRepository.create(data)
-    return await this.entityRepository.save(created, { listeners: false })
+    try {
+      return await this.entityRepository.save(created, { listeners: false })
+    } catch (e) {
+      throw new AppError(
+        ERROR_MSGS.RESOURCE_CREATION_ERROR,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
   }
 
-  async updateOne(data: EntitySchema): Promise<FindResult> {
+  async updateOne(data: object): Promise<FindResult> {
     return await this.entityRepository.save(data, { listeners: false })
   }
 }

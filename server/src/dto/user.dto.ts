@@ -1,12 +1,33 @@
-import { ObjectLiteral } from 'typeorm'
-import { User } from '../entities'
+import type { User } from '../entities'
+import type { UserDto } from '../types/user.types'
 
-export const userDto = (user: User & ObjectLiteral) => {
+export const userDto = (user: User): UserDto => {
+  const { firstName, lastName, telephone, dateOfBirth, genre, email, role } =
+    user
+
   return {
-    name: user.name,
-    lastName: user.lastName,
-    telephone: user.telephone,
-    dateOfBirth: user.dateOfBirth,
-    genre: user.genre
+    firstName,
+    lastName,
+    email,
+    telephone,
+    dateOfBirth,
+    genre,
+    role
   }
+}
+
+export const highLevelUsersDto = (users: User[]): UserDto[] => {
+  return users.map((user) => {
+    const { firstName, lastName, telephone, dateOfBirth, genre, email, role } =
+      user
+    return {
+      firstName,
+      lastName,
+      email,
+      telephone,
+      dateOfBirth,
+      genre,
+      role
+    }
+  })
 }

@@ -1,22 +1,26 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { UserRole, UserStatus, UserGenre } from '../types/user.types'
+import { email } from '../types/global.types'
+import { UserGenre, UserRole, UserStatus } from '../types/user.types'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ type: 'varchar', length: 50 })
+  @Column({ type: 'varchar', length: 50, name: 'first_name' })
   firstName: string
 
   @Column({ type: 'varchar', length: 70, name: 'last_name' })
   lastName: string
 
   @Column({ type: 'varchar', unique: true })
-  email: string
+  email: email
 
   @Column({ type: 'varchar' })
   password: string
+
+  @Column({ type: 'date', nullable: true, name: 'password_changed_at' })
+  passwordChangedAt: Date
 
   @Column({ type: 'date', name: 'date_of_birth' })
   dateOfBirth: Date
@@ -25,7 +29,7 @@ export class User extends BaseEntity {
   telephone: string
 
   @Column({ type: 'enum', default: UserRole.patient, enum: UserRole })
-  roles: UserRole
+  role: UserRole
 
   @Column({ type: 'enum', default: UserStatus.enable, enum: UserStatus })
   status: UserStatus

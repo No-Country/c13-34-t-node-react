@@ -1,14 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-// import { useAuth } from "../../context/auth";
-import { useAuth } from "../../service/auth";
+import { useAuth } from "../../context/auth";
 
 export const Authenticated = () => {
-  // const { loggedIn } = useAuth();
-  // if (!loggedIn) return <Navigate to="/acceso" />;
+  const { loggedIn } = useAuth();
 
-  const auth = useAuth();
-
-  if (!auth.isAuthenticated) return <Navigate to="/acceso" />;
+  if (!loggedIn) return <Navigate replace to="/" />;
 
   return <Outlet />;
 };

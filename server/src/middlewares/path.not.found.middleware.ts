@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 
 export const pathNotFound = (
   req: Request,
@@ -6,7 +7,7 @@ export const pathNotFound = (
   _next: NextFunction
 ) => {
   return res.status(404).json({
-    status: 'fail',
-    message: `La Ruta ${req.originalUrl} No Se Encontro.`
+    status: ERROR_MSGS.FAIL,
+    message: `La ruta ${req.originalUrl} no se encontró.`
   })
 }

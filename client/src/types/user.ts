@@ -1,11 +1,16 @@
-type TRole = "client" | "doctor" | "admin";
+export type TRole = "patient" | "doctor" | "admin";
 
 export type TUser = {
+  firstName: string;
+  lastName: string;
   email: string;
+  telephone: string;
+  dateOfBirth: string;
+  genre: "male" | "female";
+  role: TRole;
+};
+
+export type TNewUser = TUser & {
   password: string;
-  name: string;
-  genero: "men" | "women";
-  birthdate: number;
-  phone: string;
-  role: TRole[];
+  confirmPassword: string;
 };

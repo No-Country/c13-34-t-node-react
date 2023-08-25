@@ -11,7 +11,7 @@ import {
 const ENV = process.env
 
 export const mode = ENV.NODE_ENV
-export const port = ENV.PORT || 4444
+export const port = ENV.PORT ?? 4444
 export const salt = Number(ENV.SALT)
 
 export const modes = Object.freeze({
@@ -19,9 +19,9 @@ export const modes = Object.freeze({
   prod: 'production'
 })
 export const jwtConfig = {
-  jwtSecret: process.env.JWT_SECRET || 'alguntokensecreto'
+  secret: ENV.JWT_SECRET ?? 'alguntokensecreto',
+  expiresIn: ENV.JWT_EXPIRES_IN ?? '2h'
 }
-
 export const dbConfig = Object.freeze({
   type: ENV.DB_TYPE as any,
   host: ENV.DB_HOST,
@@ -31,6 +31,10 @@ export const dbConfig = Object.freeze({
   database: ENV.DB_NAME,
   logging: false,
   synchronize: true,
+  // ssl: {
+  //   ca: ENV.SSL_CERT,
+  //   rejectUnauthorized: false
+  // },
   entities: [
     User,
     Patient,
@@ -40,3 +44,4 @@ export const dbConfig = Object.freeze({
     PatientMedicalHistory
   ]
 })
+export const ACCEPTED_ORIGIN = 'http://localhost:3000'

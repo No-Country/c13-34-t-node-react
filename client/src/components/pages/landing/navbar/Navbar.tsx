@@ -1,16 +1,17 @@
 import { NavLink } from "react-router-dom";
+import { navLinks } from "../../../../data/navLinks";
 import logo from "/images/logo.png";
-import { navLinks } from "../../../../constants/api";
 
 export const Navbar = () => {
   return (
-    <div className="flex justify-between items-center py-6 px-36 bg-white text-black text-2xl">
+    <div className="flex justify-between items-center py-3 px-36 bg-white text-black text-2xl">
       <div className="flex relative z-10 items-center gap-1">
-        <img src={logo} alt="app meddify logo" />
+        <img src={logo} alt="logo" className="h-[50px]" />
       </div>
       <div className="flex relative gap-14 text-xl font-opensans tracking-wide">
         {navLinks.map((navLink) => (
           <NavLink
+            key={navLink.id}
             to={navLink.url}
             className={({ isActive }) =>
               isActive
