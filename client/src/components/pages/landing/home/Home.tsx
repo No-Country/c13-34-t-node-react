@@ -1,6 +1,7 @@
 import { MedicalSpecialties } from "./shared/MedicalSpecialties";
 import { Testimonials } from "./shared/Testimonials";
 import { Welcome } from "./shared/Welcome";
+import { MedicalSpecialties } from './shared/MedicalSpecialties';
 
 export const Home = () => {
   return (
