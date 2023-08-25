@@ -8,8 +8,10 @@ import {
   RiHistoryFill,
   RiSeoFill,
 } from "react-icons/ri";
+import { useAuth } from "../../../context/auth";
 
 export const Sidebar = () => {
+  const { logout } = useAuth();
   // Traer al usuario
   // En base al Rol mostrar la navegación correspondiente
   return (
@@ -21,6 +23,8 @@ export const Sidebar = () => {
       <div className="flex items-center justify-center">
         <img src="/images/doctor.png" alt="" className="w-[130px] mb-6" />
       </div>
+
+      <button onClick={logout}>Salir</button>
 
       <div className="flex flex-col">
         {/* administrador */}
