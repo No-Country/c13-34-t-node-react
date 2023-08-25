@@ -1,5 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import { MESSAGES } from '../constants/msgs'
 import { highLevelUsersDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import { userService } from '../services/factory/entities.factory'
@@ -27,14 +29,17 @@ export const getAllDoctorsAndAdmins = async (
     const filteredUsers = highLevelUsersDto(users as User[])
 
     return res.status(HTTPCODES.OK).json({
-      status: 'succes',
+      status: MESSAGES.SUCCESS,
       users: filteredUsers,
       count: results
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
       next(
-        new AppError('No se pudo obtener los médicos y administradores.', 500)
+        new AppError(
+          ERROR_MSGS.GET_DOCTORS_AND_ADMINS_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
       )
       return
     }
