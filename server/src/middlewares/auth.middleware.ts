@@ -1,8 +1,10 @@
-import type { Request, Response, NextFunction } from 'express'
-import { AppError } from '../utils/app.error'
-import { verifyJWT } from '../utils/jwt'
+import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import { userService } from '../services/factory/entities.factory'
 import type { DecodedAuth } from '../types/global.types'
+import { AppError } from '../utils/app.error'
+import { verifyJWT } from '../utils/jwt'
 
 export const protect = async (
   req: Request,
@@ -12,15 +14,13 @@ export const protect = async (
   let token: string | undefined
 
   if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers?.authorization &&
+    req.headers.authorization?.startsWith('Bearer')
   )
     token = req.headers.authorization.split(' ')[1]
 
   if (!token) {
-    next(
-      new AppError('No haz iniciado sesión, ¡Por favor inicia sesión!.', 401)
-    )
+    next(new AppError(ERROR_MSGS.SESSION_NOT_STARTED, HTTPCODES.UNAUTHORIZED))
     return
   }
 
@@ -34,7 +34,12 @@ export const protect = async (
   }
 
   if (!decoded) {
-    next(new AppError('El token no se decodifico.', 500))
+    next(
+      new AppError(
+        ERROR_MSGS.TOKEN_NOT_DECODED,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    )
     return
   }
 
@@ -42,6 +47,7 @@ export const protect = async (
     password: false,
     status: false
   }
+
   const userExists = await userService.findUser(
     { id: decoded.id },
     attributes,
@@ -50,7 +56,7 @@ export const protect = async (
   )
 
   if (!userExists) {
-    next(new AppError('El usuario del token no existe.', 404))
+    next(new AppError(ERROR_MSGS.TOKEN_USER_NOT_FOUND, HTTPCODES.NOT_FOUND))
     return
   }
 
@@ -60,10 +66,7 @@ export const protect = async (
 
     if (decoded.iat < changedTimeStamp) {
       next(
-        new AppError(
-          'El usuario cambio su contraseña recientemente. Vuelve a iniciar sesión.',
-          401
-        )
+        new AppError(ERROR_MSGS.USER_PASSWORD_CHANGE, HTTPCODES.UNAUTHORIZED)
       )
       return
     }
@@ -77,7 +80,7 @@ export const protect = async (
 export const restrictTo = (...roles: string[]) => {
   return (req: Request, _res: Response, next: NextFunction) => {
     if (!roles.includes(req.sessionUser?.role)) {
-      next(new AppError('Acción denegada, no tienes permisos.', 403))
+      next(new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.FORBIDDEN))
       return
     }
     next()

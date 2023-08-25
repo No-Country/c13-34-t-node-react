@@ -37,7 +37,7 @@ export interface AuthenticatedUser {
   user: UserDto
 }
 
-export type PasswordsType = {
+export interface PasswordsType {
   currentPassword: string
   newPassword: string
 }
