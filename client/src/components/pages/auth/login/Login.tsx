@@ -1,54 +1,40 @@
-// import { useAuth } from "../../../../context/auth";
+import { useAuth } from "../../../../context/auth";
+import { NavLink } from "react-router-dom";
+import { AxiosError } from "axios";
 import { useState } from "react";
-import { useAuth } from "../../../../service/auth";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import { API_URL } from "../../../../constants/api";
-import { AuthResponse, AuthResponseError } from "../../../../types/types";
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorResponse, setErrorResponse] = useState("");
-  const auth = useAuth();
-  const goTo = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+  const { login } = useAuth();
 
-    const formData = Object.fromEntries(new FormData(e.target).entries());
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+
+    const formData = new FormData(event.target as HTMLFormElement);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
-      const response = await fetch(`${API_URL}/api/v1/users/auth/signin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        console.log("Usuario conectado correctamente");
-        setErrorResponse("");
-        const json = (await response.json()) as AuthResponse;
-
-        if (json.token) {
-          auth.saveUser(json);
-          goTo("/plataforma");
-        }
-      } else {
-        console.log("Algo salió mal");
-        const json = (await response.json()) as AuthResponseError;
-        setErrorResponse(json.body.error);
-        return;
-      }
+      await login(email, password);
+      alert("Bienvenido!");
     } catch (error) {
-      console.log(error);
+      if (error instanceof AxiosError) {
+        if (error.response) {
+          alert("Correo o Contraseña incorrectos!");
+        } else {
+          alert("No se pudo establecer conexión con el Servidor!");
+        }
+      }
     }
-  };
 
-  if (auth.isAuthenticated) {
-    return <Navigate to="plataforma" />;
-  }
+    setLoading(false);
+  };
 
   return (
     <div className="h-full py-20 pl-0 pr-36 bg-white">
@@ -90,19 +76,10 @@ export const Login = () => {
             </div>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="w-[360px] flex flex-col gap-6"
-          >
-            {!!errorResponse && (
-              <div className="errorMessage">{errorResponse}</div>
-            )}
-
+          <form onSubmit={onSubmit} className="w-[360px] flex flex-col gap-6">
             <label className="block">
               <span className="block">Correo Electrónico *</span>
               <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 name="email"
                 required
@@ -114,8 +91,6 @@ export const Login = () => {
             <label className="block">
               <span className="block">Contraseña *</span>
               <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 name="password"
                 required
@@ -124,8 +99,9 @@ export const Login = () => {
               />
             </label>
             <button
+              disabled={loading}
               type="submit"
-              className="w-[360px] mt-4 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
+              className="w-[360px] mt-4 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300 disabled:bg-dark-green"
             >
               Ingresar
             </button>

@@ -1,17 +1,21 @@
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult } from '../types/entity.types'
-import {
-  UserStatus,
-  type AuthenticatedUser,
-  type Login,
-  type UserDto,
-  type UserRepository
+import type {
+  AuthenticatedUser,
+  Login,
+  PasswordsType,
+  UserDto,
+  UserRepository
 } from '../types/user.types'
+import { UserStatus } from '../types/user.types'
+import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
+import { highLevelRoles } from '../utils/highLevelRoles'
 import { generateJWT } from '../utils/jwt'
 import { EntityService } from './entity.service'
-import { AppError } from '../utils/app.error'
 
 export class UserService {
   private readonly userRepository: UserRepository
@@ -38,6 +42,9 @@ export class UserService {
 
   async createUser(user: User): Promise<UserDto> {
     user.password = await hashPassword(user.password)
+    if (highLevelRoles.includes(user.role)) {
+      user.status = UserStatus.disable
+    }
     const userCreated = (await this.entityService.create(user)) as User
     return userDto(userCreated)
   }
@@ -55,12 +62,43 @@ export class UserService {
     }
   }
 
+  async updateUserPass(
+    userToUpdate: User,
+    passwords: PasswordsType
+  ): Promise<void> {
+    const { currentPassword, newPassword } = passwords
+
+    if (currentPassword === newPassword)
+      throw new AppError(ERROR_MSGS.SAME_PASSWORD_EROR, HTTPCODES.BAD_REQUEST)
+
+    await comparePasswords(currentPassword, userToUpdate.password)
+
+    const encriptedPass = await hashPassword(newPassword)
+    const data = {
+      id: userToUpdate.id,
+      password: encriptedPass,
+      passwordChangedAt: new Date()
+    }
+
+    try {
+      await this.entityService.updateOne(data)
+    } catch (e) {
+      throw new AppError(
+        ERROR_MSGS.PASSWORD_CHANGE_ERROR,
+        HTTPCODES.BAD_REQUEST
+      )
+    }
+  }
+
   async disableUser(id: number) {
     const data = { id, status: UserStatus.disable }
     try {
       await this.entityService.updateOne(data)
     } catch (e) {
-      throw new AppError('El usuario no pudo deshabilitarse.', 500)
+      throw new AppError(
+        ERROR_MSGS.USER_DISABLE_ERROR,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
     }
   }
 }

@@ -71,7 +71,7 @@ export const userSchema = z.object({
       .superRefine((val, ctx) => {
         if (!validator.isNumeric(val)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.TELEPHONE_ONLY_NUMBERS
           })
         }
@@ -81,14 +81,36 @@ export const userSchema = z.object({
         required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
         invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
       })
-      .superRefine((val, ctx) => {
-        if (!validator.isStrongPassword(val)) {
+      .superRefine((password, ctx) => {
+        if (!validator.isStrongPassword(password)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.PASSWORD_TOO_WEAK
           })
         }
       }),
     dateOfBirth: z.coerce.date()
+  })
+})
+
+export const passwordsSchema = z.object({
+  body: z.object({
+    currentPassword: z.string({
+      required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
+      invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
+    }),
+    newPassword: z
+      .string({
+        required_error: MESSAGES.PASSWORD_REQUIRED_ERROR,
+        invalid_type_error: MESSAGES.PASSWORD_TYPE_ERROR
+      })
+      .superRefine((password, ctx) => {
+        if (!validator.isStrongPassword(password)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: MESSAGES.PASSWORD_TOO_WEAK
+          })
+        }
+      })
   })
 })

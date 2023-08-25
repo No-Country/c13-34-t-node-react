@@ -1,4 +1,5 @@
 import type { Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 
 export const sendErrorDev = (err: any, res: Response) => {
   return res.status(err.statusCode).json({
@@ -18,7 +19,7 @@ export const sendErrorProd = (err: any, res: Response) => {
     })
 
   return res.status(500).json({
-    status: 'fail',
-    message: 'Algo Salio Mal :('
+    status: ERROR_MSGS.FAIL,
+    message: ERROR_MSGS.GENERIC_ERROR
   })
 }

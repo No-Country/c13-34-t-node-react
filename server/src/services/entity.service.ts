@@ -1,4 +1,6 @@
 import { type ObjectLiteral } from 'typeorm'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import {
   type FindResult,
   type FindResults,
@@ -38,7 +40,8 @@ export class EntityService {
       ...(relationAttributes && { relations: relationAttributes })
     })
 
-    if (!entity && error) throw new AppError('No Se Encontro El Recurso.', 404)
+    if (!entity && error)
+      throw new AppError(ERROR_MSGS.RESOURCE_NOT_FOUND, HTTPCODES.NOT_FOUND)
 
     return entity
   }
@@ -49,8 +52,8 @@ export class EntityService {
       return await this.entityRepository.save(created, { listeners: false })
     } catch (e) {
       throw new AppError(
-        'No se pudo crear el recurso en la base de datos.',
-        500
+        ERROR_MSGS.RESOURCE_CREATION_ERROR,
+        HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
   }

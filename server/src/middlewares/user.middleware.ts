@@ -1,4 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import type { User } from '../entities'
 import { userService } from '../services/factory/entities.factory'
 import { UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
@@ -12,13 +15,41 @@ export const userExists = async (
   const filters = { id, status: UserStatus.enable }
 
   try {
-    const user = await userService.findUser(filters, false, false, false)
-    if (!user) throw new AppError('No se encontro el usuario.', 404)
+    const user = (await userService.findUser(
+      filters,
+      false,
+      false,
+      false
+    )) as User
+
+    if (!user)
+      throw new AppError(ERROR_MSGS.USER_NOT_FOUND, HTTPCODES.NOT_FOUND)
+
+    req.user = user
   } catch (err) {
     if (!(err instanceof AppError)) {
-      return next(new AppError('No se pudo encontrar el usuario.', 404))
+      next(new AppError(ERROR_MSGS.USER_NOT_FOUND, HTTPCODES.NOT_FOUND))
+      return
     }
-    return next(err)
+    next(err)
+    return
+  }
+  next()
+}
+
+export const validateYourUser = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): void => {
+  const yourUserId = req.sessionUser?.id
+  const userId = req.user?.id
+
+  if (yourUserId !== userId) {
+    next(
+      new AppError(ERROR_MSGS.ACTION_RECTRICTED_TO_OWNER, HTTPCODES.FORBIDDEN)
+    )
+    return
   }
 
   next()

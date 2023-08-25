@@ -1,13 +1,6 @@
-import {
-  //   Doctor,
-  //   MedicalAppointment,
-  //   MedicalRecord,
-  //   Patient,
-  //   PatientMedicalHistory,
-  User
-} from '../../entities'
-import { AppDataSrc } from '../database/database.config'
+import { User } from '../../entities'
 import { type UserRepository } from '../../types/user.types'
+import { AppDataSrc } from '../database/database.config'
 import { UserService } from '../user.service'
 
 export let userService: UserService
