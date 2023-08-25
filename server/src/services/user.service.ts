@@ -2,7 +2,7 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
-import type { FindResult } from '../types/entity.types'
+import type { FindResult, FindResults } from '../types/entity.types'
 import type {
   AuthenticatedUser,
   Login,
@@ -37,6 +37,18 @@ export class UserService {
       attributes,
       relationAttributes,
       error
+    )
+  }
+
+  async findAllUsers(
+    filters: object | object[],
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityService.findAll(
+      filters,
+      attributes,
+      relationAttributes
     )
   }
 

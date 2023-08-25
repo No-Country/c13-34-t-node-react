@@ -25,6 +25,7 @@ export interface UserDto {
   telephone: string
   dateOfBirth: Date
   genre: UserGenre
+  role: string
 }
 
 export interface Login {
