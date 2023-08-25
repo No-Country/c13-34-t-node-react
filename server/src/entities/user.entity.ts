@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { UserRole, UserStatus, UserGenre } from '../types/user.types'
 import { email } from '../types/global.types'
+import { UserGenre, UserRole, UserStatus } from '../types/user.types'
 
 @Entity({ name: 'users' })
 export class User extends BaseEntity {
@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   telephone: string
 
   @Column({ type: 'enum', default: UserRole.patient, enum: UserRole })
-  roles: UserRole
+  role: UserRole
 
   @Column({ type: 'enum', default: UserStatus.enable, enum: UserStatus })
   status: UserStatus

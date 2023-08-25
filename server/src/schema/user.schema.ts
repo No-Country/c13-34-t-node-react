@@ -71,7 +71,7 @@ export const userSchema = z.object({
       .superRefine((val, ctx) => {
         if (!validator.isNumeric(val)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.TELEPHONE_ONLY_NUMBERS
           })
         }
@@ -84,7 +84,7 @@ export const userSchema = z.object({
       .superRefine((password, ctx) => {
         if (!validator.isStrongPassword(password)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.PASSWORD_TOO_WEAK
           })
         }
@@ -107,7 +107,7 @@ export const passwordsSchema = z.object({
       .superRefine((password, ctx) => {
         if (!validator.isStrongPassword(password)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.PASSWORD_TOO_WEAK
           })
         }

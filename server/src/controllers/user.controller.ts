@@ -11,14 +11,15 @@ export const signUp = async (
 ) => {
   try {
     const user = await userService.createUser(req.safeData?.body as User)
-
     return res.status(201).json({
       status: 'success',
       user
     })
   } catch (err) {
-    if (!(err instanceof AppError))
-      return next(new AppError('No Se Pudo Guardar El Usuario.', 500))
+    if (!(err instanceof AppError)) {
+      next(new AppError('No se pudo guardar el usuario.', 500))
+      return
+    }
     next(err)
   }
 }
@@ -61,8 +62,10 @@ export const updatePassword = async (
       status: 'success'
     })
   } catch (err) {
-    if (!(err instanceof AppError))
-      return next(new AppError('No se pudo cambiar la contraseña.', 500))
+    if (!(err instanceof AppError)) {
+      next(new AppError('No se pudo cambiar la contraseña.', 500))
+      return
+    }
     next(err)
   }
 }

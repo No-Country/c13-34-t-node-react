@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 
 export const httpError = (
   err: Error,
@@ -8,7 +9,7 @@ export const httpError = (
 ) => {
   console.log(err)
   return res.status(500).json({
-    status: 'error',
-    message: 'Algo Fallo :('
+    status: ERROR_MSGS.ERROR,
+    message: ERROR_MSGS.GENERIC_ERROR
   })
 }
