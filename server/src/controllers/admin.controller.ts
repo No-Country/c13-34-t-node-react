@@ -14,6 +14,7 @@ export const getAllDoctorsAndAdmins = async (
   next: NextFunction
 ) => {
   try {
+    const requesterId = req.sessionUser?.id
     const filters = [
       {
         role: UserRole.admin
@@ -26,12 +27,14 @@ export const getAllDoctorsAndAdmins = async (
       false,
       false
     )
-    const filteredUsers = highLevelUsersDto(users as User[])
+
+    const usersMinusRequester = users.filter((user) => user.id !== requesterId)
+    const filteredUsers = highLevelUsersDto(usersMinusRequester as User[])
 
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
       users: filteredUsers,
-      count: results
+      count: results - 1
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
