@@ -1,3 +1,4 @@
+import { In, Not } from 'typeorm'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { userDto } from '../dto/user.dto'
@@ -10,12 +11,12 @@ import type {
   UserDto,
   UserRepository
 } from '../types/user.types'
-import { UserStatus } from '../types/user.types'
+import { UserRole, UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
-import { highLevelRoles } from '../utils/highLevelRoles'
 import { generateJWT } from '../utils/jwt'
 import { EntityService } from './entity.service'
+import { checkRoleForAssignment } from '../utils/check.role.for.assignment'
 
 export class UserService {
   private readonly userRepository: UserRepository
@@ -52,21 +53,44 @@ export class UserService {
     )
   }
 
-  async createUser(user: User): Promise<UserDto> {
-    user.password = await hashPassword(user.password)
-    if (highLevelRoles.includes(user.role)) {
-      user.status = UserStatus.disable
+  async findAllDoctorsAndAdmins(sessionId: number) {
+    const filters = [
+      {
+        id: Not(sessionId),
+        role: In([UserRole.admin, UserRole.doctor])
+      }
+    ]
+    const attributes = {
+      firstName: true,
+      lastName: true,
+      role: true
     }
-    const userCreated = (await this.entityService.create(user)) as User
+    const [users, count] = await this.findAllUsers(filters, attributes, false)
+
+    return {
+      users,
+      count
+    }
+  }
+
+  async createUser(user: User): Promise<UserDto> {
+    const assignedUser = checkRoleForAssignment(user)
+    assignedUser.password = await hashPassword(user.password)
+    const userCreated = (await this.entityService.create(assignedUser)) as User
     return userDto(userCreated)
   }
 
   async signIn(loginData: Login): Promise<AuthenticatedUser> {
-    const { email, password } = loginData
-    const user = (await this.findUser({ email }, false, false, true)) as User
-    const comparePass = comparePasswords(password, user.password)
-    const generateToken = generateJWT({ id: user.id })
-    const [, token] = await Promise.all([comparePass, generateToken])
+    const user = (await this.findUser(
+      { email: loginData.email },
+      false,
+      false,
+      true
+    )) as User
+    const [, token] = await Promise.all([
+      comparePasswords(loginData.password, user.password),
+      generateJWT({ id: user.id })
+    ])
 
     return {
       token,
@@ -85,10 +109,9 @@ export class UserService {
 
     await comparePasswords(currentPassword, userToUpdate.password)
 
-    const encriptedPass = await hashPassword(newPassword)
     const data = {
       id: userToUpdate.id,
-      password: encriptedPass,
+      password: await hashPassword(newPassword),
       passwordChangedAt: new Date()
     }
 
@@ -103,9 +126,8 @@ export class UserService {
   }
 
   async disableUser(id: number) {
-    const data = { id, status: UserStatus.disable }
     try {
-      await this.entityService.updateOne(data)
+      await this.entityService.updateOne({ id, status: UserStatus.disable })
     } catch (e) {
       throw new AppError(
         ERROR_MSGS.USER_DISABLE_ERROR,

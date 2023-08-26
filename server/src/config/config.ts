@@ -13,6 +13,9 @@ const ENV = process.env
 export const mode = ENV.NODE_ENV
 export const port = ENV.PORT ?? 4444
 export const salt = Number(ENV.SALT)
+export const ACCEPTED_ORIGIN = 'http://localhost:3000'
+
+export const ACCEPTED_METHODS = ['GET', 'POST', 'PATCH', 'DELETE']
 
 export const modes = Object.freeze({
   dev: 'development',
@@ -31,10 +34,10 @@ export const dbConfig = Object.freeze({
   database: ENV.DB_NAME,
   logging: false,
   synchronize: true,
-  ssl: {
-    ca: ENV.SSL_CERT,
-    rejectUnauthorized: false
-  },
+  // ssl: {
+  //   ca: ENV.SSL_CERT,
+  //   rejectUnauthorized: false
+  // },
   entities: [
     User,
     Patient,
@@ -44,4 +47,3 @@ export const dbConfig = Object.freeze({
     PatientMedicalHistory
   ]
 })
-export const ACCEPTED_ORIGIN = 'http://localhost:3000'

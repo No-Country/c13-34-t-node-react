@@ -2,10 +2,9 @@ import type { NextFunction, Request, Response } from 'express'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { highLevelUsersDto } from '../dto/user.dto'
-import type { User } from '../entities'
+// import { highLevelUsersDto } from '../dto/user.dto'
+// import type { User } from '../entities'
 import { userService } from '../services/factory/entities.factory'
-import { UserRole } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 
 export const getAllDoctorsAndAdmins = async (
@@ -15,26 +14,15 @@ export const getAllDoctorsAndAdmins = async (
 ) => {
   try {
     const requesterId = req.sessionUser?.id
-    const filters = [
-      {
-        role: UserRole.admin
-      },
-      { role: UserRole.doctor }
-    ]
-
-    const [users, results] = await userService.findAllUsers(
-      filters,
-      false,
-      false
-    )
-
-    const usersMinusRequester = users.filter((user) => user.id !== requesterId)
-    const filteredUsers = highLevelUsersDto(usersMinusRequester as User[])
+    const { users, count } =
+      await userService.findAllDoctorsAndAdmins(requesterId)
+    // const usersMinusRequester = users.filter((user) => user.id !== requesterId)
+    // const filteredUsers = highLevelUsersDto(usersMinusRequester as User[])
 
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
-      users: filteredUsers,
-      count: results - 1
+      users: users, //filteredUsers,
+      count: count
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
