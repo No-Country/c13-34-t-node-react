@@ -4,8 +4,10 @@ import { Footer } from "./landing/footer/Footer";
 
 export const PublicLayout = () => {
   return (
-    <div className="h-full w-full flex flex-col">
-      <Navbar />
+    <div className="h-full w-full flex flex-col ">
+      <div className="w-full overflow-auto">
+        <Navbar />
+      </div>
       <Outlet />
       <Footer />
     </div>

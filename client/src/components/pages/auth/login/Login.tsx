@@ -62,18 +62,13 @@ export const Login = () => {
           <h1 className="font-caudex text-primary-green text-5xl pb-4">
             Acceso
           </h1>
-          <p className="text-lg">¡Hola! ¿Le gustaría iniciar sesión como un</p>
-
-          <div className="py-9 grid grid-cols-3 gap-6 text-primary-green text-center">
-            <div className="px-4 py-2 rounded-2xl border-primary-green border-2 shadow-md">
-              Doctor
-            </div>
-            <div className="px-4 py-2 rounded-2xl border-primary-green border-2 shadow-md">
-              Paciente
-            </div>
-            <div className="px-4 py-2 rounded-2xl border-primary-green border-2 shadow-md">
-              Administrador
-            </div>
+          <div className="pb-8">
+            <h1 className="text-2xl text-primary-green font-bold">
+              ¡Estamos felices de verte!
+            </h1>
+            <p className="text-lg text-dark-green font-bold">
+              Inicia sesión con tus datos
+            </p>
           </div>
 
           <form onSubmit={onSubmit} className="w-[360px] flex flex-col gap-6">
