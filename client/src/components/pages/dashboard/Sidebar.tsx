@@ -11,9 +11,10 @@ import {
 import { useAuth } from "../../../context/auth";
 
 export const Sidebar = () => {
+  const auth = useAuth();
+  const user = auth.user;
   const { logout } = useAuth();
-  // Traer al usuario
-  // En base al Rol mostrar la navegación correspondiente
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-center">
@@ -21,14 +22,20 @@ export const Sidebar = () => {
       </div>
 
       <div className="flex items-center justify-center">
-        <img src="/images/doctor.png" alt="" className="w-[130px] mb-6" />
+        <img
+          src="/images/oscar.jpg"
+          alt=""
+          className="w-[130px] mb-6 rounded-full"
+        />
       </div>
 
       <button onClick={logout}>Salir</button>
 
       <div className="flex flex-col">
         {/* administrador */}
-        <div className="text-center text-[#777777] mb-12">Administrador</div>
+        <div className="text-center font-bold text-[#777777] mb-12">
+          {user?.firstName.toUpperCase() + " " + user?.lastName.toUpperCase()}
+        </div>
         <div>
           <ul className="flex flex-col">
             <li>
