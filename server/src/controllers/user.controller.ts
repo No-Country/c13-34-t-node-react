@@ -136,12 +136,17 @@ export const deleteUser = async (
   try {
     await userService.disableUser(req.safeData?.params)
 
-    return res.status(204).json({
-      status: 'success'
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo autenticar el usuario.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.USER_AUTHENTICATION_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)
