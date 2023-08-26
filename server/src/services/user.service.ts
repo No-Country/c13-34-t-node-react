@@ -73,6 +73,20 @@ export class UserService {
     }
   }
 
+  async approveRegistrationAdmin(requesterId: number, action: 'approve' | 'reject'): Promise<boolean> {
+    try {
+      const request = await this.entityService.findOne({ id: requesterId }, false, false, false)
+      if (!request) {
+        return false
+      }
+      request.status = action === 'approve' ? 'enable' : 'disable'
+      await this.entityService.updateOne(request)
+      return true
+    } catch (err) {
+      return false
+    }
+  }
+
   async createUser(user: User): Promise<UserDto> {
     const assignedUser = checkRoleForAssignment(user)
     assignedUser.password = await hashPassword(user.password)

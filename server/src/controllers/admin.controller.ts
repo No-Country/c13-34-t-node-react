@@ -6,6 +6,43 @@ import { MESSAGES } from '../constants/msgs'
 // import type { User } from '../entities'
 import { userService } from '../services/factory/entities.factory'
 import { AppError } from '../utils/app.error'
+import { log } from 'console'
+
+
+//Logica para aprobar registros
+export const approveRegistrationAdmin = async (req: Request, res: Response, next : NextFunction) =>{
+  try{
+    const {requesterId} = req.params
+    const {action} = req.body
+
+    const number = parseInt(requesterId)
+    const succes = await userService.approveRegistrationAdmin(number, action)
+
+    if(succes){
+      return res.status(HTTPCODES.OK).json({
+        status: MESSAGES.SUCCESS,
+        message: "Solicitud aprobada"
+      })
+    }else{
+      return res.status(HTTPCODES.NOT_FOUND).json({
+       status:"",
+       message:"Solicitud no encontrada"
+      })
+    }
+
+  }catch(err){
+    next(
+      new AppError(
+        "Error al aprobar la solicitud",
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    )
+    
+  }
+}
+
+
+//Logica para traer doctores y medicos
 
 export const getAllDoctorsAndAdmins = async (
   req: Request,
