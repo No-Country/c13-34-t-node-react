@@ -1,43 +1,49 @@
+import { useState } from "react";
+const serviceImages = [
+  { title: "Exámenes médicos", path: "/images/service1.webp" },
+  { title: "Turnos", path: "/images/service2.jpg" },
+  { title: "Consultas", path: "/images/service3.jpg" },
+  { title: "Especialidades", path: "/images/service4.jpg" },
+];
+
 export const Services = () => {
+  const [imageSelected, setImageSelected] = useState(serviceImages[1]);
   return (
     <div className="flex flex-col gap-12 items-center justify-center">
       <p className="text-3xl font-caudex font-bold tracking-wide text-dark-green">
         "La atención médica más completa."
       </p>
-      <div className="relative w-full flex justify-center">
-        <div className="flex flex-col gap-8 w-1/2 pl-36 pr-6 bg-lightest-green">
-          <p className="font-caudex text-3xl tracking-wide">Turnos</p>
-          <p className="font-caudex text-2xl">
-            Sistema de reserva de turnos con tu profesional médico.
+      <div className="relative w-full flex gap-32">
+        <div className="relative flex flex-col gap-8 w-1/2 pt-6 pl-36 pr-6 bg-lightest-green">
+          <p className="font-caudex text-3xl tracking-wide">
+            {imageSelected.title}
           </p>
-          <p className="font-caudex text-2xl">
-            Verifica horarios disponibles y agenda un turno de forma online.
+          <p className="font-caudex text-xl">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum sed
+            culpa possimus consequatur? Assumenda neque reprehenderit odit odio,
+            vero tenetur error? Esse adipisci inventore optio ex iusto, quia
+            asperiores officia.
           </p>
-          <div className="bg-white flex gap-8 -bottom-20 absolute rounded-xl p-4 border-2 border-slate-300">
-            <img
-              src="https://centromedicoabc.com/wp-content/uploads/2021/04/lab_clinico_sangre.png"
-              className="w-24"
-            />
-            <img
-              src="https://turnos.app/assets/img/doc1.jpg"
-              className="w-24 border-2 border-slate-500"
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPPKpIFnx0EHEnf0kOivSVLo8biWTLG4B3H5BAx-_RSHLxddaq1dvbCAVO-kZ_ofyDhNY&usqp=CAU"
-              className="w-24"
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxcSbUuu8MGOtKtc3N_BYtYH-UpT7gZ7CwMf_ZVXO96k2tbkLqoK7DwKo10uGk12aDdns&usqp=CAU"
-              className="w-24"
-            />
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL5Jff01SOlSIc5MxQlfiP1Jq6ZVQbyD8J9A&usqp=CAU"
-              className="w-24"
-            />
+          <div className="bg-white w-fit flex gap-8 -bottom-20 absolute m-auto left-0 right-0 rounded-xl p-5 border-2 border-slate-300">
+            {serviceImages.map((image) => (
+              <div
+                onClick={() => setImageSelected(image)}
+                className={`w-24 rounded-lg cursor-pointer hover:drop-shadow-2xl ${
+                  imageSelected.title === image.title
+                    ? "border-4 border-slate-300"
+                    : ""
+                }`}
+              >
+                <img src={image.path} className="h-full" />
+              </div>
+            ))}
           </div>
         </div>
-        <div className="relative ml-20">
-          <img src="https://turnos.app/assets/img/doc1.jpg" />
+        <div className="relative flex justify-center w-80 ml-20">
+          <img
+            src={imageSelected.path}
+            className="h-80 rounded-md drop-shadow-lg"
+          />
           <button className="w-full absolute -bottom-20 py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
             Conocer más
           </button>
