@@ -1,4 +1,12 @@
 export enum MESSAGES {
+  SUCCESS = 'success',
+  ADMIN = 'admin',
+  PATIENT = 'patient',
+  DOCTOR = 'doctor',
+  ENABLE = 'enable',
+  DISABLE = 'disable',
+  MALE = 'male',
+  FEMALE = 'female',
   FIRST_NAME_REQUIRED_ERROR = 'El nombre es requerido.',
   FIRST_NAME_TYPE_ERROR = 'El nombre debe ser un texto.',
   FIRST_NAME_MIN_LENGTH = 'El nombre debe ser de mínimo 2 caracteres.',

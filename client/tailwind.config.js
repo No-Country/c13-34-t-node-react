@@ -19,22 +19,18 @@ export default {
       },
       screens: {
         // mobile: "375px",
-        sm: { min: "375px", max: "767px" },
+        // sm: { min: "375px", max: "767px" },
         // => @media (min-width: 640px and max-width: 767px) { ... }
-
         // tablet: "820px",
-        md: { min: "820px", max: "1023px" },
+        // md: { min: "820px", max: "1023px" },
         // => @media (min-width: 768px and max-width: 1023px) { ... }
-
         // laptop: "1366",
-        lg: { min: "1366px", max: "1535px" },
+        // lg: { min: "1366px", max: "1535px" },
         // => @media (min-width: 1024px and max-width: 1279px) { ... }
-
         // xl: { min: "1280px", max: "1535px" },
         // => @media (min-width: 1280px and max-width: 1535px) { ... }
-
         // destok: "1920",
-        "2xl": { min: "1536px" },
+        // "2xl": { min: "1536px" },
         // => @media (min-width: 1536px) { ... }
       },
     },

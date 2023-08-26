@@ -1,4 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import { MESSAGES } from '../constants/msgs'
 import { type User } from '../entities/'
 import { userService } from '../services/factory/entities.factory'
 import { type Login } from '../types/user.types'
@@ -11,13 +14,18 @@ export const signUp = async (
 ) => {
   try {
     const user = await userService.createUser(req.safeData?.body as User)
-    return res.status(201).json({
-      status: 'success',
+    return res.status(HTTPCODES.CREATED).json({
+      status: MESSAGES.SUCCESS,
       user
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo guardar el usuario.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.USER_SAVE_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)
@@ -34,14 +42,19 @@ export const singIn = async (
       req.safeData?.body as Login
     )
 
-    return res.status(200).json({
-      status: 'success',
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
       token,
       user
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo autenticar el usuario.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.USER_AUTHENTICATION_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)
@@ -58,12 +71,17 @@ export const updatePassword = async (
 
     await userService.updateUserPass(user as User, safeData?.body)
 
-    return res.status(204).json({
-      status: 'success'
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo cambiar la contraseña.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.PASSWORD_CHANGE_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)
@@ -118,12 +136,17 @@ export const deleteUser = async (
   try {
     await userService.disableUser(req.safeData?.params)
 
-    return res.status(204).json({
-      status: 'success'
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo autenticar el usuario.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.USER_AUTHENTICATION_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)

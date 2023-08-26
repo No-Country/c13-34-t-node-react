@@ -1,21 +1,22 @@
 import { type Repository } from 'typeorm'
+import { MESSAGES } from '../constants/msgs'
 import { type User } from '../entities'
 import { type email } from './global.types'
 
 export enum UserRole {
-  admin = 'admin',
-  patient = 'patient',
-  doctor = 'doctor'
+  admin = MESSAGES.ADMIN,
+  patient = MESSAGES.PATIENT,
+  doctor = MESSAGES.DOCTOR
 }
 
 export enum UserStatus {
-  enable = 'enable',
-  disable = 'disable'
+  enable = MESSAGES.ENABLE,
+  disable = MESSAGES.DISABLE
 }
 
 export enum UserGenre {
-  male = 'male',
-  female = 'female'
+  male = MESSAGES.MALE,
+  female = MESSAGES.FEMALE
 }
 
 export interface UserDto {
@@ -25,6 +26,7 @@ export interface UserDto {
   telephone: string
   dateOfBirth: Date
   genre: UserGenre
+  role: string
 }
 
 export interface Login {
