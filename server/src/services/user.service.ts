@@ -65,7 +65,8 @@ export class UserService {
       firstName: true,
       lastName: true,
       status: true,
-      role: true
+      role: true,
+      id: true
     }
     const [users, count] = await this.findAllUsers(filters, attributes, false)
 
@@ -75,7 +76,7 @@ export class UserService {
     }
   }
 
-  async approveRegistrationAdmin(
+  async toggleAdminDocsStatus(
     requesterId: number,
     action:
       | MESSAGES.ADMIN_REGISTRATION_APPROVAL

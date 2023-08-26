@@ -5,18 +5,19 @@ import { MESSAGES } from '../constants/msgs'
 import { userService } from '../services/factory/entities.factory'
 import { AppError } from '../utils/app.error'
 
-// Logica para aprobar registros
-export const approveRegistrationAdmin = async (
+// Logica para aprobar / rechazar registros
+export const approveRejectDoctorsAndAdminsStatus = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { requesterId } = req.params
+    const { requestId } = req.params
     const { action } = req.body
+    console.log('action', action)
 
-    const number = parseInt(requesterId)
-    const succes = await userService.approveRegistrationAdmin(number, action)
+    const number = parseInt(requestId)
+    const succes = await userService.toggleAdminDocsStatus(number, action)
 
     if (succes) {
       return res.status(HTTPCODES.OK).json({

@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import {
-  approveRegistrationAdmin,
+  approveRejectDoctorsAndAdminsStatus,
   getAllDoctorsAndAdmins
 } from '../controllers/admin.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
@@ -21,5 +21,5 @@ adminRouter.patch(
   '/approve-or-reject/:requestId',
   protect,
   restrictTo(UserRole.admin),
-  approveRegistrationAdmin
+  approveRejectDoctorsAndAdminsStatus
 )
