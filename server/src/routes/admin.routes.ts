@@ -1,6 +1,8 @@
 import { Router } from 'express'
-import { getAllDoctorsAndAdmins } from '../controllers/admin.controller'
-import { approveRegistrationAdmin } from '../controllers/admin.controller'
+import {
+  approveRegistrationAdmin,
+  getAllDoctorsAndAdmins
+} from '../controllers/admin.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
 
@@ -14,7 +16,7 @@ adminRouter.get(
   getAllDoctorsAndAdmins
 )
 
-//Ruta para aprobar o rechazar solicitudes de registro
+// Ruta para aprobar o rechazar solicitudes de registro
 adminRouter.patch(
   '/approve-or-reject/:requestId',
   protect,

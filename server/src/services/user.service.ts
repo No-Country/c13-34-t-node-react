@@ -1,6 +1,7 @@
 import { In, Not } from 'typeorm'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import { MESSAGES } from '../constants/msgs'
 import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
@@ -14,9 +15,9 @@ import type {
 import { UserRole, UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
+import { checkRoleForAssignment } from '../utils/check.role.for.assignment'
 import { generateJWT } from '../utils/jwt'
 import { EntityService } from './entity.service'
-import { checkRoleForAssignment } from '../utils/check.role.for.assignment'
 
 export class UserService {
   private readonly userRepository: UserRepository
@@ -63,6 +64,7 @@ export class UserService {
     const attributes = {
       firstName: true,
       lastName: true,
+      status: true,
       role: true
     }
     const [users, count] = await this.findAllUsers(filters, attributes, false)
@@ -73,13 +75,26 @@ export class UserService {
     }
   }
 
-  async approveRegistrationAdmin(requesterId: number, action: 'approve' | 'reject'): Promise<boolean> {
+  async approveRegistrationAdmin(
+    requesterId: number,
+    action:
+      | MESSAGES.ADMIN_REGISTRATION_APPROVAL
+      | MESSAGES.ADMIN_REGISTRATION_DISAPPROVAL
+  ): Promise<boolean> {
     try {
-      const request = await this.entityService.findOne({ id: requesterId }, false, false, false)
+      const request = await this.entityService.findOne(
+        { id: requesterId },
+        false,
+        false,
+        false
+      )
       if (!request) {
         return false
       }
-      request.status = action === 'approve' ? 'enable' : 'disable'
+      request.status =
+        action === MESSAGES.ADMIN_REGISTRATION_APPROVAL
+          ? MESSAGES.ENABLE
+          : MESSAGES.DISABLE
       await this.entityService.updateOne(request)
       return true
     } catch (err) {
