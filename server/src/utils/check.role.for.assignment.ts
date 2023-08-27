@@ -1,4 +1,4 @@
-import { User } from '../entities'
+import type { User } from '../entities'
 import { UserStatus } from '../types/user.types'
 import { highLevelRoles } from './high.level.roles'
 

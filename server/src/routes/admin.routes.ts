@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import {
-  approveRejectDoctorsAndAdminsStatus,
-  getAllDoctorsAndAdmins
+  approveDoctorsAndAdminsRegistration,
+  getAllDoctorsAndAdmins,
+  revertDoctorsAndAdminsRegistration
 } from '../controllers/admin.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
@@ -16,10 +17,18 @@ adminRouter.get(
   getAllDoctorsAndAdmins
 )
 
-// Ruta para aprobar o rechazar solicitudes de registro
+// Ruta para aprobar solicitudes de registro
 adminRouter.patch(
-  '/approve-or-reject/:requestId',
+  '/approve-registration/:userId',
   protect,
   restrictTo(UserRole.admin),
-  approveRejectDoctorsAndAdminsStatus
+  approveDoctorsAndAdminsRegistration
+)
+
+// Ruta para cambiar el estado de un doctor o admin a disable
+adminRouter.delete(
+  '/remove-registration/:userId',
+  protect,
+  restrictTo(UserRole.admin),
+  revertDoctorsAndAdminsRegistration
 )

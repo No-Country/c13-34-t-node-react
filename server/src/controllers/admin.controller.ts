@@ -5,42 +5,61 @@ import { MESSAGES } from '../constants/msgs'
 import { userService } from '../services/factory/entities.factory'
 import { AppError } from '../utils/app.error'
 
-// Logica para aprobar / rechazar registros
-export const approveRejectDoctorsAndAdminsStatus = async (
+export const approveDoctorsAndAdminsRegistration = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { requestId } = req.params
-    const { action } = req.body
-    console.log('action', action)
-
-    const number = parseInt(requestId)
-    const succes = await userService.toggleAdminDocsStatus(number, action)
-
-    if (succes) {
-      return res.status(HTTPCODES.OK).json({
-        status: MESSAGES.SUCCESS,
-        message: MESSAGES.ADMIN_TOGGLE_STATUS_OK
-      })
-    } else {
-      return res.status(HTTPCODES.NOT_FOUND).json({
-        status: ERROR_MSGS.FAIL,
-        message: MESSAGES.ADMIN_TOGGLE_STATUS_FAIL
-      })
-    }
-  } catch (err) {
-    next(
-      new AppError(
-        MESSAGES.ADMIN_TOGGLE_STATUS_ERROR,
-        HTTPCODES.INTERNAL_SERVER_ERROR
-      )
+    const { userId } = req.params
+    const updatedUser = await userService.approveAdminDocsRegistration(
+      Number(userId)
     )
+
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      message: MESSAGES.ADMIN_REGISTRATION_APPROVAL_OK,
+      updatedUser
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
   }
 }
 
-// Logica para traer doctores y medicos
+export const revertDoctorsAndAdminsRegistration = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.params
+    await userService.disableUser(Number(userId))
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      message: MESSAGES.ADMIN_REGISTRATION_REMOVAL_OK
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.ADMINT_REGISTRATION_REMOVAL_ERROR,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
 
 export const getAllDoctorsAndAdmins = async (
   req: Request,

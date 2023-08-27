@@ -1,9 +1,9 @@
+import type { PatientRepository } from '../types/patient.types'
 import { EntityService } from './entity.service'
-import { PatientRepository } from '../types/patient.types'
 
 export class PatientService {
-  private patientRepository: PatientRepository
-  private entityService: EntityService
+  private readonly patientRepository: PatientRepository
+  private readonly entityService: EntityService
 
   constructor(paientRepository: PatientRepository) {
     this.patientRepository = paientRepository

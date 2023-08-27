@@ -29,5 +29,7 @@ export enum ERROR_MSGS {
   SESSION_DATA_TAMPERED = 'Los datos de tu sesión han sido manipulados.',
   TOKEN_GENERATION_ERROR = 'No se generó el token.',
   SERVER_ERROR = 'Error en el servidor.',
-  GET_DOCTORS_AND_ADMINS_ERROR = 'No se pudo obtener los médicos ni los administradores.'
+  GET_DOCTORS_AND_ADMINS_ERROR = 'No se pudo obtener los médicos ni los administradores.',
+  ADMIN_REGISTRATION_APPROVAL_ERROR = 'Error al aprobar el registro del admin/doctor',
+  ADMINT_REGISTRATION_REMOVAL_ERROR = 'Error al deshabilitar un admin/doctor'
 }

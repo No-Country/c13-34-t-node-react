@@ -1,7 +1,6 @@
 import { In, Not } from 'typeorm'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { MESSAGES } from '../constants/msgs'
 import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
@@ -76,31 +75,36 @@ export class UserService {
     }
   }
 
-  async toggleAdminDocsStatus(
-    requesterId: number,
-    action:
-      | MESSAGES.ADMIN_REGISTRATION_APPROVAL
-      | MESSAGES.ADMIN_REGISTRATION_DISAPPROVAL
-  ): Promise<boolean> {
-    try {
-      const request = await this.entityService.findOne(
-        { id: requesterId },
-        false,
-        false,
-        false
-      )
-      if (!request) {
-        return false
-      }
-      request.status =
-        action === MESSAGES.ADMIN_REGISTRATION_APPROVAL
-          ? MESSAGES.ENABLE
-          : MESSAGES.DISABLE
-      await this.entityService.updateOne(request)
-      return true
-    } catch (err) {
-      return false
+  async approveAdminDocsRegistration(requesterId: number): Promise<FindResult> {
+    const dataToUpdate = {
+      id: requesterId,
+      status: UserStatus.enable
     }
+
+    try {
+      await this.entityService.updateOne(dataToUpdate)
+    } catch (error) {
+      throw new AppError(
+        ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+        HTTPCODES.BAD_REQUEST
+      )
+    }
+
+    const attributes = {
+      firstName: true,
+      lastName: true,
+      status: true,
+      role: true,
+      id: true
+    }
+    const user = await this.entityService.findOne(
+      { id: requesterId },
+      attributes,
+      false,
+      false
+    )
+
+    return { user }
   }
 
   async createUser(user: User): Promise<UserDto> {
