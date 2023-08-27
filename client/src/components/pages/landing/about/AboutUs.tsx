@@ -1,4 +1,5 @@
 import { SectionAbout1 } from "./shared/SectionAbout1";
+import { SectionAbout4 } from "./shared/SectionAbout4";
 
 export const AboutUs = () => {
   return (
@@ -12,8 +13,8 @@ export const AboutUs = () => {
       <section className="py-4 px-36">
         <div className="h-80">Section About 3</div>
       </section>
-      <section className="py-4 px-36">
-        <div className="h-80">Section About 4</div>
+      <section className="p-4 pt-24 pb-5 2xl:px-36">
+        <SectionAbout4 />
       </section>
       <section className="py-4 px-36">
         <div className="h-80">Section About 5</div>
