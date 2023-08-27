@@ -9,7 +9,9 @@ export const PublicLayout = () => {
         <Navbar />
       </div>
       <Outlet />
-      <Footer />
+      <div className="z-10">
+        <Footer />
+      </div>
     </div>
   );
 };

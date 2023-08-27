@@ -53,9 +53,9 @@ export const Register = () => {
   };
 
   return (
-    <div className="h-full py-20 pl-0 pr-36 bg-white">
-      <div className="grid grid-cols-2 gap-24">
-        <div className="flex flex-col justify-center items-center relative">
+    <div className="h-full w-full px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
+      <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">
+        <div className="hidden 2xl:flex flex-col justify-center items-center relative">
           <div className="absolute">
             <img
               src="/images/circles.png"
@@ -76,15 +76,14 @@ export const Register = () => {
           </div>
         </div>
 
-        <div className="w-[502px] flex flex-col font-opensans">
+        <div className="w-full 2xl:w-[502px] flex flex-col font-opensans">
+          <h1 className="font-caudex text-primary-green text-5xl 2xl:text-6xl pb-8">
+            Crea una cuenta
+          </h1>
           <form
             onSubmit={handleSubmit}
-            className="w-[360px] flex flex-col gap-6"
+            className="w-full 2xl:w-[360px] flex flex-col gap-6"
           >
-            <h1 className="font-caudex text-primary-green text-5xl pb-2">
-              Crea una cuenta
-            </h1>
-
             <label className="block">
               <span className="block">Nombre(s) *</span>
               <input
@@ -202,7 +201,7 @@ export const Register = () => {
             <button
               disabled={loading}
               type="submit"
-              className="w-[360px] mt-5 py-3 rounded-3xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300 disabled:bg-dark-green"
+              className="w-full 2xl:w-[360px] mt-5 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300 disabled:bg-dark-green"
             >
               Enviar
             </button>
