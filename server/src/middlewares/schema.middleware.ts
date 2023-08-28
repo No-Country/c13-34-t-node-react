@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import type { AnyZodObject } from 'zod'
+import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
 import { AppError } from '../utils/app.error'
 
@@ -26,10 +27,9 @@ export const schemaValidator = (schema: AnyZodObject) => {
         }
       })
 
-      next(new AppError(errors, 400))
+      next(new AppError(errors, HTTPCODES.BAD_REQUEST))
       return
     }
-
     req.safeData = results.data
 
     next()

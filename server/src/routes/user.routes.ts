@@ -18,6 +18,6 @@ userRouter.use(
   validateYourUser
 )
 
-// userRouter.get('users' getUsers )
-// userRouter.put('/users/:id', updateUser)
+// userRouter.get('/:id' getUsers )
+// userRouter.put('/:id', updateUser)
 userRouter.delete('/:id', deleteUser)

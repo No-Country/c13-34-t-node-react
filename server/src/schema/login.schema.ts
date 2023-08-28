@@ -2,6 +2,7 @@ import validator from 'validator'
 import z from 'zod'
 import { MESSAGES } from '../constants/msgs'
 import { userService } from '../services/factory/entities.factory'
+import { UserStatus } from '../types/user.types'
 
 export const loginSchema = z.object({
   body: z.object({
@@ -14,7 +15,7 @@ export const loginSchema = z.object({
       .trim()
       .toLowerCase()
       .superRefine(async (email, ctx) => {
-        const filters = { email }
+        const filters = { email, status: UserStatus.enable }
         const userExists = await userService.findUser(
           filters,
           false,
@@ -24,7 +25,7 @@ export const loginSchema = z.object({
 
         if (!userExists) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.EMAIL_NOT_REGISTERED
           })
         }
@@ -37,7 +38,7 @@ export const loginSchema = z.object({
       .superRefine((val, ctx) => {
         if (!validator.isStrongPassword(val)) {
           ctx.addIssue({
-            code: 'custom',
+            code: z.ZodIssueCode.custom,
             message: MESSAGES.PASSWORD_TOO_WEAK
           })
         }

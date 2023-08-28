@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-// import { useAuth } from "../../context/auth";
-import { useAuth } from "../../service/auth";
+import { useAuth } from "../../context/auth";
 
 export const Authenticated = () => {
-  const auth = useAuth();
+  const { loggedIn } = useAuth();
 
-  if (!auth.isAuthenticated) return <Navigate to="/tablero" />;
+  if (!loggedIn) return <Navigate replace to="/" />;
+
   return <Outlet />;
 };
