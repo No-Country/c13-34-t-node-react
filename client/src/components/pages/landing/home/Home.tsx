@@ -9,7 +9,7 @@ export const Home = () => {
       <section className="p-4 mb-32 2xl:pt-20 2xl:px-36 bg-gradient-to-r from-yellow-50 to-green-100">
         <Welcome />
       </section>
-      <section className="overflow-auto py-12 mb-40">
+      <section className=" py-12 mb-40">
         <Services />
       </section>
       <section className="overflow-auto mb-40">
