@@ -16,6 +16,14 @@ export const approveDoctorsAndAdminsRegistration = async (
       Number(userId)
     )
 
+    if (updatedUser == null) {
+      return res.status(HTTPCODES.BAD_REQUEST).json({
+        status: ERROR_MSGS.FAIL,
+        message: ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_FAIL,
+        updatedUser
+      })
+    }
+
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
       message: MESSAGES.ADMIN_REGISTRATION_APPROVAL_OK,
@@ -35,23 +43,35 @@ export const approveDoctorsAndAdminsRegistration = async (
   }
 }
 
-export const revertDoctorsAndAdminsRegistration = async (
+export const cancelDoctorsAndAdminsRegistration = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { userId } = req.params
-    await userService.disableUser(Number(userId))
+    const canceledUser = await userService.cancelAdminDocsRegistration(
+      Number(userId)
+    )
+
+    if (canceledUser == null) {
+      return res.status(HTTPCODES.BAD_REQUEST).json({
+        status: ERROR_MSGS.FAIL,
+        message: ERROR_MSGS.ADMIN_REGISTRATION_CANCELATION_FAIL,
+        canceledUser
+      })
+    }
+
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
-      message: MESSAGES.ADMIN_REGISTRATION_REMOVAL_OK
+      message: MESSAGES.ADMIN_REGISTRATION_CANCELATION_OK,
+      canceledUser
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
       next(
         new AppError(
-          ERROR_MSGS.ADMINT_REGISTRATION_REMOVAL_ERROR,
+          ERROR_MSGS.ADMIN_REGISTRATION_CANCELATION_ERROR,
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
       )

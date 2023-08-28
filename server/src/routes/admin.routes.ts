@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import {
   approveDoctorsAndAdminsRegistration,
-  getAllDoctorsAndAdmins,
-  revertDoctorsAndAdminsRegistration
+  cancelDoctorsAndAdminsRegistration,
+  getAllDoctorsAndAdmins
 } from '../controllers/admin.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
@@ -27,8 +27,8 @@ adminRouter.patch(
 
 // Ruta para cambiar el estado de un doctor o admin a disable
 adminRouter.delete(
-  '/remove-registration/:userId',
+  '/cancel-registration/:userId',
   protect,
   restrictTo(UserRole.admin),
-  revertDoctorsAndAdminsRegistration
+  cancelDoctorsAndAdminsRegistration
 )

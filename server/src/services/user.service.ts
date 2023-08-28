@@ -75,21 +75,7 @@ export class UserService {
     }
   }
 
-  async approveAdminDocsRegistration(requesterId: number): Promise<FindResult> {
-    const dataToUpdate = {
-      id: requesterId,
-      status: UserStatus.enable
-    }
-
-    try {
-      await this.entityService.updateOne(dataToUpdate)
-    } catch (error) {
-      throw new AppError(
-        ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
-        HTTPCODES.BAD_REQUEST
-      )
-    }
-
+  async approveAdminDocsRegistration(userId: number): Promise<FindResult> {
     const attributes = {
       firstName: true,
       lastName: true,
@@ -97,14 +83,72 @@ export class UserService {
       role: true,
       id: true
     }
-    const user = await this.entityService.findOne(
-      { id: requesterId },
+
+    const userToBeUpdated = await this.entityService.findOne(
+      { id: userId },
       attributes,
       false,
       false
     )
 
-    return { user }
+    if (userToBeUpdated?.status === UserStatus.disable) {
+      const dataToUpdate = {
+        id: userId,
+        status: UserStatus.enable
+      }
+      try {
+        await this.entityService.updateOne(dataToUpdate)
+
+        const updatedUser = { ...userToBeUpdated }
+        updatedUser.status = UserStatus.enable
+
+        return {
+          ...updatedUser
+        }
+      } catch (error) {
+        throw new AppError(
+          ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+          HTTPCODES.BAD_REQUEST
+        )
+      }
+    }
+    return null
+  }
+
+  async cancelAdminDocsRegistration(userId: number): Promise<FindResult> {
+    const attributes = {
+      firstName: true,
+      lastName: true,
+      status: true,
+      role: true,
+      id: true
+    }
+
+    const userToBeCanceled = await this.entityService.findOne(
+      { id: userId },
+      attributes,
+      false,
+      false
+    )
+
+    if (userToBeCanceled?.status === UserStatus.enable) {
+      try {
+        await this.disableUser(Number(userId))
+
+        const updatedUser = { ...userToBeCanceled }
+        updatedUser.status = UserStatus.disable
+
+        return {
+          ...updatedUser
+        }
+      } catch (error) {
+        throw new AppError(
+          ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+          HTTPCODES.BAD_REQUEST
+        )
+      }
+    }
+    return null
   }
 
   async createUser(user: User): Promise<UserDto> {

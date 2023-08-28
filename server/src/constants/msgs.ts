@@ -8,7 +8,7 @@ export enum MESSAGES {
   MALE = 'male',
   FEMALE = 'female',
   ADMIN_REGISTRATION_APPROVAL_OK = 'El registro del admin/doctor fue aprobado con éxito.',
-  ADMIN_REGISTRATION_REMOVAL_OK = 'El registro del admin/doctor fue deshabilitado con éxito.',
+  ADMIN_REGISTRATION_CANCELATION_OK = 'El registro del admin/doctor fue deshabilitado con éxito.',
   FIRST_NAME_REQUIRED_ERROR = 'El nombre es requerido.',
   FIRST_NAME_TYPE_ERROR = 'El nombre debe ser un texto.',
   FIRST_NAME_MIN_LENGTH = 'El nombre debe ser de mínimo 2 caracteres.',
