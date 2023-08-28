@@ -5,6 +5,7 @@ export enum MESSAGES {
   DOCTOR = 'doctor',
   ENABLE = 'enable',
   DISABLE = 'disable',
+  PENDING = 'pending',
   MALE = 'male',
   FEMALE = 'female',
   ADMIN_REGISTRATION_APPROVAL_OK = 'El registro del admin/doctor fue aprobado con éxito.',

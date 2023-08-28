@@ -31,7 +31,7 @@ export enum ERROR_MSGS {
   SERVER_ERROR = 'Error en el servidor.',
   GET_DOCTORS_AND_ADMINS_ERROR = 'No se pudo obtener los médicos ni los administradores.',
   ADMIN_REGISTRATION_APPROVAL_ERROR = 'Error al aprobar el registro del admin/doctor.',
-  ADMIN_REGISTRATION_APPROVAL_FAIL = 'El registro del admin/doctor ya ha sido aprobado previamente.',
+  ADMIN_REGISTRATION_APPROVAL_FAIL = 'El admin/doctor ya ha sido aprobado previamente o no existe.',
   ADMIN_REGISTRATION_CANCELATION_ERROR = 'Error al deshabilitar un admin/doctor',
-  ADMIN_REGISTRATION_CANCELATION_FAIL = 'El admin/doctor ya se encuentra deshabilitado.'
+  ADMIN_REGISTRATION_CANCELATION_FAIL = 'El admin/doctor ya se encuentra deshabilitado o no existe.'
 }

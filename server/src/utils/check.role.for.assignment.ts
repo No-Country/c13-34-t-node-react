@@ -4,7 +4,7 @@ import { highLevelRoles } from './high.level.roles'
 
 export const checkRoleForAssignment = (user: User) => {
   if (highLevelRoles.includes(user.role)) {
-    user.status = UserStatus.disable
+    user.status = UserStatus.pending
   }
   return user
 }

@@ -64,6 +64,7 @@ export class UserService {
       firstName: true,
       lastName: true,
       status: true,
+      email: true,
       role: true,
       id: true
     }
@@ -80,6 +81,7 @@ export class UserService {
       firstName: true,
       lastName: true,
       status: true,
+      email: true,
       role: true,
       id: true
     }
@@ -91,27 +93,35 @@ export class UserService {
       false
     )
 
-    if (userToBeUpdated?.status === UserStatus.disable) {
-      const dataToUpdate = {
-        id: userId,
-        status: UserStatus.enable
-      }
-      try {
-        await this.entityService.updateOne(dataToUpdate)
-
-        const updatedUser = { ...userToBeUpdated }
-        updatedUser.status = UserStatus.enable
-
-        return {
-          ...updatedUser
+    if (userToBeUpdated == null) {
+      return null
+    } else {
+      if (
+        userToBeUpdated?.status === UserStatus.disable ||
+        userToBeUpdated?.status === UserStatus.pending
+      ) {
+        const dataToUpdate = {
+          id: userId,
+          status: UserStatus.enable
         }
-      } catch (error) {
-        throw new AppError(
-          ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
-          HTTPCODES.BAD_REQUEST
-        )
+        try {
+          await this.entityService.updateOne(dataToUpdate)
+
+          const updatedUser = { ...userToBeUpdated }
+          updatedUser.status = UserStatus.enable
+
+          return {
+            ...updatedUser
+          }
+        } catch (error) {
+          throw new AppError(
+            ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+            HTTPCODES.BAD_REQUEST
+          )
+        }
       }
     }
+
     return null
   }
 
@@ -120,6 +130,7 @@ export class UserService {
       firstName: true,
       lastName: true,
       status: true,
+      email: true,
       role: true,
       id: true
     }
@@ -131,23 +142,28 @@ export class UserService {
       false
     )
 
-    if (userToBeCanceled?.status === UserStatus.enable) {
-      try {
-        await this.disableUser(Number(userId))
+    if (userToBeCanceled == null) {
+      return null
+    } else {
+      if (userToBeCanceled?.status === UserStatus.enable) {
+        try {
+          await this.disableUser(Number(userId))
 
-        const updatedUser = { ...userToBeCanceled }
-        updatedUser.status = UserStatus.disable
+          const updatedUser = { ...userToBeCanceled }
+          updatedUser.status = UserStatus.disable
 
-        return {
-          ...updatedUser
+          return {
+            ...updatedUser
+          }
+        } catch (error) {
+          throw new AppError(
+            ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+            HTTPCODES.BAD_REQUEST
+          )
         }
-      } catch (error) {
-        throw new AppError(
-          ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
-          HTTPCODES.BAD_REQUEST
-        )
       }
     }
+
     return null
   }
 

@@ -11,7 +11,8 @@ export enum UserRole {
 
 export enum UserStatus {
   enable = MESSAGES.ENABLE,
-  disable = MESSAGES.DISABLE
+  disable = MESSAGES.DISABLE,
+  pending = MESSAGES.PENDING
 }
 
 export enum UserGenre {
