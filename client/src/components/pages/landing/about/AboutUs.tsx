@@ -4,7 +4,7 @@ import { SectionAbout4 } from "./shared/SectionAbout4";
 
 export const AboutUs = () => {
   return (
-    <div className="h-full">
+    <div className="h-full mt-16 xl:mt-0">
       <section className="pt-4 2xl:pt-16 2xl:px-36">
         <SectionAbout1 />
       </section>
