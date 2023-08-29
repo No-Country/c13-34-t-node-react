@@ -11,18 +11,8 @@ export const approveDoctorsAndAdminsRegistration = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.params
-    const updatedUser = await userService.approveAdminDocsRegistration(
-      Number(userId)
-    )
-
-    if (updatedUser == null) {
-      return res.status(HTTPCODES.BAD_REQUEST).json({
-        status: ERROR_MSGS.FAIL,
-        message: ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_FAIL,
-        updatedUser
-      })
-    }
+    const { userId } = req.safeData?.params
+    const updatedUser = await userService.approveAdminDocsRegistration(userId)
 
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
@@ -88,7 +78,7 @@ export const getAllDoctorsAndAdmins = async (
 ) => {
   try {
     const requesterId = req.sessionUser?.id
-    const { users, count } =
+    const [users, count] =
       await userService.findAllDoctorsAndAdmins(requesterId)
 
     return res.status(HTTPCODES.OK).json({
