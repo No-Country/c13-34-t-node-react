@@ -1,1 +1,1 @@
-export const API_URL = "https://meddyplus-backend.onrender.com";
+export const API_URL = import.meta.env.VITE_APP_API_URL;

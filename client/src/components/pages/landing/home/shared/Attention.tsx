@@ -28,16 +28,16 @@ export const Attention = () => {
             <div>
               <div className="flex items-center gap-1 pb-11">
                 <img
-                  src="/images/icon-3.png"
-                  alt="icon-3"
+                  src="/images/icon-1.png"
+                  alt="icon-1"
                   className="w-16 object-cover"
                 />
                 <p className="text-2xl">We are certified</p>
               </div>
               <div className="flex items-center gap-1">
                 <img
-                  src="/images/icon-4.png"
-                  alt="icon-4"
+                  src="/images/icon-3.png"
+                  alt="icon-3"
                   className="w-16 object-cover"
                 />
                 <p className="text-2xl">We are certified</p>
@@ -47,16 +47,16 @@ export const Attention = () => {
             <div>
               <div className="flex items-center gap-1 pb-11">
                 <img
-                  src="/images/icon-1.png"
-                  alt="icon-1"
+                  src="/images/icon-2.png"
+                  alt="icon-2"
                   className="w-16 object-cover"
                 />
                 <p className="text-2xl">We are certified</p>
               </div>
               <div className="flex items-center gap-1">
                 <img
-                  src="/images/icon-2.png"
-                  alt="icon-2"
+                  src="/images/icon-4.png"
+                  alt="icon-4"
                   className="w-16 object-cover"
                 />
                 <p className="text-2xl">We are certified</p>
