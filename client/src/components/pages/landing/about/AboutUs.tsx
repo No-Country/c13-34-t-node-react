@@ -1,5 +1,6 @@
 import { SectionAbout1 } from "./shared/SectionAbout1";
 import { SectionAbout2 } from "./shared/SectionAbout2";
+import { SectionAbout3 } from "./shared/SectionAbout3";
 import { SectionAbout4 } from "./shared/SectionAbout4";
 
 export const AboutUs = () => {
@@ -12,7 +13,7 @@ export const AboutUs = () => {
         <SectionAbout2 />
       </section>
       <section className="py-4 px-36">
-        <div className="h-80">Section About 3</div>
+        <SectionAbout3 />
       </section>
       <section className="p-4 pt-24 pb-5 2xl:px-36">
         <SectionAbout4 />
