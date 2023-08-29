@@ -45,7 +45,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const signup = async (newUser: TNewUser) => {
     await axios.post(`${API_URL}/api/v1/users/auth/signup`, newUser);
-    await login(newUser.email, newUser.password);
+    newUser.role !== "doctor" && (await login(newUser.email, newUser.password));
   };
 
   const logout = () => {

@@ -2,6 +2,7 @@ import { useAuth } from "../../../../context/auth";
 import { NavLink } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useState } from "react";
+import { LoadingSpinner } from "../../../common/LoadingSpinner";
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -22,11 +23,10 @@ export const Login = () => {
 
     try {
       await login(email, password);
-      alert("Bienvenido!");
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response) {
-          alert("Correo o Contraseña incorrectos!");
+          alert("Ha ocurrido un error!");
         } else {
           alert("No se pudo establecer conexión con el Servidor!");
         }
@@ -37,7 +37,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="h-full w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
+    <div className="h-full relative w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">
         <div className="hidden 2xl:flex flex-col justify-center items-center relative">
           <div className="absolute">
@@ -99,9 +99,9 @@ export const Login = () => {
             <button
               disabled={loading}
               type="submit"
-              className="w-full 2xl:w-[360px] mt-4 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300 disabled:bg-dark-green"
+              className="w-full 2xl:w-[360px] mt-4 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
             >
-              Ingresar
+              {loading ? <LoadingSpinner /> : "Ingresar"}
             </button>
           </form>
           <div className="w-full 2xl:w-[360px] pt-2 grid grid-cols-2 justify-between text-primary-green">
