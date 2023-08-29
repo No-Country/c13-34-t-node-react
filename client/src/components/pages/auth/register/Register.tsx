@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useAuth } from "../../../../context/auth";
 import { TRole } from "../../../../types/user";
 import { AxiosError } from "axios";
+import { LoadingSpinner } from "../../../common/LoadingSpinner";
+import { Modal } from "../../../common/Modal";
 
 export const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -15,15 +17,14 @@ export const Register = () => {
   const [genre, setGenre] = useState<"male" | "female">("male");
   const [role, setRole] = useState<TRole>("patient");
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
 
   const { signup } = useAuth();
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    if (loading) {
-      return;
-    }
     setLoading(true);
 
     try {
@@ -38,22 +39,34 @@ export const Register = () => {
         genre,
         role,
       });
-
-      alert("Se ha registrado exitosamente");
+      setLoading(false);
+      if (role === "doctor") {
+        setMessage(
+          "Registro exitoso. Debes esperar a ser aceptado por un administrador.",
+        );
+        setShowModal(true);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response) {
+          console.log(error);
           alert("Formulario Invalido");
         } else {
-          alert("No se pudo establecer conexión con el Servidor!");
+          setMessage("No se pudo establecer conexión con el Servidor!");
+          setShowModal(true);
         }
       }
-      console.log(error);
+      setLoading(false);
     }
   };
 
   return (
     <div className="h-full w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        message={message}
+      />
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">
         <div className="hidden 2xl:flex flex-col justify-center items-center relative">
           <div className="absolute">
@@ -201,9 +214,9 @@ export const Register = () => {
             <button
               disabled={loading}
               type="submit"
-              className="w-full 2xl:w-[360px] mt-5 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300 disabled:bg-dark-green"
+              className="w-full 2xl:w-[360px] mt-5 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
             >
-              Enviar
+              {loading ? <LoadingSpinner /> : "Enviar"}
             </button>
           </form>
         </div>
