@@ -7,7 +7,7 @@ export const DashboardLayout = () => {
       <div>
         <Sidebar />
       </div>
-      <div className="bg-primary-gray">
+      <div className="bg-stone-50">
         <Outlet />
       </div>
     </div>

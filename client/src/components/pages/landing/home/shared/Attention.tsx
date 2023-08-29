@@ -1,8 +1,8 @@
 export const Attention = () => {
   return (
-    <div className="py-8">
+    <div className="pt-2">
       <div className="grid grid-cols-2">
-        <div className="">
+        <div>
           <img
             src="/images/home-section2.png"
             alt=""
