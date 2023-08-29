@@ -1,4 +1,12 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn
+} from 'typeorm'
+import { MedicalRecord } from '.'
 
 @Entity({ name: 'patients_medical_history' })
 export class PatientMedicalHistory extends BaseEntity {
@@ -19,4 +27,8 @@ export class PatientMedicalHistory extends BaseEntity {
 
   @Column({ type: 'varchar' })
   medication: string
+
+  @OneToOne((_type) => MedicalRecord)
+  @JoinColumn({ name: 'medical_record_id' })
+  medicalRecord: number
 }

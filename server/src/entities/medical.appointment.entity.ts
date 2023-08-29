@@ -2,11 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { Doctor } from './doctor.entity'
-import { Patient } from './patient.entity'
+import { MedicalAppointmentDates, Patient } from '.'
 
 @Entity({ name: 'medical_appointments' })
 export class MedicalAppointment extends BaseEntity {
@@ -16,12 +17,13 @@ export class MedicalAppointment extends BaseEntity {
   @Column({ type: 'text' })
   description: string
 
-  @Column({ type: 'date' })
-  date: Date
-
-  @ManyToOne((_type) => Doctor, (doctor) => doctor.medicalApointments)
-  doctor: Doctor
+  @OneToOne((_type) => MedicalAppointmentDates)
+  @JoinColumn({ name: 'medical_appointment_date_id' })
+  medicalAppointmentDate: number
 
   @ManyToOne((_type) => Patient, (patient) => patient.medicalAppointments)
   patient: Patient
+
+  @Column({ type: 'date' })
+  date: Date
 }

@@ -2,6 +2,7 @@ import 'dotenv/config'
 import {
   Doctor,
   MedicalAppointment,
+  MedicalAppointmentDates,
   MedicalRecord,
   Patient,
   PatientMedicalHistory,
@@ -43,6 +44,7 @@ export const dbConfig = Object.freeze({
     Patient,
     Doctor,
     MedicalAppointment,
+    MedicalAppointmentDates,
     MedicalRecord,
     PatientMedicalHistory
   ]
