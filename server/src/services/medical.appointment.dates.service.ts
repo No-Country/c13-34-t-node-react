@@ -1,9 +1,9 @@
-import { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
+import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { EntityService } from './entity.service'
 
 export class MedicalAppointmentDatesService {
-  private medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
-  private entityService: EntityService
+  private readonly medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
+  private readonly entityService: EntityService
 
   constructor(
     medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
