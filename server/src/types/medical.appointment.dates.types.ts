@@ -1,5 +1,5 @@
-import { Repository } from 'typeorm'
-import { MedicalAppointmentDates } from '../entities/medical.appointmet.dates.entity'
+import { type Repository } from 'typeorm'
+import { type MedicalAppointmentDates } from '../entities/medical.appointmet.dates.entity'
 
 export type MedicalAppointmentDatesRepository =
   Repository<MedicalAppointmentDates>

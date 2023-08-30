@@ -13,4 +13,6 @@ export class MedicalAppointmentDatesService {
   }
 
   async createMedicalAppointmentDate() {}
+
+  async getMedicalAppointmentDates() {}
 }
