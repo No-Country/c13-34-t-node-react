@@ -2,6 +2,7 @@ import { SectionAbout1 } from "./shared/SectionAbout1";
 import { SectionAbout2 } from "./shared/SectionAbout2";
 import { SectionAbout3 } from "./shared/SectionAbout3";
 import { SectionAbout4 } from "./shared/SectionAbout4";
+import { SectionAbout5 } from "./shared/SectionAbout5";
 
 export const AboutUs = () => {
   return (
@@ -19,7 +20,7 @@ export const AboutUs = () => {
         <SectionAbout4 />
       </section>
       <section className="py-4 px-36">
-        <div className="h-80">Section About 5</div>
+        <SectionAbout5 />
       </section>
     </div>
   );
