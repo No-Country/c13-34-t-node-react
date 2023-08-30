@@ -267,6 +267,7 @@ export const Register = () => {
                 <option value="">Seleccione un tipo</option>
                 <option value="patient">Paciente</option>
                 <option value="doctor">Doctor</option>
+                <option value="admin">Administrador</option>
               </select>
             </label>
             {errors.role && touched.role && (

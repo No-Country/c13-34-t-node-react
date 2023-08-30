@@ -1,6 +1,6 @@
 export const Welcome = () => {
   return (
-    <div className="grid 2xl:grid-cols-2 2xl:gap-24 2xl:h-[620px] w-full">
+    <div className="grid 2xl:grid-cols-2 2xl:gap-24 max-sm:pt-4 2xl:h-[620px] w-full">
       <div className="flex flex-col gap-2">
         <div className="flex flex-col w-full">
           <h1 className="font-caudex text-3xl 2xl:text-5xl font-bold pt-4 2xl:pt-14 mb-3 2xl:tracking-[1px]">
