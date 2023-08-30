@@ -4,13 +4,15 @@ export const Testimonials = () => {
       <p className="text-center font-caudex text-3xl text-primary-green pt-5">
         Que dicen nuestros pacientes
       </p>
-      <p className="text-center text-lg mt-3">
+      <p className="text-center text-lg mt-3 mx-4">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maiores
         ex repellat amet iusto tempora, commodi optio veniam, sed tempore
         laborum esse eveniet error, quis at!
       </p>
-      <div className="carouselTestimonials flex space-x-12 justify-center">
-        <div className="cardTestimonial border-2 border-primary-green w-96 h-72 rounded-2xl mt-12 bg-white">
+
+      {/* flex-row flex-nowrap overflow-auto */}
+      <div className="lg:space-x-12 justify-center items-center flex-col lg:flex-row flex gap-10">
+        <div className="border-2 border-primary-green w-80 lg:w-96 h-80 lg:h-72 rounded-2xl mt-6 lg:mt-10 bg-white">
           <div className="flex items-center space-x-1 mt-5 justify-center">
             <svg
               className="w-4 h-4 text-yellow-300"
@@ -70,7 +72,7 @@ export const Testimonials = () => {
             src="../images/doctor.png"
           />
         </div>
-        <div className="cardTestimonial border-2 border-primary-green w-96 h-72 rounded-2xl mt-12 bg-white">
+        <div className="border-2 border-primary-green w-80 lg:w-96 h-80 lg:h-72 rounded-2xl mt-6 lg:mt-10 bg-white">
           <div className="flex items-center space-x-1 mt-5 justify-center">
             <svg
               className="w-4 h-4 text-yellow-300"
@@ -130,7 +132,7 @@ export const Testimonials = () => {
             src="../images/doctor.png"
           />
         </div>
-        <div className="cardTestimonial border-2 border-primary-green w-96 h-72 rounded-2xl mt-12 bg-white">
+        <div className="border-2 border-primary-green w-80 lg:w-96 h-80 lg:h-72 rounded-2xl mt-6 lg:mt-10 bg-white">
           <div className="flex items-center space-x-1 mt-5 justify-center">
             <svg
               className="w-4 h-4 text-yellow-300"
