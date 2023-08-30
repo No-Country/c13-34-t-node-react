@@ -72,11 +72,11 @@ export const App = () => {
                 {/* /plataforma/paciente/panel */}
                 <Route path="paciente">
                   <Route path="panel" element={<PatientDashboardPage />} />
-                  <Route path="citas" element={<PatientAppointmentsPage />} />
                   <Route
                     path="reservar-citas"
                     element={<PatientBookAppointmentPage />}
                   />
+                  <Route path="citas" element={<PatientAppointmentsPage />} />
                   <Route
                     path="prescripcion"
                     element={<PatientPrescriptionPage />}

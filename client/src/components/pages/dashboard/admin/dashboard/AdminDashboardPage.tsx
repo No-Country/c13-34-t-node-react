@@ -5,17 +5,19 @@ export const AdminDashboardPage = () => {
   return (
     <div className="bg-gray-50">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
-        <h2 className="text-lg font-bold">Usuarios</h2>
+        <h2 className="text-lg font-bold uppercase">Usuarios</h2>
         <div>Notificación</div>
       </div>
 
       <div className="bg-white m-8 rounded-tl-2xl rounded-tr-2xl">
-        <div className="p-4 flex justify-end gap-6 pr-24">
-          <p className="py-2">Mostrar</p>
-          <button className="bg-lightest-green py-2 px-4 rounded-xl">
-            Reciente
+        <div className="p-4 flex justify-end gap-4 pr-24">
+          <p className="py-1.5 font-semibold">Mostrar</p>
+          <button className="bg-other-blue py-1.5 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium">
+            Administradores
           </button>
-          <p className="py-2">Pacientes</p>
+          <button className="bg-other-blue py-1.5 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium">
+            Doctores
+          </button>
         </div>
         <div className="bg-gray-50 mx-4 my-0 p-4 flex items-center gap-8">
           <form action="" className="relative">
@@ -23,10 +25,10 @@ export const AdminDashboardPage = () => {
             <input
               type="text"
               placeholder="Buscar usuarios"
-              className="bg-white outline-none py-2 pl-12 pr-4 rounded-2xl text-lg text-gray-400 border border-gray-200 w-96"
+              className="bg-white outline-none py-1.5 pl-12 pr-4 rounded-2xl text-lg text-dark-green border border-gray-200 w-96"
             />
           </form>
-          <button className="text-black hover:text-dark-green items-center bg-lightest-green text-lg py-1 px-6 rounded-2xl cursor-pointer border border-primary-green">
+          <button className="text-white items-center bg-primary-green hover:bg-dark-green text-lg py-1 px-6 rounded-xl border hover:border-dark-green transition">
             Agregar nuevo usuario +
           </button>
         </div>
@@ -145,7 +147,7 @@ export const AdminDashboardPage = () => {
                   Female
                 </td>
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Administrador
+                  Doctor
                 </td>
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                   <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-yellow-800 bg-yellow-200 rounded-lg bg-opacity-50">
