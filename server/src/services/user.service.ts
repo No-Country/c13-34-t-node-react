@@ -98,13 +98,10 @@ export class UserService {
         HTTPCODES.BAD_REQUEST
       )
 
-    const dataToUpdate = {
-      id: userId,
-      status: UserStatus.enable
-    }
+    userToBeUpdated.status = UserStatus.enable
 
     try {
-      return await this.entityService.updateOne(dataToUpdate)
+      return await this.entityService.updateOne(userToBeUpdated)
     } catch (error) {
       throw new AppError(
         ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
