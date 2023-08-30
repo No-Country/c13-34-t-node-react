@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 // AuthProvider
 import { AuthProvider } from "../context/auth";
 // import { AuthProvider } from "../service/auth";
@@ -56,6 +56,10 @@ export const App = () => {
               <Route path="plataforma" element={<DashboardLayout />}>
                 {/* /plataforma/administrador/panel */}
                 <Route path="administrador">
+                  <Route
+                    path=""
+                    element={<Navigate to="/plataforma/administrador/panel" />}
+                  />
                   <Route path="panel" element={<AdminDashboardPage />} />
                   <Route path="citas" element={<AdminAppointmentsPage />} />
                   <Route path="pacientes" element={<AdminPatientsPage />} />

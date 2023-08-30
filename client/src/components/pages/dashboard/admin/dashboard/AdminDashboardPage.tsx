@@ -1,7 +1,20 @@
 import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
+import { UsersService } from "@/services/users";
+import { RiEyeFill, RiDeleteBin6Fill, RiEdit2Fill } from "react-icons/ri";
+import useSWR from "swr";
 
 export const AdminDashboardPage = () => {
+  const { data, error } = useSWR(
+    "getHighLevelRolesUsers",
+    UsersService.getHighLevelRolesUsers,
+  );
+
+  if (error) return <div>Error</div>;
+  if (!data) return <div>Cargando...</div>;
+
+  const { status, users, count } = data;
+
   return (
     <div className="bg-gray-50">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
@@ -32,6 +45,7 @@ export const AdminDashboardPage = () => {
             Agregar nuevo usuario +
           </button>
         </div>
+
         <div className="overflow-auto">
           <table className="table-auto bg-white px-4 py-8 w-full">
             <thead className="bg-white border-b-2 border-gray-200">
@@ -68,7 +82,69 @@ export const AdminDashboardPage = () => {
                 </th>
               </tr>
             </thead>
+
             <tbody className="divide-y divide-gray-100">
+              {users.map((user) => (
+                <tr key={user.id} className="bg-gray-50">
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    <NavLink
+                      to="/"
+                      className="font-bold text-blue-500 hover:underline"
+                    >
+                      {user.id}
+                    </NavLink>
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.firstName}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.lastName}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.telephone}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.email}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.dateOfBirth}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.genre}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {user.role}
+                  </td>
+                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                    <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
+                      Aceptado
+                    </span>
+                  </td>
+                  <td className="p-3 flex items-center gap-4">
+                    <NavLink
+                      to="/plataforma/administrador/ver"
+                      className="text-blue-500 hover:text-blue-700 transition"
+                    >
+                      <RiEyeFill className="text-3xl" />
+                    </NavLink>
+
+                    <NavLink
+                      to="/plataforma/administrador/eliminar"
+                      className="text-other-red hover:text-[#870620] transition"
+                    >
+                      <RiDeleteBin6Fill className="text-3xl" />
+                    </NavLink>
+
+                    <NavLink
+                      to="/plataforma/administrador/editar"
+                      className="text-other-yellow hover:text-[#6d5d17] transition"
+                    >
+                      <RiEdit2Fill className="text-3xl" />
+                    </NavLink>
+                  </td>
+                </tr>
+              ))}
+
               <tr className="bg-gray-50">
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                   <NavLink
@@ -119,6 +195,7 @@ export const AdminDashboardPage = () => {
                   </NavLink>
                 </td>
               </tr>
+
               <tr className="bg-white">
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                   <NavLink
@@ -169,6 +246,7 @@ export const AdminDashboardPage = () => {
                   </NavLink>
                 </td>
               </tr>
+
               <tr className="bg-gray-50">
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                   <NavLink
