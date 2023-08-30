@@ -68,15 +68,15 @@ export class UserService {
       role: true,
       id: true
     }
-    const [users, count] = await this.findAllUsers(filters, attributes, false)
 
-    return {
-      users,
-      count
-    }
+    return await this.findAllUsers(filters, attributes, false)
   }
 
   async approveAdminDocsRegistration(userId: number): Promise<FindResult> {
+    const filters = {
+      id: userId,
+      status: In([UserStatus.disable, UserStatus.pending])
+    }
     const attributes = {
       firstName: true,
       lastName: true,
@@ -85,44 +85,32 @@ export class UserService {
       role: true,
       id: true
     }
-
     const userToBeUpdated = await this.entityService.findOne(
-      { id: userId },
+      filters,
       attributes,
       false,
       false
     )
 
-    if (userToBeUpdated == null) {
-      return null
-    } else {
-      if (
-        userToBeUpdated?.status === UserStatus.disable ||
-        userToBeUpdated?.status === UserStatus.pending
-      ) {
-        const dataToUpdate = {
-          id: userId,
-          status: UserStatus.enable
-        }
-        try {
-          await this.entityService.updateOne(dataToUpdate)
+    if (!userToBeUpdated)
+      throw new AppError(
+        ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_FAIL,
+        HTTPCODES.BAD_REQUEST
+      )
 
-          const updatedUser = { ...userToBeUpdated }
-          updatedUser.status = UserStatus.enable
-
-          return {
-            ...updatedUser
-          }
-        } catch (error) {
-          throw new AppError(
-            ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
-            HTTPCODES.BAD_REQUEST
-          )
-        }
-      }
+    const dataToUpdate = {
+      id: userId,
+      status: UserStatus.enable
     }
 
-    return null
+    try {
+      return await this.entityService.updateOne(dataToUpdate)
+    } catch (error) {
+      throw new AppError(
+        ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
+        HTTPCODES.BAD_REQUEST
+      )
+    }
   }
 
   async cancelAdminDocsRegistration(userId: number): Promise<FindResult> {
@@ -175,9 +163,16 @@ export class UserService {
   }
 
   async signIn(loginData: Login): Promise<AuthenticatedUser> {
+    const attributes = {
+      id: true,
+      firstName: true,
+      lastName: true,
+      password: true,
+      role: true
+    }
     const user = (await this.findUser(
       { email: loginData.email },
-      false,
+      attributes,
       false,
       true
     )) as User

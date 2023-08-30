@@ -3,9 +3,12 @@ import { NavLink } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { LoadingSpinner } from "../../../common/LoadingSpinner";
+import { Modal } from "../../../common/Modal";
 
 export const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
 
   const { login } = useAuth();
 
@@ -26,9 +29,11 @@ export const Login = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response) {
-          alert("Ha ocurrido un error!");
+          setMessage("Correo o Contraseña incorrectos!");
+          setShowModal(true);
         } else {
-          alert("No se pudo establecer conexión con el Servidor!");
+          setMessage("No se pudo establecer conexión con el Servidor!");
+          setShowModal(true);
         }
       }
     }
@@ -38,6 +43,11 @@ export const Login = () => {
 
   return (
     <div className="h-full relative w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        message={message}
+      />
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">
         <div className="hidden 2xl:flex flex-col justify-center items-center relative">
           <div className="absolute">
