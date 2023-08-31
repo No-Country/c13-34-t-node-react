@@ -11,6 +11,9 @@ import {
   RiLogoutBoxLine,
 } from "react-icons/ri";
 import { useAuth } from "../../../context/auth";
+import { GrUserAdmin } from "react-icons/gr";
+import { FaBriefcaseMedical } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
 
 export const Sidebar = () => {
   const { user, logout } = useAuth();
@@ -20,11 +23,13 @@ export const Sidebar = () => {
       <div className="flex flex-col w-full">
         <div className="flex flex-col items-center justify-center">
           <img src="/images/logo.png" alt="" className="w-[220px] mb-11" />
-          <img
-            src="/images/oscar.jpg"
-            alt=""
-            className="w-[130px] mb-6 rounded-full"
-          />
+          <div className="w-[120px] h-[120px] flex justify-center items-center mb-6 border-2 border-slate-200 rounded-full">
+            {user?.role === "admin" && (
+              <GrUserAdmin size={80} className="pl-4" />
+            )}
+            {user?.role === "doctor" && <FaBriefcaseMedical size={80} />}
+            {user?.role === "patient" && <AiOutlineUser size={80} />}
+          </div>
           <div className="text-center font-bold text-[#777777]">
             {user?.firstName.toUpperCase() + " " + user?.lastName.toUpperCase()}
           </div>
