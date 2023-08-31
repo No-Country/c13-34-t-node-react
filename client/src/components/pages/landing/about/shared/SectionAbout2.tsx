@@ -12,13 +12,13 @@ export const SectionAbout2 = () => {
         <p className="font-caudex md:text-3xl font-bold tracking-wide text-dark-green">
           ATENDE TU SALUD CON EL SERVICIO MÁS COMPLETO
         </p>
-        <p className="text-xs md:text-base">
+        <p className="text-sm md:text-base">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
           tempore aliquam temporibus porro. Expedita earum rerum dolorem, ab,
           reiciendis nobis sequi minima beatae accusantium pariatur harum labore
           facere corporis impedit.
         </p>
-        <p className="text-xs md:text-base">
+        <p className="text-sm md:text-base">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
           tempore aliquam temporibus porro. Expedita earum rerum dolorem, ab,
           reiciendis nobis sequi minima beatae accusantium pariatur harum labore

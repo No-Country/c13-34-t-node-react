@@ -1,21 +1,26 @@
 import * as yup from "yup";
 
 const passwordRules =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^_&*-]).{5,}$/;
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^_&*-]).{8,}$/;
 
 export const registerSchema = yup.object().shape({
-  firstName: yup.string().max(50, "Como máximo 50 caracteres"),
-  lastName: yup.string().max(70, "Como máximo 70 caracteres"),
+  firstName: yup
+    .string()
+    .min(2, "Deben ser como mínimo 2 caracteres")
+    .max(50, "Como máximo 50 caracteres"),
+  lastName: yup
+    .string()
+    .min(2, "Deben ser como mínimo 2 caracteres")
+    .max(70, "Como máximo 70 caracteres"),
   email: yup
     .string()
     .email("Ingresa un email válido")
     .required("Campo Obligatorio"),
   password: yup
     .string()
-    .min(5)
     .matches(passwordRules, {
       message:
-        "La contraseña debe contener al menos 1 mayusc, 1 minusc, 1 número y un caracter especial",
+        "La contraseña debe contener al menos 8 caracteres con: 1 mayusc, 1 minusc, 1 número y un caracter especial",
     })
     .required("Required"),
   confirmPassword: yup

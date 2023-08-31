@@ -2,7 +2,7 @@ import { FC } from "react";
 
 export const SectionAbout1 = () => {
   return (
-    <div className="flex flex-col 2xl:grid 2xl:grid-cols-2 w-full gap-4">
+    <div className="flex flex-col px-6 2xl:grid 2xl:grid-cols-2 w-full gap-4">
       <div className="flex flex-col w-full 2xl:order-1">
         <h1 className="text-2xl 2xl:text-3xl font-bold font-caudex max-sm:pt-4 pb-1 2xl:tracking-[1px]">
           ENFOQUE EN EL CUIDADO DE LOS OJOS Y CIRUGÍA
