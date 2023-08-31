@@ -13,6 +13,7 @@ async function getHighLevelRolesUsers() {
   );
 
   res.data.users.sort((a, b) => (a.id > b.id ? 1 : -1));
+
   return res.data;
 }
 
@@ -30,7 +31,12 @@ async function acceptHighLevelRoleUser(userId: number) {
   return res.data;
 }
 
+async function deletedHighLevelRoleUser(userId: number) {
+  return client.delete("/api/v1/admin/high-level-roles/" + userId);
+}
+
 export const UsersService = {
   getHighLevelRolesUsers,
   acceptHighLevelRoleUser,
+  deletedHighLevelRoleUser,
 };

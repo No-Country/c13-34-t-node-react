@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 interface PropsTypes {
   showModal: boolean;
-  setShowModal: (value: React.SetStateAction<boolean>) => void;
+  onClose: () => void;
   message: ReactNode;
 }
 
-export const Modal = ({ showModal, setShowModal, message }: PropsTypes) => {
+export const Modal = ({ showModal, onClose, message }: PropsTypes) => {
   return (
     <>
       {showModal ? (
@@ -22,7 +22,7 @@ export const Modal = ({ showModal, setShowModal, message }: PropsTypes) => {
                   <button
                     className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={onClose}
                   >
                     Close
                   </button>
