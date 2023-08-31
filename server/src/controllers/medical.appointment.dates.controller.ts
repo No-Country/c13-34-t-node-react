@@ -4,16 +4,19 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { medicalAppointmentDatesService } from '../services/factory/entities.factory'
 import { MESSAGES, SUCCESS_MESSAGES } from '../constants/msgs'
+import { type User } from '../entities'
 
-export const createDate = async (
+export const createDates = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
+    const { sessionUser } = req
     const { date, hours } = req.safeData?.body
     const medicalAppointmentDates =
-      await medicalAppointmentDatesService.createMedicalAppointmentDate(
+      await medicalAppointmentDatesService.createMedicalAppointmentDates(
+        sessionUser as User,
         date,
         hours
       )

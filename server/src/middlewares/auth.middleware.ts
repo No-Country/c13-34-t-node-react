@@ -43,14 +43,14 @@ export const protect = async (
     return
   }
 
-  const attributes = {
-    password: false,
-    status: false
-  }
+  // const attributes = {
+  //   password: false,
+  //   status: false
+  // }
 
   const userExists = await userService.findUser(
     { id: decoded.id },
-    attributes,
+    false,
     false,
     false
   )
