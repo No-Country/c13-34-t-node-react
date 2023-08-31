@@ -5,7 +5,7 @@ import { RiEyeFill, RiEdit2Fill, RiEditBoxLine } from "react-icons/ri";
 import useSWR, { useSWRConfig } from "swr";
 import { TUser, TUserStatus } from "@/types/user";
 import { Modal } from "@/components/common/Modal";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
 
@@ -14,14 +14,26 @@ export const AdminUsersPage = () => {
     getHighLevelRolesUsersKey,
     UsersService.getHighLevelRolesUsers,
   );
+  const [usersData, setUsersData] = useState<TUser[]>();
+  const [roleSelected, setRoleSelected] = useState("todos");
 
-  if (error) return <div>Error</div>;
-  if (!data) return <div>Cargando...</div>;
+  const originalUsers = useRef<TUser[]>([]);
 
-  // const { status, users, count } = data;
-  const { users } = data;
+  useEffect(() => {
+    if (data) {
+      setUsersData(data.users);
+      originalUsers.current = data.users;
+    }
+  }, [data]);
 
-  return (
+  const filterByRole = (role: string) => {
+    const FilteredUsers = originalUsers.current.filter(
+      (user) => user.role === role,
+    );
+    setUsersData(FilteredUsers);
+  };
+
+  return usersData ? (
     <div className="bg-gray-50">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
         <h2 className="text-lg font-bold uppercase">Usuarios</h2>
@@ -31,10 +43,40 @@ export const AdminUsersPage = () => {
       <div className="bg-white m-8 rounded-tl-2xl rounded-tr-2xl">
         <div className="p-4 flex justify-end gap-4 pr-24">
           <p className="py-1.5 font-semibold">Mostrar</p>
-          <button className="bg-other-blue py-1.5 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium">
+          <button
+            onClick={() => {
+              setUsersData(originalUsers.current);
+              setRoleSelected("todos");
+            }}
+            className={` ${
+              roleSelected === "todos" &&
+              "text-other-blue bg-white border  border-other-blue"
+            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+          >
+            Todos
+          </button>
+          <button
+            onClick={() => {
+              filterByRole("admin");
+              setRoleSelected("admin");
+            }}
+            className={` ${
+              roleSelected === "admin" &&
+              "text-other-blue bg-white border  border-other-blue"
+            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+          >
             Administradores
           </button>
-          <button className="bg-other-blue py-1.5 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium">
+          <button
+            onClick={() => {
+              filterByRole("doctor");
+              setRoleSelected("doctor");
+            }}
+            className={` ${
+              roleSelected === "doctor" &&
+              "text-other-blue bg-white border  border-other-blue"
+            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+          >
             Doctores
           </button>
         </div>
@@ -90,7 +132,7 @@ export const AdminUsersPage = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {users.map((user) => (
+              {usersData.map((user) => (
                 <tr key={user.id} className="bg-white">
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <NavLink
@@ -146,6 +188,10 @@ export const AdminUsersPage = () => {
         </div>
       </div>
     </div>
+  ) : error ? (
+    <div> Ha ocurrido un error</div>
+  ) : (
+    <div> Cargando...</div>
   );
 };
 
