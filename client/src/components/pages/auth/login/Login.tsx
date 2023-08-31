@@ -109,7 +109,7 @@ export const Login = () => {
             <button
               disabled={loading}
               type="submit"
-              className="w-full 2xl:w-[360px] mt-4 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
+              className="w-full flex justify-center 2xl:w-[360px] mt-4 py-2 rounded-xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300"
             >
               {loading ? <LoadingSpinner /> : "Ingresar"}
             </button>
