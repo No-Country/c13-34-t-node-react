@@ -47,6 +47,15 @@ export const Sidebar = () => {
               </li>
               <li>
                 <NavLink
+                  to="/plataforma/administrador/usuarios"
+                  className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
+                >
+                  <RiLayoutMasonryFill className="text-2xl" />
+                  <p>Usuarios</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/plataforma/administrador/citas"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >

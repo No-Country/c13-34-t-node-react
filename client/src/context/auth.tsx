@@ -37,7 +37,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     // setear header por defecto a la instancia de axios
     // Authorization: Bearer token
-    client.defaults.headers.common.Authorization = "Bearer " + initialToken;
+    client.defaults.headers.common.Authorization = "Bearer " + data.token;
 
     // Guardar en el disco (para persistir)
     localStorage.setItem("auth-token", data.token);

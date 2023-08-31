@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 interface PropsTypes {
   showModal: boolean;
   setShowModal: (value: React.SetStateAction<boolean>) => void;
-  message: string;
+  message: ReactNode;
 }
 
 export const Modal = ({ showModal, setShowModal, message }: PropsTypes) => {
@@ -13,9 +14,9 @@ export const Modal = ({ showModal, setShowModal, message }: PropsTypes) => {
             <div className="relative w-auto my-6 mx-auto ">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="relative p-6 flex-auto">
-                  <p className="my-4 text-slate-500 text-2xl font-bold leading-relaxed">
+                  <div className="my-4 text-slate-500 text-2xl font-bold leading-relaxed">
                     {message}
-                  </p>
+                  </div>
                 </div>
                 <div className="flex items-center justify-end p-2 border-t border-solid border-slate-200 rounded-b">
                   <button
