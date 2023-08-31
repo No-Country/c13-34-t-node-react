@@ -9,10 +9,9 @@ export const NotAuthenticated = () => {
       case "admin":
         return <Navigate replace to="/plataforma/administrador" />;
       case "doctor":
-        // todo
-        return <Navigate replace to="/plataforma" />;
-      case "admin":
-        return <Navigate replace to="/plataforma" />;
+        return <Navigate replace to="/plataforma/doctor" />;
+      case "patient":
+        return <Navigate replace to="/plataforma/paciente" />;
     }
   }
 

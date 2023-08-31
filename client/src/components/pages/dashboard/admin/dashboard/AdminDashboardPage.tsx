@@ -1,3 +1,7 @@
 export const AdminDashboardPage = () => {
-  return <h1>Panel</h1>;
+  return (
+    <div className="text-3xl">
+      Dashboard del Administrador listo para diseñar y mostrar
+    </div>
+  );
 };

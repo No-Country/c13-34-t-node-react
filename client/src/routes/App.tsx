@@ -19,23 +19,26 @@ import { Authenticated } from "@/components/pages/Authenticated";
 import { DashboardLayout } from "@/components/pages/dashboard/DashboardLayout";
 // Admin
 import { AdminDashboardPage } from "@/components/pages/dashboard/admin/dashboard/AdminDashboardPage";
+import { AdminUsersPage } from "@/components/pages/dashboard/admin/users/AdminUsersPage";
+import { AdminUserPage } from "@/components/pages/dashboard/admin/users/AdminUserPage";
+import { AdminUserEditPage } from "@/components/pages/dashboard/admin/users/AdminUserEditPage";
 import { AdminAppointmentsPage } from "@/components/pages/dashboard/admin/appointments/AdminAppointmentsPage";
 import { AdminPatientsPage } from "@/components/pages/dashboard/admin/patients/AdminPatientsPage";
 // Doctor
 import { DoctorDashboardPage } from "@/components/pages/dashboard/doctor/dashboard/DoctorDashboardPage";
 import { DoctorAppointmentsPage } from "@/components/pages/dashboard/doctor/appointments/DoctorAppointmentsPage";
 import { DoctorPatientsPage } from "@/components/pages/dashboard/doctor/patients/DoctorPatientsPage";
+import { DoctorPatientPage } from "@/components/pages/dashboard/doctor/patients/DoctorPatientPage";
 import { DoctorSchedulePage } from "@/components/pages/dashboard/doctor/schedule/DoctorSchedulePage";
 // Patient
 import { PatientDashboardPage } from "@/components/pages/dashboard/patient/dashboard/PatientDashboardPage";
 import { PatientAppointmentsPage } from "@/components/pages/dashboard/patient/appointments/PatientAppointmentsPage";
 import { PatientBookAppointmentPage } from "@/components/pages/dashboard/patient/book-appointment/PatientBookAppointmentPage";
-import { PatientPrescriptionPage } from "@/components/pages/dashboard/patient/prescription/PatientPrescriptionPage";
+import { PatientDoctorsPage } from "@/components/pages/dashboard/patient/doctors/PatientDoctorsPage";
+import { PatientDoctorPage } from "@/components/pages/dashboard/patient/doctors/PatientDoctorPage";
 import { PatientMedicalRecordsPage } from "@/components/pages/dashboard/patient/medical-records/PatientMedicalRecordsPage";
 // 404
 import { NotFound } from "@/components/pages/NotFound";
-import { AdminUsersPage } from "@/components/pages/dashboard/admin/users/AdminUsersPage";
-import { AdminUserPage } from "@/components/pages/dashboard/admin/users/AdminUserPage";
 
 export const App = () => {
   return (
@@ -65,30 +68,44 @@ export const App = () => {
                   <Route path="panel" element={<AdminDashboardPage />} />
                   <Route path="usuarios" element={<AdminUsersPage />} />
                   <Route path="usuarios/:userId" element={<AdminUserPage />} />
+                  <Route
+                    path="usuarios/editar/:userId"
+                    element={<AdminUserEditPage />}
+                  />
                   <Route path="citas" element={<AdminAppointmentsPage />} />
                   <Route path="pacientes" element={<AdminPatientsPage />} />
                 </Route>
 
                 {/* /plataforma/doctor/panel */}
                 <Route path="doctor">
+                  <Route
+                    path=""
+                    element={<Navigate to="/plataforma/doctor/panel" />}
+                  />
                   <Route path="panel" element={<DoctorDashboardPage />} />
-                  <Route path="citas" element={<DoctorAppointmentsPage />} />
                   <Route path="pacientes" element={<DoctorPatientsPage />} />
+                  <Route
+                    path="pacientes/:userId"
+                    element={<DoctorPatientPage />}
+                  />
+                  <Route path="citas" element={<DoctorAppointmentsPage />} />
                   <Route path="cronograma" element={<DoctorSchedulePage />} />
                 </Route>
 
                 {/* /plataforma/paciente/panel */}
                 <Route path="paciente">
+                  <Route
+                    path=""
+                    element={<Navigate to="/plataforma/paciente/panel" />}
+                  />
                   <Route path="panel" element={<PatientDashboardPage />} />
+                  <Route path="doctores" element={<PatientDoctorsPage />} />
+                  <Route path="doctor" element={<PatientDoctorPage />} />
                   <Route
                     path="reservar-citas"
                     element={<PatientBookAppointmentPage />}
                   />
                   <Route path="citas" element={<PatientAppointmentsPage />} />
-                  <Route
-                    path="prescripcion"
-                    element={<PatientPrescriptionPage />}
-                  />
                   <Route
                     path="registros-medicos"
                     element={<PatientMedicalRecordsPage />}

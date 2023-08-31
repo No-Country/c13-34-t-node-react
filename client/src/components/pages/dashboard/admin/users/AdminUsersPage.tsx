@@ -1,12 +1,7 @@
 import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { UsersService } from "@/services/users";
-import {
-  RiEyeFill,
-  RiDeleteBin6Fill,
-  RiEdit2Fill,
-  RiEditBoxLine,
-} from "react-icons/ri";
+import { RiEyeFill, RiEdit2Fill, RiEditBoxLine } from "react-icons/ri";
 import useSWR, { useSWRConfig } from "swr";
 import { TUser, TUserStatus } from "@/types/user";
 import { Modal } from "@/components/common/Modal";
@@ -15,7 +10,7 @@ import { useState } from "react";
 const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
 
 export const AdminUsersPage = () => {
-  const { data, error, mutate } = useSWR(
+  const { data, error } = useSWR(
     getHighLevelRolesUsersKey,
     UsersService.getHighLevelRolesUsers,
   );
@@ -96,7 +91,7 @@ export const AdminUsersPage = () => {
 
             <tbody className="divide-y divide-gray-100">
               {users.map((user) => (
-                <tr key={user.id} className="bg-gray-50">
+                <tr key={user.id} className="bg-white">
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <NavLink
                       to="/"
@@ -138,14 +133,7 @@ export const AdminUsersPage = () => {
                     </NavLink>
 
                     <NavLink
-                      to="/plataforma/administrador/eliminar"
-                      className="text-other-red hover:text-[#870620] transition"
-                    >
-                      <RiDeleteBin6Fill className="text-3xl" />
-                    </NavLink>
-
-                    <NavLink
-                      to="/plataforma/administrador/editar"
+                      to={`/plataforma/administrador/usuarios/editar/${user.id}`}
                       className="text-other-yellow hover:text-[#6d5d17] transition"
                     >
                       <RiEditBoxLine className="text-3xl" />
@@ -181,42 +169,60 @@ const StatusChip = ({ user }: { user: TUser }) => {
 
   return (
     <div
-      className="px-3 py-1 text-sm uppercase tracking-wider rounded-lg text-white inline-flex items-center gap-1"
+      className="px-3 py-1 text-sm uppercase tracking-wider rounded-lg text-white inline-flex items-center gap-2"
       style={{ backgroundColor: current.color }}
     >
-      {current.name}
-      {user.status === "pending" && <StatusChipAcceptButton user={user} />}
+      <span>{current.name}</span>
+      <StatusChipAcceptRejectButton user={user} />
+      {/* {user.status === "pending" && (
+      )} */}
     </div>
   );
 };
 
-const StatusChipAcceptButton = ({ user }: { user: TUser }) => {
+const StatusChipAcceptRejectButton = ({ user }: { user: TUser }) => {
   const [show, setShow] = useState(false);
   const { mutate } = useSWRConfig();
 
   return (
     <>
-      <button onClick={() => setShow(true)} className="bg-white rounded-full">
-        <RiEdit2Fill className="text-blue-500 mx-2 text-xl" />
+      <button
+        onClick={() => setShow(true)}
+        className="bg-white rounded-full aspect-square p-[2px]"
+      >
+        <RiEdit2Fill className="text-blue-500" />
       </button>
+
       <Modal
         showModal={show}
-        setShowModal={setShow}
+        onClose={() => setShow(false)}
         message={
           <div className="text-center">
-            <p className="mb-2">
-              Seguro que desea aceptar al usuario {user.firstName}
+            <p className="mb-4">
+              ¿Qué desea hacer con el usuario {user.firstName}?
             </p>
-            <button
-              className="bg-green-600 text-white rounded-xl py-1 px-2"
-              onClick={async () => {
-                await UsersService.acceptHighLevelRoleUser(user.id);
-                await mutate(getHighLevelRolesUsersKey);
-                setShow(false);
-              }}
-            >
-              Confirmar
-            </button>
+            <div className="flex gap-2 justify-center">
+              <button
+                className="bg-red-600 text-white rounded-xl py-1 px-2"
+                onClick={async () => {
+                  await UsersService.deletedHighLevelRoleUser(user.id);
+                  await mutate(getHighLevelRolesUsersKey);
+                  setShow(false);
+                }}
+              >
+                Rechazar
+              </button>
+              <button
+                className="bg-green-600 text-white rounded-xl py-1 px-2"
+                onClick={async () => {
+                  await UsersService.acceptHighLevelRoleUser(user.id);
+                  await mutate(getHighLevelRolesUsersKey);
+                  setShow(false);
+                }}
+              >
+                Aceptar
+              </button>
+            </div>
           </div>
         }
       />

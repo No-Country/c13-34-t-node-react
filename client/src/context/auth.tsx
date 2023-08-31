@@ -50,7 +50,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const signup = async (newUser: TNewUser) => {
     await AuthService.signup(newUser);
-    if (newUser.role !== "doctor") {
+    if (newUser.role === "patient") {
       await login(newUser.email, newUser.password);
     }
   };
