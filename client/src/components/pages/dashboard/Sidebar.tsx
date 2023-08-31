@@ -4,6 +4,7 @@ import {
   RiCalendarTodoFill,
   RiPsychotherapyFill,
   RiCheckboxMultipleFill,
+  RiTeamFill,
   RiStethoscopeFill,
   RiHistoryFill,
   RiSeoFill,
@@ -35,11 +36,10 @@ export const Sidebar = () => {
         </div>
 
         {/* administrador */}
-
         {user?.role === "admin" && (
           <div>
             <h3 className="text-lg font-bold text-center text-dark-green mb-12">
-              Admin
+              Administrador
             </h3>
             <ul className="flex flex-col">
               <li>
@@ -53,11 +53,20 @@ export const Sidebar = () => {
               </li>
               <li>
                 <NavLink
+                  to="/plataforma/administrador/usuarios"
+                  className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
+                >
+                  <RiTeamFill className="text-2xl" />
+                  <p>Usuarios</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/plataforma/administrador/citas"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
                   <RiCalendarTodoFill className="text-2xl" />
-                  <p>Citas</p>
+                  <p>Agendar Citas</p>
                 </NavLink>
               </li>
               <li>
@@ -74,7 +83,6 @@ export const Sidebar = () => {
         )}
 
         {/* Doctor */}
-
         {user?.role === "doctor" && (
           <div>
             <h3 className="text-lg font-bold text-center text-dark-green mb-12">
@@ -92,20 +100,20 @@ export const Sidebar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/plataforma/doctor/citas"
-                  className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
-                >
-                  <RiCalendarTodoFill className="text-2xl" />
-                  <p>Citas</p>
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to="/plataforma/doctor/pacientes"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
                   <RiPsychotherapyFill className="text-2xl" />
                   <p>Pacientes</p>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/plataforma/doctor/citas"
+                  className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
+                >
+                  <RiCalendarTodoFill className="text-2xl" />
+                  <p>Agendar Citas</p>
                 </NavLink>
               </li>
               <li>
@@ -139,11 +147,11 @@ export const Sidebar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/plataforma/paciente/citas"
+                  to="/plataforma/paciente/doctores"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
-                  <RiCalendarTodoFill className="text-2xl" />
-                  <p>Citas</p>
+                  <RiStethoscopeFill className="text-2xl" />
+                  <p>Doctores</p>
                 </NavLink>
               </li>
               <li>
@@ -152,16 +160,16 @@ export const Sidebar = () => {
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
                   <RiCheckboxMultipleFill className="text-2xl" />
-                  <p>Reservar una cita</p>
+                  <p>Reservar cita</p>
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/plataforma/paciente/prescripcion"
+                  to="/plataforma/paciente/citas"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
-                  <RiStethoscopeFill className="text-2xl" />
-                  <p>Prescripción</p>
+                  <RiCalendarTodoFill className="text-2xl" />
+                  <p>Mis Citas</p>
                 </NavLink>
               </li>
               <li>

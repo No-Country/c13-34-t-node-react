@@ -5,7 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { MedicalAppointmentDatesStatus } from '../types/medical.appointments.dates.types'
+import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 import { Doctor } from './doctor.entity'
 
 @Entity({ name: 'medical_appointments_dates' })

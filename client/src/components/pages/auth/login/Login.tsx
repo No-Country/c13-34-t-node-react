@@ -45,7 +45,7 @@ export const Login = () => {
     <div className="h-full relative w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
       <Modal
         showModal={showModal}
-        setShowModal={setShowModal}
+        onClose={() => setShowModal(false)}
         message={message}
       />
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">

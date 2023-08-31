@@ -11,8 +11,8 @@ export const approveDoctorsAndAdminsRegistration = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.safeData?.params
-    const updatedUser = await userService.approveAdminDocsRegistration(userId)
+    const { id } = req.safeData?.params
+    const updatedUser = await userService.approveAdminDocsRegistration(id)
 
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
@@ -39,23 +39,11 @@ export const cancelDoctorsAndAdminsRegistration = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.params
-    const canceledUser = await userService.cancelAdminDocsRegistration(
-      Number(userId)
-    )
+    const { id } = req.safeData?.params
+    await userService.cancelAdminDocsRegistration(id)
 
-    if (canceledUser == null) {
-      return res.status(HTTPCODES.BAD_REQUEST).json({
-        status: ERROR_MSGS.FAIL,
-        message: ERROR_MSGS.ADMIN_REGISTRATION_CANCELATION_FAIL,
-        canceledUser
-      })
-    }
-
-    return res.status(HTTPCODES.OK).json({
-      status: MESSAGES.SUCCESS,
-      message: MESSAGES.ADMIN_REGISTRATION_CANCELATION_OK,
-      canceledUser
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {

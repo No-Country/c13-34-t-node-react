@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../../../context/auth";
 import { TNewUser } from "../../../../types/user";
@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { registerSchema } from "../../../../schemas";
 
 export const Register = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,7 +22,7 @@ export const Register = () => {
     try {
       await signup(values);
       setLoading(false);
-      if (values.role === "doctor") {
+      if (values.role === "doctor" || values.role === "admin") {
         setMessage(
           "Registro exitoso. Debes esperar a ser aceptado por un administrador.",
         );
@@ -63,7 +64,10 @@ export const Register = () => {
     <div className="h-full w-full mt-20 xl:mt-0 px-4 pt-0 pb-8 2xl:py-20 2xl:pl-0 2xl:pr-36 bg-white">
       <Modal
         showModal={showModal}
-        setShowModal={setShowModal}
+        onClose={() => {
+          setShowModal(false);
+          navigate("/");
+        }}
         message={message}
       />
       <div className="grid grid-cols-1 2xl:grid-cols-2 gap-24">
@@ -267,6 +271,7 @@ export const Register = () => {
                 <option value="">Seleccione un tipo</option>
                 <option value="patient">Paciente</option>
                 <option value="doctor">Doctor</option>
+                <option value="admin">Administrador</option>
               </select>
             </label>
             {errors.role && touched.role && (

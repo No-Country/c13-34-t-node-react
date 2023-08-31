@@ -43,3 +43,7 @@ export enum MESSAGES {
   DB_START_UP_OK = 'Base de datos levantada correctamente.',
   SERVER_CONNECTED_ON_PORT = 'Servidor conectado en el puerto'
 }
+
+export enum SUCCESS_MESSAGES {
+  MEDICAL_APPOINTMENT_DATE_CREATE = 'La cita médica se creo correctamente.'
+}

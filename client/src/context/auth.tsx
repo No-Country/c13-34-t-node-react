@@ -1,7 +1,7 @@
 import { FC, ReactNode, createContext, useContext, useState } from "react";
 import { TNewUser, TUser } from "../types/user";
-import { API_URL } from "../constants/api";
-import axios from "axios";
+import { AuthService } from "../services/auth";
+import { client } from "../config/client";
 
 type TAuthState = {
   loggedIn: boolean;
@@ -14,8 +14,11 @@ type TAuthState = {
 const AuthContext = createContext({} as TAuthState);
 
 const initialToken = localStorage.getItem("auth-token") ?? "";
-// setear header por defecto a la instancia de axios
-// Authorization: Bearer initial token
+// setear header por defecto a la instancia de axios (para cuando se recarga la página)
+if (initialToken) {
+  client.defaults.headers.common.Authorization = "Bearer " + initialToken;
+}
+
 const initialUserStr = localStorage.getItem("auth-user");
 
 const initialUser = initialUserStr
@@ -29,23 +32,27 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const loggedIn = !!token;
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post(`${API_URL}/api/v1/users/auth/signin`, {
-      email,
-      password,
-    });
-
+    const response = await AuthService.signin(email, password);
     const data = response.data;
-    localStorage.setItem("auth-token", data.token);
-    localStorage.setItem("auth-user", JSON.stringify(data.user));
-    setToken(data.token);
-    setUser(data.user);
+
     // setear header por defecto a la instancia de axios
     // Authorization: Bearer token
+    client.defaults.headers.common.Authorization = "Bearer " + data.token;
+
+    // Guardar en el disco (para persistir)
+    localStorage.setItem("auth-token", data.token);
+    localStorage.setItem("auth-user", JSON.stringify(data.user));
+
+    // Guardar en la memoria para acceder globalmente
+    setToken(data.token);
+    setUser(data.user);
   };
 
   const signup = async (newUser: TNewUser) => {
-    await axios.post(`${API_URL}/api/v1/users/auth/signup`, newUser);
-    newUser.role !== "doctor" && (await login(newUser.email, newUser.password));
+    await AuthService.signup(newUser);
+    if (newUser.role === "patient") {
+      await login(newUser.email, newUser.password);
+    }
   };
 
   const logout = () => {
@@ -55,6 +62,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setUser(undefined);
     // eliminar header por defecto a la instancia de axios
     // Authorization: Bearer token
+    client.defaults.headers.common.Authorization = undefined;
   };
 
   return (

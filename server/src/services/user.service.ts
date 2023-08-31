@@ -61,10 +61,13 @@ export class UserService {
       }
     ]
     const attributes = {
+      dateOfBirth: true,
+      telephone: true,
       firstName: true,
       lastName: true,
       status: true,
       email: true,
+      genre: true,
       role: true,
       id: true
     }
@@ -98,13 +101,10 @@ export class UserService {
         HTTPCODES.BAD_REQUEST
       )
 
-    const dataToUpdate = {
-      id: userId,
-      status: UserStatus.enable
-    }
+    userToBeUpdated.status = UserStatus.enable
 
     try {
-      return await this.entityService.updateOne(dataToUpdate)
+      return await this.entityService.updateOne(userToBeUpdated)
     } catch (error) {
       throw new AppError(
         ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
@@ -113,7 +113,11 @@ export class UserService {
     }
   }
 
-  async cancelAdminDocsRegistration(userId: number): Promise<FindResult> {
+  async cancelAdminDocsRegistration(userId: number): Promise<void> {
+    const filters = {
+      id: userId,
+      status: In([UserStatus.pending, UserStatus.enable])
+    }
     const attributes = {
       firstName: true,
       lastName: true,
@@ -122,37 +126,21 @@ export class UserService {
       role: true,
       id: true
     }
-
     const userToBeCanceled = await this.entityService.findOne(
-      { id: userId },
+      filters,
       attributes,
       false,
       false
     )
 
-    if (userToBeCanceled == null) {
-      return null
-    } else {
-      if (userToBeCanceled?.status === UserStatus.enable) {
-        try {
-          await this.disableUser(Number(userId))
-
-          const updatedUser = { ...userToBeCanceled }
-          updatedUser.status = UserStatus.disable
-
-          return {
-            ...updatedUser
-          }
-        } catch (error) {
-          throw new AppError(
-            ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
-            HTTPCODES.BAD_REQUEST
-          )
-        }
-      }
+    if (!userToBeCanceled) {
+      throw new AppError(
+        ERROR_MSGS.ADMIN_REGISTRATION_CANCELATION_FAIL,
+        HTTPCODES.NOT_FOUND
+      )
     }
 
-    return null
+    await this.disableUser(Number(userId))
   }
 
   async createUser(user: User): Promise<UserDto> {

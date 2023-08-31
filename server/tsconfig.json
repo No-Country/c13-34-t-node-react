@@ -14,5 +14,5 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*", ".eslintrc.js"],
-  "exclude": ["src/types/*.ts", "node_modules"]
+  "exclude": ["node_modules"]
 }
