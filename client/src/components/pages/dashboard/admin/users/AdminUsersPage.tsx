@@ -3,9 +3,10 @@ import { NavLink } from "react-router-dom";
 import { UsersService } from "@/services/users";
 import { RiEyeFill, RiEdit2Fill, RiEditBoxLine } from "react-icons/ri";
 import useSWR, { useSWRConfig } from "swr";
-import { TUser, TUserStatus } from "@/types/user";
+import { TRole, TUser, TUserStatus } from "@/types/user";
 import { Modal } from "@/components/common/Modal";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import clsx from "clsx";
 
 const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
 
@@ -14,26 +15,20 @@ export const AdminUsersPage = () => {
     getHighLevelRolesUsersKey,
     UsersService.getHighLevelRolesUsers,
   );
-  const [usersData, setUsersData] = useState<TUser[]>();
-  const [roleSelected, setRoleSelected] = useState("todos");
 
-  const originalUsers = useRef<TUser[]>([]);
+  const [selectedRole, setSelectedRole] = useState<TRole | "todos">("todos");
 
-  useEffect(() => {
-    if (data) {
-      setUsersData(data.users);
-      originalUsers.current = data.users;
-    }
-  }, [data]);
+  if (error) return <div> Ha ocurrido un error</div>;
+  if (!data) return <div> Cargando...</div>;
 
-  const filterByRole = (role: string) => {
-    const FilteredUsers = originalUsers.current.filter(
-      (user) => user.role === role,
-    );
-    setUsersData(FilteredUsers);
-  };
+  const { users } = data;
 
-  return usersData ? (
+  const filteredUsers =
+    selectedRole !== "todos"
+      ? users.filter((user) => user.role === selectedRole)
+      : users;
+
+  return (
     <div className="bg-gray-50">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
         <h2 className="text-lg font-bold uppercase">Usuarios</h2>
@@ -45,37 +40,40 @@ export const AdminUsersPage = () => {
           <p className="py-1.5 font-semibold">Mostrar</p>
           <button
             onClick={() => {
-              setUsersData(originalUsers.current);
-              setRoleSelected("todos");
+              setSelectedRole("todos");
             }}
-            className={` ${
-              roleSelected === "todos" &&
-              "text-other-blue bg-white border  border-other-blue"
-            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+            className={clsx(
+              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              selectedRole === "todos"
+                ? "bg-other-blue text-white"
+                : "text-other-blue bg-white",
+            )}
           >
             Todos
           </button>
           <button
             onClick={() => {
-              filterByRole("admin");
-              setRoleSelected("admin");
+              setSelectedRole("admin");
             }}
-            className={` ${
-              roleSelected === "admin" &&
-              "text-other-blue bg-white border  border-other-blue"
-            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+            className={clsx(
+              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              selectedRole === "admin"
+                ? "bg-other-blue text-white"
+                : "text-other-blue bg-white",
+            )}
           >
             Administradores
           </button>
           <button
             onClick={() => {
-              filterByRole("doctor");
-              setRoleSelected("doctor");
+              setSelectedRole("doctor");
             }}
-            className={` ${
-              roleSelected === "doctor" &&
-              "text-other-blue bg-white border  border-other-blue"
-            } bg-other-blue py-15 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium`}
+            className={clsx(
+              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              selectedRole === "doctor"
+                ? "bg-other-blue text-white"
+                : "text-other-blue bg-white",
+            )}
           >
             Doctores
           </button>
@@ -132,7 +130,7 @@ export const AdminUsersPage = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {usersData.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user.id} className="bg-white">
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <NavLink
@@ -188,10 +186,6 @@ export const AdminUsersPage = () => {
         </div>
       </div>
     </div>
-  ) : error ? (
-    <div> Ha ocurrido un error</div>
-  ) : (
-    <div> Cargando...</div>
   );
 };
 
