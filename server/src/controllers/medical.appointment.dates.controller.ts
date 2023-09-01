@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express'
-import { AppError } from '../utils/app.error'
+import type { NextFunction, Request, Response } from 'express'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { medicalAppointmentDatesService } from '../services/factory/entities.factory'
 import { MESSAGES, SUCCESS_MESSAGES } from '../constants/msgs'
 import { type User } from '../entities'
+import { medicalAppointmentDatesService } from '../services/factory/entities.factory'
+import { AppError } from '../utils/app.error'
 
 export const createDates = async (
   req: Request,
@@ -20,7 +20,10 @@ export const createDates = async (
         date,
         hours
       )
-
+    console.log(
+      'Respuesta del controlador medicalAppointmentDates',
+      medicalAppointmentDates
+    )
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       message: SUCCESS_MESSAGES.MEDICAL_APPOINTMENT_DATE_CREATE,

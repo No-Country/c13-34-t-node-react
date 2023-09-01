@@ -1,5 +1,5 @@
-import { Repository } from 'typeorm'
-import { Doctor } from '../entities'
+import type { Repository } from 'typeorm'
+import type { Doctor } from '../entities'
 
 export type DoctorRepository = Repository<Doctor>
 

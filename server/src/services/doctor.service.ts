@@ -1,5 +1,5 @@
-import { Doctor } from '../entities'
-import { DoctorRepository } from '../types/doctor.types'
+import type { Doctor } from '../entities'
+import type { DoctorRepository } from '../types/doctor.types'
 import { EntityService } from './entity.service'
 
 export class DoctorService {

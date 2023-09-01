@@ -1,4 +1,4 @@
-import { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { Doctor, MedicalAppointmentDates, User } from '../entities'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
@@ -18,21 +18,23 @@ export class MedicalAppointmentDatesService {
 
   async createMedicalAppointmentDates(
     sessionUser: User,
-    date: Date,
+    date: string,
     hours: string[]
   ) {
-    //medicaappointmentdates
+    // medicalappointmentdates
     const unifiedDates = unifyDates(date, hours)
     const createDates = unifiedDates.map(async (date) => {
       const dateToCreate = { date }
       const dateCreated = (await this.entityService.create(
         dateToCreate
       )) as MedicalAppointmentDates
-
+      console.log('dateCreated', dateCreated)
       return dateCreated
     })
     const datesCreated = await Promise.all(createDates)
-    //doctor
+    console.log('datesCreated', datesCreated)
+
+    // doctor
     let doctor
     const doctorExists = await doctorService.findDoctor(sessionUser?.id)
 
@@ -41,10 +43,11 @@ export class MedicalAppointmentDatesService {
         user: sessionUser
       }
       doctor = await doctorService.createDoctor(doctorToCreate as Doctor)
+      doctor.medicalAppointmentDates = datesCreated
     }
     if (!doctor) throw new AppError('', 400)
 
-    doctor.medicalAppointmentDates = datesCreated
+    doctorExists.medicalAppointmentDates = datesCreated
 
     return datesCreated
   }

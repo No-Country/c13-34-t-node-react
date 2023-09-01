@@ -13,7 +13,7 @@ export class MedicalAppointmentDates extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ type: 'date' })
+  @Column({ type: 'timestamp' })
   date: Date
 
   @Column({

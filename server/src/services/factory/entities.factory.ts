@@ -1,11 +1,11 @@
-import { User, Doctor, MedicalAppointmentDates } from '../../entities'
-import { type UserRepository } from '../../types/user.types'
+import { Doctor, MedicalAppointmentDates, User } from '../../entities'
+import type { DoctorRepository } from '../../types/doctor.types'
 import { type MedicalAppointmentDatesRepository } from '../../types/medical.appointment.dates.types'
+import { type UserRepository } from '../../types/user.types'
 import { AppDataSrc } from '../database/database.config'
-import { UserService } from '../user.service'
-import { MedicalAppointmentDatesService } from '../medical.appointment.dates.service'
-import { DoctorRepository } from '../../types/doctor.types'
 import { DoctorService } from '../doctor.service'
+import { MedicalAppointmentDatesService } from '../medical.appointment.dates.service'
+import { UserService } from '../user.service'
 
 export let userService: UserService,
   medicalAppointmentDatesService: MedicalAppointmentDatesService,

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import validator from 'validator'
 import z from 'zod'
 
@@ -10,7 +11,8 @@ export const medicalAppointmentsDatesSchema = z.object({
           'La fecha con su hora debe venir en un arreglo de strings'
       })
       .superRefine((inputDate, ctx) => {
-        if (!validator.isDate(inputDate)) {
+        const isValidDate = dayjs(inputDate).isValid()
+        if (!isValidDate) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: 'La fecha tiene un formato incorrecto'
