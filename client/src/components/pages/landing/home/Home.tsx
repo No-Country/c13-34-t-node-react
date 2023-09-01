@@ -10,16 +10,16 @@ export const Home = () => {
       <section className="p-4 2xl:pt-20 2xl:px-36 bg-gradient-to-r from-yellow-50 to-green-100">
         <Welcome />
       </section>
-      <section className="pt-4 2xl:py-20 2xl:px-36">
+      <section className="pt-4 2xl:pt-10 2xl:px-36">
         <Attention />
       </section>
-      <section className=" py-12 mb-40">
+      <section className="py-12 mb-40">
         <Services />
       </section>
       <section className="overflow-auto mb-40">
         <Testimonials />
       </section>
-      <section className="py-4 px-36">
+      <section>
         <MedicalSpecialties />
       </section>
     </div>
