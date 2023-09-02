@@ -14,7 +14,10 @@ const ENV = process.env
 export const mode = ENV.NODE_ENV
 export const port = ENV.PORT ?? 4444
 export const salt = Number(ENV.SALT)
-export const ACCEPTED_ORIGIN = 'http://localhost:3000'
+export const ACCEPTED_ORIGIN = [
+  'http://localhost:3000',
+  'https://meddyplus.netlify.app'
+]
 
 export const ACCEPTED_METHODS = ['GET', 'POST', 'PATCH', 'DELETE']
 

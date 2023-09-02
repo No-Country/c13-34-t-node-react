@@ -1,6 +1,7 @@
+import z from 'zod'
 import dayjs from 'dayjs'
 import validator from 'validator'
-import z from 'zod'
+import { verifyArrayDuplicates } from '../utils/verify.duplicates'
 
 export const medicalAppointmentsDatesSchema = z.object({
   body: z.object({
@@ -19,15 +20,31 @@ export const medicalAppointmentsDatesSchema = z.object({
           })
         }
       }),
-    hours: z.array(z.string()).superRefine((hours, ctx) => {
-      hours.forEach((hour) => {
-        if (!validator.isTime(hour)) {
+    hours: z
+      .array(
+        z.string({
+          invalid_type_error: 'Las horas deben estar en el formato de texto.'
+        })
+      )
+      .superRefine((hours, ctx) => {
+        if (hours.length < 1)
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: 'La hora tiene un formato incorrecto'
+            message: 'Debe haber al menos un horario disponible.'
           })
-        }
+        if (verifyArrayDuplicates(hours))
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Algún horario esta repetido.'
+          })
+        hours.forEach((hour) => {
+          if (!hour || !validator.isTime(hour)) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'La hora tiene un formato incorrecto'
+            })
+          }
+        })
       })
-    })
   })
 })

@@ -11,16 +11,25 @@ export class DoctorService {
     this.entityService = new EntityService(doctorRepository)
   }
 
-  async createDoctor(doctor: Doctor): Promise<Doctor> {
+  async createDoctor(doctor: object): Promise<Doctor> {
     return await this.doctorRepository.save(doctor)
   }
 
-  async findDoctor(doctorId: number): Promise<Doctor> {
+  async findDoctor(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<Doctor> {
     return (await this.entityService.findOne(
-      { id: doctorId },
-      false,
-      false,
-      false
+      filters,
+      attributes,
+      relationAttributes,
+      error
     )) as Doctor
+  }
+
+  async updateDoctor(doctor: Doctor) {
+    return await this.entityService.updateOne(doctor)
   }
 }

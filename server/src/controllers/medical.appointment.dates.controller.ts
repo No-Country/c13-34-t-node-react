@@ -20,10 +20,7 @@ export const createDates = async (
         date,
         hours
       )
-    console.log(
-      'Respuesta del controlador medicalAppointmentDates',
-      medicalAppointmentDates
-    )
+
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       message: SUCCESS_MESSAGES.MEDICAL_APPOINTMENT_DATE_CREATE,

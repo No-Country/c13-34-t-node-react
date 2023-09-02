@@ -47,10 +47,12 @@ export class EntityService {
   }
 
   async create(data: ObjectLiteral): Promise<ObjectLiteral> {
+    debugger
     const created = this.entityRepository.create(data)
     try {
       return await this.entityRepository.save(created, { listeners: false })
     } catch (e) {
+      console.log(e)
       throw new AppError(
         ERROR_MSGS.RESOURCE_CREATION_ERROR,
         HTTPCODES.INTERNAL_SERVER_ERROR
