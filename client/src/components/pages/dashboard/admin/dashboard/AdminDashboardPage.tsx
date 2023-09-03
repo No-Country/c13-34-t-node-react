@@ -1,7 +1,50 @@
+import card1_DA from "/images/card1-dashboard-administrador.png";
+import card2_DA from "/images/card2-dashboard-administrador.png";
+import card3_DA from "/images/card3-dashboard-administrador.png";
+import card4_DA from "/images/card4-dashboard-administrador.png";
+import card5_DA from "/images/card5-dashboard-administrador.png";
+import card6_DA from "/images/card6-dashboard-administrador.png";
+import card7_DA from "/images/card7-dashboard-administrador.png";
+
 export const AdminDashboardPage = () => {
   return (
-    <div className="text-3xl">
-      Dashboard del Administrador listo para diseñar y mostrar
-    </div>
+    <>
+        <div className="2xl:flex 2xl:justify-evenly 2xl:pb-6 pt-6">     
+          <div className="grid pb-6 2xl:pb-0">
+            <img className="justify-self-center w-72 2xl:w-[500px]" src={card1_DA} alt="card1-dashboard-administrador" />
+          </div>
+
+          <div className="grid pb-6 2xl:pb-0">
+            <img className="justify-self-center w-72 2xl:w-[500px]" src={card2_DA} alt="card2-dashboard-administrador" />
+          </div>
+        </div>
+
+        <div className="2xl:flex 2xl:justify-evenly pb-6">
+          <div className="grid pb-6 2xl:pb-0">
+            <img className="justify-self-center w-72 2xl:w-[500px]" src={card3_DA} alt="card3-dashboard-administrador" />
+          </div>
+
+          <div className="grid pb-6 2xl:pb-0">
+            <img className=" justify-self-center w-72 2xl:w-[500px]" src={card4_DA} alt="card4-dashboard-administrador" />
+          </div>
+        </div>
+
+      <div className="grid pb-6">
+        <img className="w-72 justify-self-center 2xl:w-[77%]" src={card5_DA} alt="card5-dashboard-administrador" />
+      </div>
+
+      <div className="2xl:flex 2xl:justify-evenly 2xl:pb-6">
+        <div className="grid pb-6 2xl:pb-0">
+          <img className="w-72 justify-self-center 2xl:w-[450px]" src={card6_DA} alt="card6-dashboard-administrador" />
+        </div>
+
+        <div className="grid pb-6 2xl:pb-0">
+          <img className="w-72 justify-self-center xl:w-[450px]" src={card7_DA} alt="card7-dashboard-administrador" />
+        </div>
+      </div>
+    </>
+    
   );
 };
+
+
