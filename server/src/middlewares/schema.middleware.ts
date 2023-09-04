@@ -30,7 +30,17 @@ export const schemaValidator = (schema: AnyZodObject) => {
       next(new AppError(errors, HTTPCODES.BAD_REQUEST))
       return
     }
-    req.safeData = results.data
+    if (req.safeData?.params || req.safeData?.body) {
+      const { params, body } = req.safeData
+
+      req.safeData = results.data
+
+      if (params) req.safeData!.params = params
+
+      if (body) req.safeData!.body = body
+    } else {
+      req.safeData = results.data
+    }
 
     next()
   }

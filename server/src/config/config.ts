@@ -38,12 +38,12 @@ export const dbConfig = Object.freeze({
   database: ENV.DB_NAME,
   logging: false,
   synchronize: true,
-  ...(mode === modes.prod && {
-    ssl: {
-      ca: ENV.SSL_CERT,
-      rejectUnauthorized: false
-    }
-  }),
+  // ...(mode === modes.prod && {
+  //   ssl: {
+  //     ca: ENV.SSL_CERT,
+  //     rejectUnauthorized: false
+  //   }
+  // }),
   entities: [
     User,
     Patient,
