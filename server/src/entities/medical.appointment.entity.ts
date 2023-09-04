@@ -23,7 +23,4 @@ export class MedicalAppointment extends BaseEntity {
 
   @ManyToOne((_type) => Patient, (patient) => patient.medicalAppointments)
   patient: Patient
-
-  @Column({ type: 'date' })
-  date: Date
 }

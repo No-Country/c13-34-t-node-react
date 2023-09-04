@@ -1,4 +1,5 @@
-import { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { FindResult } from '../types/entity.types'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
@@ -51,8 +52,27 @@ export class MedicalAppointmentDatesService {
 
       return dateCreated as MedicalAppointmentDates
     })
+
     return await Promise.all(createDates)
   }
 
-  async getMedicalAppointmentDates() {}
+  async findMedicalAppointmentDate(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<MedicalAppointmentDates> {
+    return (await this.entityService.findOne(
+      filters,
+      attributes,
+      relationAttributes,
+      error
+    )) as MedicalAppointmentDates
+  }
+
+  async updateMedicalAppointmentDate(
+    medicalAppoinmentDate: MedicalAppointmentDates
+  ): Promise<FindResult> {
+    return await this.entityService.updateOne(medicalAppoinmentDate)
+  }
 }

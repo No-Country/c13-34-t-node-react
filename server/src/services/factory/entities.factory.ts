@@ -2,7 +2,8 @@ import {
   User,
   Doctor,
   MedicalAppointment,
-  MedicalAppointmentDates
+  MedicalAppointmentDates,
+  Patient
 } from '../../entities'
 import type { UserRepository } from '../../types/user.types'
 import type { MedicalAppointmentRepository } from '../../types/medical.appointment.types'
@@ -12,14 +13,19 @@ import { AppDataSrc } from '../database/database.config'
 import { DoctorService } from '../doctor.service'
 import { MedicalAppointmentDatesService } from '../medical.appointment.dates.service'
 import { UserService } from '../user.service'
+import { PatientService } from '../patient.service'
+import type { PatientRepository } from '../../types/patient.types'
+import { MedicalAppointmentService } from '../medical.appointment.service'
 
 export let userService: UserService,
   medicalAppointmentDatesService: MedicalAppointmentDatesService,
-  doctorService: DoctorService
+  doctorService: DoctorService,
+  medicalAppointmentService: MedicalAppointmentService,
+  patientService: PatientService
 
 const userRepository: UserRepository = AppDataSrc.getRepository(User)
 
-// const patientRepository: Repository<Patient> = AppDataSrc.getRepository(Patient)
+const patientRepository: PatientRepository = AppDataSrc.getRepository(Patient)
 
 const doctorRepository: DoctorRepository = AppDataSrc.getRepository(Doctor)
 
@@ -41,4 +47,8 @@ const medicalAppointmentRepository: MedicalAppointmentRepository =
     medicalAppointmentDatesRespository
   )
   doctorService = new DoctorService(doctorRepository)
+  medicalAppointmentService = new MedicalAppointmentService(
+    medicalAppointmentRepository
+  )
+  patientService = new PatientService(patientRepository)
 })()

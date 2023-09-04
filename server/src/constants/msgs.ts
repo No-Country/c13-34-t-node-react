@@ -41,9 +41,12 @@ export enum MESSAGES {
   DATE_OF_BIRTH_INVALID_DATE = 'La fecha indicada no existe',
   DATE_OF_BIRTH_DEFAULT_ERROR = 'Invalid date',
   DB_START_UP_OK = 'Base de datos levantada correctamente.',
-  SERVER_CONNECTED_ON_PORT = 'Servidor conectado en el puerto'
+  SERVER_CONNECTED_ON_PORT = 'Servidor conectado en el puerto',
+  MEDICAL_APPOINTMENT_DESC_REQUIRED = 'La descripción es requerida.',
+  MEDICAL_APPOINTMENT_DESC_MIN_LENGTH = 'La descripción debe ser más específica.',
+  MEDICAL_APPOINTMENT_DESC_TYPE = 'La descrición debe ser un texto.'
 }
 
 export enum SUCCESS_MESSAGES {
-  MEDICAL_APPOINTMENT_DATE_CREATE = 'La cita médica se creo correctamente.'
+  MEDICAL_APPOINTMENT_DATE_CREATE = 'Tus fechas de cita médica se crearon correctamente.'
 }

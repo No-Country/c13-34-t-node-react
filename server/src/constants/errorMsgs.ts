@@ -34,5 +34,8 @@ export enum ERROR_MSGS {
   ADMIN_REGISTRATION_APPROVAL_FAIL = 'El admin/doctor ya ha sido aprobado previamente o no existe.',
   ADMIN_REGISTRATION_CANCELATION_ERROR = 'Error al deshabilitar un admin/doctor',
   ADMIN_REGISTRATION_CANCELATION_FAIL = 'El admin/doctor ya se encuentra deshabilitado o no existe.',
-  MEDICAL_APPOINTMENT_DATE_CREATE_FAIL = 'No se pudo crear la cita médica.'
+  MEDICAL_APPOINTMENT_DATE_CREATE_FAIL = 'No se pudo crear la cita médica.',
+  MEDICAL_APPOINTMENT_FAIL_UPDATE = 'La cita médica no pudo cambiar su estado.',
+  MEDICAL_APPOINTMENT_FAIL_SAVE = 'La cita médica no pudo crearse.',
+  CREATE_PATIENT_ERROR = 'El paciente no pudo crearse.'
 }
