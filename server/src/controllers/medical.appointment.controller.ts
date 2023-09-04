@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { AppError } from '../utils/app.error'
 import { medicalAppointmentService } from '../services/factory/entities.factory'
 import type { User } from '../entities'
