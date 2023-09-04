@@ -18,33 +18,40 @@ export class MedicalAppointmentDatesService {
 
   async createMedicalAppointmentDates(
     sessionUser: User,
-    date: Date,
+    date: string,
     hours: string[]
-  ) {
-    //medicaappointmentdates
+  ): Promise<MedicalAppointmentDates[]> {
     const unifiedDates = unifyDates(date, hours)
-    const createDates = unifiedDates.map(async (date) => {
-      const dateToCreate = { date }
-      const dateCreated = (await this.entityService.create(
-        dateToCreate
-      )) as MedicalAppointmentDates
 
-      return dateCreated
-    })
-    const datesCreated = await Promise.all(createDates)
-    //doctor
-    let doctor
-    const doctorExists = await doctorService.findDoctor(sessionUser?.id)
+    let doctorCreated: Doctor | undefined
+
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id: sessionUser.id } },
+      false,
+      false,
+      false
+    )
 
     if (!doctorExists) {
       const doctorToCreate = {
         user: sessionUser
       }
-      doctor = await doctorService.createDoctor(doctorToCreate as Doctor)
+      doctorCreated = await doctorService.createDoctor(doctorToCreate)
+      if (!doctorCreated)
+        throw new AppError('El médico no se creo en la base de datos.', 500)
     }
-    if (!doctor) throw new AppError('', 400)
 
-    doctor.medicalAppointmentDates = datesCreated
+    const createDates = unifiedDates.map(async (date: unknown) => {
+      const dateType = date as Date
+      const createDate = { date: dateType } as MedicalAppointmentDates
+      createDate.doctor = doctorExists
+        ? doctorExists
+        : (doctorCreated as Doctor)
+      const dateCreated = await this.entityService.create(createDate)
+
+      return dateCreated as MedicalAppointmentDates
+    })
+    const datesCreated = await Promise.all(createDates)
 
     return datesCreated
   }
