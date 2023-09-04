@@ -1,4 +1,7 @@
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import { Doctor, MedicalAppointmentDates, User } from '../entities'
+import { FindResult } from '../types/entity.types'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'

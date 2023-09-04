@@ -4,6 +4,7 @@ import { medicalAppointmentService } from '../services/factory/entities.factory'
 import type { User } from '../entities'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 
 export const createMedicalAppointment = async (
   req: Request,
@@ -25,7 +26,12 @@ export const createMedicalAppointment = async (
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
-      next(new AppError('No se pudo crear la cita médica.', 500))
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENT_FAIL_SAVE,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
       return
     }
     next(err)

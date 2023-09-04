@@ -1,7 +1,7 @@
 import z from 'zod'
 import { MESSAGES } from '../constants/msgs'
 
-export const medicalappointmentSchema = z.object({
+export const medicalAppointmentSchema = z.object({
   body: z.object({
     description: z
       .string({

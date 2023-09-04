@@ -37,5 +37,6 @@ export enum ERROR_MSGS {
   MEDICAL_APPOINTMENT_DATE_CREATE_FAIL = 'No se pudo crear la cita médica.',
   MEDICAL_APPOINTMENT_FAIL_UPDATE = 'La cita médica no pudo cambiar su estado.',
   MEDICAL_APPOINTMENT_FAIL_SAVE = 'La cita médica no pudo crearse.',
-  CREATE_PATIENT_ERROR = 'El paciente no pudo crearse.'
+  CREATE_PATIENT_ERROR = 'El paciente no pudo crearse.',
+  CREATE_DOCTOR_SERVICE_FAIL = 'El doctor no pudo crearse.'
 }
