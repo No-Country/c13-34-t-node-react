@@ -6,13 +6,13 @@ import { EntityService } from './entity.service'
 import { doctorService } from './factory/entities.factory'
 
 export class MedicalAppointmentDatesService {
-  private readonly medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
+  //private readonly medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
   private readonly entityService: EntityService
 
   constructor(
     medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
   ) {
-    this.medicalAppointmentDatesRepository = medicalAppointmentDatesRepository
+    //this.medicalAppointmentDatesRepository = medicalAppointmentDatesRepository
     this.entityService = new EntityService(medicalAppointmentDatesRepository)
   }
 
@@ -51,9 +51,7 @@ export class MedicalAppointmentDatesService {
 
       return dateCreated as MedicalAppointmentDates
     })
-    const datesCreated = await Promise.all(createDates)
-
-    return datesCreated
+    return await Promise.all(createDates)
   }
 
   async getMedicalAppointmentDates() {}
