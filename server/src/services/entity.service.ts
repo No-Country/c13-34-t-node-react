@@ -47,7 +47,6 @@ export class EntityService {
   }
 
   async create(data: ObjectLiteral): Promise<ObjectLiteral> {
-    debugger
     const created = this.entityRepository.create(data)
     try {
       return await this.entityRepository.save(created, { listeners: false })
