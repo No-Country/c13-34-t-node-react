@@ -38,5 +38,12 @@ export enum ERROR_MSGS {
   MEDICAL_APPOINTMENT_FAIL_UPDATE = 'La cita médica no pudo cambiar su estado.',
   MEDICAL_APPOINTMENT_FAIL_SAVE = 'La cita médica no pudo crearse.',
   CREATE_PATIENT_ERROR = 'El paciente no pudo crearse.',
-  CREATE_DOCTOR_SERVICE_FAIL = 'El doctor no pudo crearse.'
+  CREATE_DOCTOR_SERVICE_FAIL = 'El doctor no pudo crearse.',
+  MEDICAL_APPOINTMENT_DATES_INVALID_TYPE = 'La fecha con su hora debe venir en un arreglo de strings',
+  MEDICAL_APPOINTMENT_DATES_REQUIRED = 'La fecha con su hora es requerida',
+  MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT = 'La fecha tiene un formato incorrecto',
+  MEDICAL_APPOINTMENT_DATES_HOURS_INVALID_FORMAT_STRING = 'Las horas deben estar en un formato de texto.',
+  MEDICAL_APPOINTMENT_DATES_HOURS_EMPTY_ARRAY = 'Debe haber al menos un horario disponible.',
+  MEDICAL_APPOINTMENT_DATES_HOURS_REPEATED = 'Algún horario esta repetido.',
+  MEDICAL_APPOINTMENT_DATES_HOURS_INVALID_FORMAT = 'La hora tiene un formato incorrecto'
 }

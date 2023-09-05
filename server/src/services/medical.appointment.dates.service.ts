@@ -1,7 +1,8 @@
+import dayjs from 'dayjs'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { Doctor, MedicalAppointmentDates, User } from '../entities'
-import { FindResult } from '../types/entity.types'
+import type { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { FindResult } from '../types/entity.types'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
@@ -45,16 +46,27 @@ export class MedicalAppointmentDatesService {
         )
     }
 
-    const createDates = unifiedDates.map(async (date: unknown) => {
-      const dateType = date as Date
-      const createDate = { date: dateType } as MedicalAppointmentDates
-      createDate.doctor = doctorExists || (doctorCreated as Doctor)
-      const dateCreated = await this.entityService.create(createDate)
-
-      return dateCreated as MedicalAppointmentDates
+    const createDates = unifiedDates.map(async (date) => {
+      const dateInSeconds = dayjs(date).unix().toString()
+      // Buscaamos la fecha recibida convertida a sec en la BD
+      const dateFromDB = await this.findMedicalAppointmentDate(
+        { date: dateInSeconds },
+        false,
+        false,
+        false
+      )
+      if (!dateFromDB || dateFromDB.date !== dateInSeconds) {
+        const createDate = { date: dateInSeconds } as MedicalAppointmentDates
+        createDate.doctor = doctorExists || (doctorCreated as Doctor)
+        const dateCreated = await this.entityService.create(createDate)
+        return dateCreated as MedicalAppointmentDates
+      }
+      if (dateFromDB) {
+        return dateFromDB
+      }
     })
 
-    return await Promise.all(createDates)
+    return (await Promise.all(createDates)) as MedicalAppointmentDates[]
   }
 
   async findMedicalAppointmentDate(
