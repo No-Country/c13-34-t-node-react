@@ -1,6 +1,6 @@
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { MedicalAppointment, Patient, User } from '../entities'
+import type { MedicalAppointment, Patient, User } from '../entities'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
@@ -22,12 +22,11 @@ export class MedicalAppointmentService {
     medicalAppoinmentDateId: number,
     description: string
   ): Promise<MedicalAppointment> {
-    //buscar la fecha de la cita y cambiar/actualizar su estado a selected
+    // buscar la fecha de la cita y cambiar/actualizar su estado a selected
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
         { id: medicalAppoinmentDateId },
         false,
-        { patient: true },
         { doctor: true },
         true
       )

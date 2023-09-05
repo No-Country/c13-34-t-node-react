@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
@@ -7,7 +8,6 @@ import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
 import { EntityService } from './entity.service'
 import { doctorService } from './factory/entities.factory'
-
 export class MedicalAppointmentDatesService {
   private readonly entityService: EntityService
 
@@ -32,7 +32,7 @@ export class MedicalAppointmentDatesService {
       false,
       false
     )
-
+    console.log('doctor existe??', doctorExists)
     if (!doctorExists) {
       const doctorToCreate = {
         user: sessionUser
@@ -44,17 +44,47 @@ export class MedicalAppointmentDatesService {
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
     }
+    console.log('doctor creado: ', doctorCreated)
 
-    const createDates = unifiedDates.map(async (date: unknown) => {
-      const dateType = date as Date
-      const createDate = { date: dateType } as MedicalAppointmentDates
-      createDate.doctor = doctorExists || (doctorCreated as Doctor)
-      const dateCreated = await this.entityService.create(createDate)
+    const createDates = unifiedDates.map(async (date) => {
+      const idToCompared = doctorExists?.id || doctorCreated?.id
+      console.log('idToCompared', idToCompared)
+      const dateInSeconds = dayjs(date).unix().toString()
+      // Buscaamos la fecha recibida convertida a sec en la BD
+      const dateFromDB = await this.findMedicalAppointmentDate(
+        { date: dateInSeconds },
+        false,
+        { doctor: true },
+        false
+      )
+      console.log('date from DB', dateFromDB)
 
-      return dateCreated as MedicalAppointmentDates
+      console.log('!dateFromDB', !dateFromDB)
+      console.log(
+        'dateFromDB.date !== dateInSeconds',
+        dateFromDB.date !== dateInSeconds
+      )
+      console.log(
+        'dateFromDB.doctor.id === idToCompared',
+        dateFromDB.doctor.id === idToCompared
+      )
+      if (
+        !dateFromDB ||
+        (dateFromDB?.date === dateInSeconds &&
+          dateFromDB?.doctor.id !== idToCompared)
+      ) {
+        console.log('Entré al IF..... ')
+        const createDate = { date: dateInSeconds } as MedicalAppointmentDates
+        createDate.doctor = doctorExists || (doctorCreated as Doctor)
+        const dateCreated = await this.entityService.create(createDate)
+        return dateCreated as MedicalAppointmentDates
+      }
+      if (dateFromDB) {
+        return dateFromDB
+      }
     })
 
-    return await Promise.all(createDates)
+    return (await Promise.all(createDates)) as MedicalAppointmentDates[]
   }
 
   async findMedicalAppointmentDate(

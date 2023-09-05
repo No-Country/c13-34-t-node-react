@@ -35,6 +35,7 @@ export const createDates = async (
       medicalAppointmentDates: datesToFrontEnd
     })
   } catch (err) {
+    console.log('error del controlador', err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(
