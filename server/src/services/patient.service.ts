@@ -11,9 +11,6 @@ export class PatientService {
     // this.patientRepository = paientRepository
     this.entityService = new EntityService(paientRepository)
   }
-  async getpatienttable(Patient: MedicalAppointmentService) {
-   this.getpatienttable(UserRole.patient)) as Patient
-  }
 
   async createPatient(patient: Patient): Promise<Patient> {
     return (await this.entityService.create(patient)) as Patient

@@ -5,6 +5,7 @@ import { createMedicalAppointment } from '../controllers/medical.appointment.con
 import { medicalAppointmentSchema } from '../schema/medical.appointment.schema'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
+import { getPatients } from '../controllers/getpatient.controller'
 
 export const patientRouter = Router()
 
@@ -16,5 +17,5 @@ patientRouter.post(
   schemaValidator(medicalAppointmentSchema),
   createMedicalAppointment
 )
-// get tabla de pacientes
-patientRouter.get('/getpatient', UserRole.patient)
+
+patientRouter.get('/medical-appoinment/', getPatients)
