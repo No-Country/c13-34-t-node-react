@@ -1,6 +1,7 @@
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MedicalAppointment, Patient, User } from '../entities'
+import { userExists } from '../middlewares/user.middleware'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 import { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
@@ -49,7 +50,17 @@ export class MedicalAppointmentService {
     //crear el paciente en la tabla de patients
     let patient: Patient | undefined
     try {
-      patient = await patientService.createPatient(patientToCreate)
+      const patientExists = await patientService.findPatient(
+        { user: { id: sessionUser.id } },
+        false,
+        { user: true, medicalAppointments: true },
+        false
+      )
+      if (patientExists) {
+        patient = patientExists
+      } else {
+        patient = await patientService.createPatient(patientToCreate)
+      }
     } catch (err) {
       throw new AppError(
         ERROR_MSGS.CREATE_PATIENT_ERROR,

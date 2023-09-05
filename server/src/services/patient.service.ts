@@ -11,6 +11,20 @@ export class PatientService {
     this.entityService = new EntityService(paientRepository)
   }
 
+  async findPatient(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<Patient | null> {
+    return (await this.entityService.findOne(
+      filters,
+      attributes,
+      relationAttributes,
+      error
+    )) as Patient | null
+  }
+
   async createPatient(patient: Patient): Promise<Patient> {
     return (await this.entityService.create(patient)) as Patient
   }
