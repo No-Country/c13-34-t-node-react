@@ -23,7 +23,7 @@ export class MedicalAppointmentService {
     medicalAppoinmentDateId: number,
     description: string
   ): Promise<MedicalAppointment> {
-    //buscar la fecha de la cita y cambiar/actualizar su estado a selected
+    // buscar la fecha de la cita y cambiar/actualizar su estado a selected
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
         { id: medicalAppoinmentDateId },
