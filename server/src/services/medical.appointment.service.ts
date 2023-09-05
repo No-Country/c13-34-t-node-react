@@ -1,9 +1,8 @@
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MedicalAppointment, Patient, User } from '../entities'
-import { userExists } from '../middlewares/user.middleware'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
-import { MedicalAppointmentRepository } from '../types/medical.appointment.types'
+import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
 import { EntityService } from './entity.service'
 import {
@@ -23,11 +22,12 @@ export class MedicalAppointmentService {
     medicalAppoinmentDateId: number,
     description: string
   ): Promise<MedicalAppointment> {
-    // buscar la fecha de la cita y cambiar/actualizar su estado a selected
+    //buscar la fecha de la cita y cambiar/actualizar su estado a selected
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
         { id: medicalAppoinmentDateId },
         false,
+        { patient: true },
         { doctor: true },
         true
       )
@@ -43,11 +43,11 @@ export class MedicalAppointmentService {
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
-    //crear un objeto para la tabla de patients, y asignarle el sessionUser en la clave user de ese objeto
+    // crear un objeto para la tabla de patients, y asignarle el sessionUser en la clave user de ese objeto
     const patientToCreate = {
       user: sessionUser
     } as Patient
-    //crear el paciente en la tabla de patients
+    // crear el paciente en la tabla de patients
     let patient: Patient | undefined
     try {
       const patientExists = await patientService.findPatient(
@@ -67,14 +67,14 @@ export class MedicalAppointmentService {
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
-    //crear un objeto para la tabla de medicalAppointment, asignarle en la clave medicalAppointmentDate la fecha que buscamos y actualizamos su estado
-    //en el objeto para la tabla medicalAppointment asignarle en la clave patient, el paciente que creamos
+    // crear un objeto para la tabla de medicalAppointment, asignarle en la clave medicalAppointmentDate la fecha que buscamos y actualizamos su estado
+    // en el objeto para la tabla medicalAppointment asignarle en la clave patient, el paciente que creamos
     const medicalAppoinment = {
       description,
       medicalAppointmentDate,
       patient
     } as MedicalAppointment
-    //devolver la cita creada
+    // devolver la cita creada
     return (await this.entityService.create(
       medicalAppoinment
     )) as MedicalAppointment
