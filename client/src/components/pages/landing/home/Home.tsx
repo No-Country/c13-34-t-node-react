@@ -13,10 +13,10 @@ export const Home = () => {
       <section className="pt-4 2xl:pt-10 2xl:px-36">
         <Attention />
       </section>
-      <section className="py-12 mb-40">
+      <section className="py-12 mb-10">
         <Services />
       </section>
-      <section className="overflow-auto mb-40">
+      <section className="overflow-auto mb-10">
         <Testimonials />
       </section>
       <section>
