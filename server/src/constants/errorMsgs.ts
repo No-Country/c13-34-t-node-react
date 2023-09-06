@@ -47,5 +47,7 @@ export enum ERROR_MSGS {
   MEDICAL_APPOINTMENT_DATES_HOURS_REPEATED = 'Algún horario esta repetido.',
   MEDICAL_APPOINTMENT_DATES_HOURS_INVALID_FORMAT = 'La hora tiene un formato incorrecto',
   MEDICAL_APPOINTMENT_DATE_NOT_EXISTS_OR_CANCELLED_OR_COMPLETED = 'La fecha que elegiste ya fue seleccionada, no existe o se ha concluido la cita médica.',
-  PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.'
+  PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.',
+  DOCTORS_NOT_FOUND = 'No hay doctores cons disponibilidad horaria.',
+  DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.'
 }
