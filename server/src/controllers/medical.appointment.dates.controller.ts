@@ -1,11 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
 import { AppError } from '../utils/app.error'
-import { secondsToDate } from '../utils/secondsToDate'
 
 export const createDates = async (
   req: Request,
@@ -22,17 +21,12 @@ export const createDates = async (
         hours
       )
 
-    const datesToFrontEnd = medicalAppointmentDates.map((ele) => {
-      return {
-        ...ele,
-        date: secondsToDate(ele.date)
-      }
-    })
+    //const datesToFrontEnd = medicalAppointmentDates
 
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CREATED,
-      medicalAppointmentDates: datesToFrontEnd
+      medicalAppointmentDates
     })
   } catch (err) {
     if (!(err instanceof AppError)) {

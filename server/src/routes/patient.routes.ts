@@ -11,7 +11,7 @@ export const patientRouter = Router()
 
 patientRouter.use(protect, restrictTo(UserRole.patient))
 
-patientRouter.get('/medical-appoinment/', getPatient)
+patientRouter.get('/medical-appointment/', getPatient)
 
 patientRouter.post(
   '/medical-appointment/:id',
