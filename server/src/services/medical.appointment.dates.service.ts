@@ -1,20 +1,21 @@
 import dayjs from 'dayjs'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
 import type { FindResult } from '../types/entity.types'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
-import { EntityService } from './entity.service'
-import { doctorService } from './factory/entities.factory'
+import { EntityFactory } from './factory/entity.factory'
+import { doctorService } from './'
+
 export class MedicalAppointmentDatesService {
-  private readonly entityService: EntityService
+  private readonly entityFactory: EntityFactory
 
   constructor(
     medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
   ) {
-    this.entityService = new EntityService(medicalAppointmentDatesRepository)
+    this.entityFactory = new EntityFactory(medicalAppointmentDatesRepository)
   }
 
   async createMedicalAppointmentDates(
@@ -52,7 +53,7 @@ export class MedicalAppointmentDatesService {
       const createNewDate = async () => {
         const createDate = { date: dateInSeconds } as MedicalAppointmentDates
         createDate.doctor = doctorExists || (doctorCreated as Doctor)
-        return await (this.entityService.create(
+        return await (this.entityFactory.create(
           createDate
         ) as Promise<MedicalAppointmentDates>)
       }
@@ -65,10 +66,9 @@ export class MedicalAppointmentDatesService {
         false
       )
 
-      if (dateFromDB === null) {
+      if (!dateFromDB) {
         return await createNewDate()
       } else if (
-        dateFromDB &&
         dateFromDB.date === dateInSeconds &&
         dateFromDB.doctor.id !== idToCompared
       ) {
@@ -87,7 +87,7 @@ export class MedicalAppointmentDatesService {
     relationAttributes: object | false,
     error: boolean
   ): Promise<MedicalAppointmentDates> {
-    return (await this.entityService.findOne(
+    return (await this.entityFactory.findOne(
       filters,
       attributes,
       relationAttributes,
@@ -98,6 +98,6 @@ export class MedicalAppointmentDatesService {
   async updateMedicalAppointmentDate(
     medicalAppoinmentDate: MedicalAppointmentDates
   ): Promise<FindResult> {
-    return await this.entityService.updateOne(medicalAppoinmentDate)
+    return await this.entityFactory.updateOne(medicalAppoinmentDate)
   }
 }

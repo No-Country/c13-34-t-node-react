@@ -1,36 +1,46 @@
 import type { NextFunction, Request, Response } from 'express'
-import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { medicalAppointmentService } from '../services/factory/entities.factory'
+import { patientService } from '../services'
 import { AppError } from '../utils/app.error'
-import type { User } from '../entities/user.entity'
 import { MESSAGES } from '../constants/msgs'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 
-export const patientController = async (
+export const getPatient = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { sessionUser, safeData } = req
+    // obtener el id del paciente
+    const { sessionUser } = req
+    const patient = await patientService.findPatient(
+      { id: sessionUser?.id },
+      false,
+      {
+        medicalAppointments: {
+          medicalAppointmentDate: {
+            doctor: { user: true }
+          }
+        }
+      },
+      false
+    )
 
-    const newMedicalAppointment =
-      await medicalAppointmentService.createMedicalAppointment(
-        sessionUser as User,
-        safeData?.params.id,
-        safeData?.body.description
-      )
-    return res.status(HTTPCODES.CREATED).json({
+    return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
-      medicalAppointment: newMedicalAppointment
+      patient
     })
   } catch (err) {
-    if (err instanceof AppError) {
-      next(err)
-    } else {
+    console.log(err)
+    if (!(err instanceof AppError)) {
       next(
-        new AppError(ERROR_MSGS.GENERIC_ERROR, HTTPCODES.INTERNAL_SERVER_ERROR)
+        new AppError(
+          ERROR_MSGS.PATIENT_NOT_FOUND,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
       )
+      return
     }
+    next(err)
   }
 }

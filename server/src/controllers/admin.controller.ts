@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { userService } from '../services/factory/entities.factory'
+import { userService } from '../services'
 import { AppError } from '../utils/app.error'
 
 export const approveDoctorsAndAdminsRegistration = async (

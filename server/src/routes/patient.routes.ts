@@ -5,11 +5,13 @@ import { createMedicalAppointment } from '../controllers/medical.appointment.con
 import { medicalAppointmentSchema } from '../schema/medical.appointment.schema'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
-import { getPatients } from '../controllers/getpatient.controller'
+import { getPatient } from '../controllers/patient.controller'
 
 export const patientRouter = Router()
 
 patientRouter.use(protect, restrictTo(UserRole.patient))
+
+patientRouter.get('/medical-appoinment/', getPatient)
 
 patientRouter.post(
   '/medical-appointment/:id',
@@ -17,5 +19,3 @@ patientRouter.post(
   schemaValidator(medicalAppointmentSchema),
   createMedicalAppointment
 )
-
-patientRouter.get('/medical-appoinment/', getPatients)

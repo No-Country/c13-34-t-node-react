@@ -1,20 +1,18 @@
+import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
+import type { MedicalAppointment, Patient, User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import type { MedicalAppointment, Patient, User } from '../entities'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
-import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
-import { EntityService } from './entity.service'
-import {
-  medicalAppointmentDatesService,
-  patientService
-} from './factory/entities.factory'
+import { EntityFactory } from './factory/entity.factory'
+import { medicalAppointmentDatesService, patientService } from './'
+import { MESSAGES } from '../constants/msgs'
 
 export class MedicalAppointmentService {
-  private readonly entityService: EntityService
+  private readonly entityFactory: EntityFactory
 
   constructor(medicalAppointmentRepository: MedicalAppointmentRepository) {
-    this.entityService = new EntityService(medicalAppointmentRepository)
+    this.entityFactory = new EntityFactory(medicalAppointmentRepository)
   }
 
   async createMedicalAppointment(
@@ -25,11 +23,20 @@ export class MedicalAppointmentService {
     // buscar la fecha de la cita y cambiar/actualizar su estado a selected
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
-        { id: medicalAppoinmentDateId },
+        {
+          id: medicalAppoinmentDateId,
+          status: MedicalAppointmentDatesStatus.pending
+        },
         false,
         { doctor: true },
-        true
+        false
       )
+    if (!medicalAppointmentDate)
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_NOT_EXISTS_OR_CANCELLED_OR_COMPLETED,
+        HTTPCODES.NOT_FOUND
+      )
+
     medicalAppointmentDate.status = MedicalAppointmentDatesStatus.selected
 
     try {
@@ -74,7 +81,7 @@ export class MedicalAppointmentService {
       patient
     } as MedicalAppointment
     // devolver la cita creada
-    return (await this.entityService.create(
+    return (await this.entityFactory.create(
       medicalAppoinment
     )) as MedicalAppointment
   }

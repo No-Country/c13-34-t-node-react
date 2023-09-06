@@ -1,14 +1,14 @@
 import type { Patient } from '../entities/patient.entity'
 import type { PatientRepository } from '../types/patient.types'
-import { EntityService } from './entity.service'
+import { EntityFactory } from './factory/entity.factory'
 
 export class PatientService {
   // private readonly patientRepository: PatientRepository
-  private readonly entityService: EntityService
+  private readonly entityFactory: EntityFactory
 
   constructor(paientRepository: PatientRepository) {
     // this.patientRepository = paientRepository
-    this.entityService = new EntityService(paientRepository)
+    this.entityFactory = new EntityFactory(paientRepository)
   }
 
   async findPatient(
@@ -17,7 +17,7 @@ export class PatientService {
     relationAttributes: object | false,
     error: boolean
   ): Promise<Patient | null> {
-    return (await this.entityService.findOne(
+    return (await this.entityFactory.findOne(
       filters,
       attributes,
       relationAttributes,
@@ -26,6 +26,6 @@ export class PatientService {
   }
 
   async createPatient(patient: Patient): Promise<Patient> {
-    return (await this.entityService.create(patient)) as Patient
+    return (await this.entityFactory.create(patient)) as Patient
   }
 }
