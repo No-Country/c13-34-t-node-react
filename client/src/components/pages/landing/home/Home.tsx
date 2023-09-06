@@ -10,18 +10,18 @@ export const Home = () => {
       <section className="p-4 2xl:pt-20 2xl:px-36 bg-gradient-to-r from-yellow-50 to-green-100">
         <Welcome />
       </section>
-      <section className="pt-4 2xl:pt-10 2xl:px-36">
+      <section className="pt-4 2xl:pt-12 2xl:px-36">
         <Attention />
       </section>
-      <section className="py-12 mb-10">
+      <section className="py-12 mb-12">
         <Services />
       </section>
-      <section className="overflow-auto mb-10">
+      <section className="overflow-auto mb-12">
         <Testimonials />
       </section>
-      <section>
+      <section className="">
         <MedicalSpecialties />
       </section>
     </div>
   );
-};
+}; 
