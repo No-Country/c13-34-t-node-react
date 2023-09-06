@@ -114,9 +114,9 @@ export class MedicalAppointmentDatesService {
 
   // Cambia el estado de la fecha de una cita médica a cancelado, si está pendiente
   // o si está pendiente, lo cambia a cancelado
-  async toggleStatusMedicalAppointmentDate(dateId: string): Promise<void> {
+  async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
     const date = await this.findMedicalAppointmentDate(
-      { id: dateId },
+      { id },
       false,
       false,
       true
@@ -129,15 +129,18 @@ export class MedicalAppointmentDatesService {
       )
     }
 
-    if (date.status === MedicalAppointmentDatesStatus.cancelled) {
-      date.status = MedicalAppointmentDatesStatus.pending
-      await this.updateMedicalAppointmentDate(date)
-      return
+    switch (date.status) {
+      case MedicalAppointmentDatesStatus.selected:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
+      case MedicalAppointmentDatesStatus.cancelled:
+        date.status = MedicalAppointmentDatesStatus.pending
+        break
+      case MedicalAppointmentDatesStatus.pending:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
     }
 
-    if (date.status === MedicalAppointmentDatesStatus.pending) {
-      date.status = MedicalAppointmentDatesStatus.cancelled
-      await this.updateMedicalAppointmentDate(date)
-    }
+    await this.updateMedicalAppointmentDate(date)
   }
 }
