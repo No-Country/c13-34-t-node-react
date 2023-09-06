@@ -112,8 +112,9 @@ export class MedicalAppointmentDatesService {
     return await this.entityFactory.updateOne(medicalAppoinmentDate)
   }
 
-  // Cancelar fecha de una cita medica
-  async cancelMedicalAppointmentDate(dateId: string): Promise<void> {
+  // Cambia el estado de la fecha de una cita médica a cancelado, si está pendiente
+  // o si está pendiente, lo cambia a cancelado
+  async toggleStatusMedicalAppointmentDate(dateId: string): Promise<void> {
     const date = await this.findMedicalAppointmentDate(
       { id: dateId },
       false,
@@ -128,7 +129,15 @@ export class MedicalAppointmentDatesService {
       )
     }
 
-    date.status = MedicalAppointmentDatesStatus.cancelled
-    await this.updateMedicalAppointmentDate(date)
+    if (date.status === MedicalAppointmentDatesStatus.cancelled) {
+      date.status = MedicalAppointmentDatesStatus.pending
+      await this.updateMedicalAppointmentDate(date)
+      return
+    }
+
+    if (date.status === MedicalAppointmentDatesStatus.pending) {
+      date.status = MedicalAppointmentDatesStatus.cancelled
+      await this.updateMedicalAppointmentDate(date)
+    }
   }
 }

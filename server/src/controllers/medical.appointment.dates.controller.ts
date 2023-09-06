@@ -40,21 +40,19 @@ export const createDates = async (
   }
 }
 
-export const cancelMedicalAppointmentDate = async (
+export const toggleStatusMedicalAppointmentDate = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { dateId } = req.params
+    const { id } = req.params
 
-    await medicalAppointmentDatesService.cancelMedicalAppointmentDate(dateId)
-    res.status(HTTPCODES.OK).json({
-      status: MESSAGES.SUCCESS,
-      message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CANCELLED
+    await medicalAppointmentDatesService.toggleStatusMedicalAppointmentDate(id)
+    res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
-    console.log('error del controlador', err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(

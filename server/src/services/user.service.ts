@@ -1,4 +1,7 @@
 import { In, Not } from 'typeorm'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
 import type {
@@ -8,9 +11,6 @@ import type {
   UserDto,
   UserRepository
 } from '../types/user.types'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
-import { userDto } from '../dto/user.dto'
 import { UserRole, UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
@@ -19,11 +19,9 @@ import { generateJWT } from '../utils/jwt'
 import { EntityFactory } from './factory/entity.factory'
 
 export class UserService {
-  //private readonly userRepository: UserRepository
   private readonly entityFactory: EntityFactory
 
   constructor(userRepository: UserRepository) {
-    //this.userRepository = userRepository
     this.entityFactory = new EntityFactory(userRepository)
   }
 

@@ -8,8 +8,6 @@ export enum MESSAGES {
   PENDING = 'pending',
   MALE = 'male',
   FEMALE = 'female',
-  ADMIN_REGISTRATION_APPROVAL_OK = 'El registro del admin/doctor fue aprobado con éxito.',
-  ADMIN_REGISTRATION_CANCELATION_OK = 'El registro del admin/doctor fue deshabilitado con éxito.',
   FIRST_NAME_REQUIRED_ERROR = 'El nombre es requerido.',
   FIRST_NAME_TYPE_ERROR = 'El nombre debe ser un texto.',
   FIRST_NAME_MIN_LENGTH = 'El nombre debe ser de mínimo 2 caracteres.',
@@ -45,6 +43,5 @@ export enum MESSAGES {
   MEDICAL_APPOINTMENT_DESC_REQUIRED = 'La descripción es requerida.',
   MEDICAL_APPOINTMENT_DESC_MIN_LENGTH = 'La descripción debe ser más específica.',
   MEDICAL_APPOINTMENT_DESC_TYPE = 'La descrición debe ser un texto.',
-  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.',
-  MEDICAL_APPOINTMENT_DATE_CANCELLED = 'la fecha se cancelo correctamente.'
+  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.'
 }
