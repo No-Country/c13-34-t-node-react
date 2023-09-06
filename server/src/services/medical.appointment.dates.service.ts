@@ -1,13 +1,13 @@
 import dayjs from 'dayjs'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
 import type { FindResult } from '../types/entity.types'
-import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
+import { MedicalAppointmentDatesStatus, type MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { AppError } from '../utils/app.error'
 import { unifyDates } from '../utils/unify.dates'
 import { EntityFactory } from './factory/entity.factory'
-import { doctorService } from './'
+import { doctorService, medicalAppointmentDatesService } from './'
 
 export class MedicalAppointmentDatesService {
   private readonly entityFactory: EntityFactory
@@ -100,4 +100,29 @@ export class MedicalAppointmentDatesService {
   ): Promise<FindResult> {
     return await this.entityFactory.updateOne(medicalAppoinmentDate)
   }
+
+  //Cancelar fecha de una cita medica
+
+async cancelMedicalAppointmentDate(dateId: string): Promise<void> {
+  const date = await this.findMedicalAppointmentDate(
+    { id: dateId },
+    false,
+    false,
+    true
+  )
+
+  if (!date) {
+    throw new AppError(
+      ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT,
+      HTTPCODES.NOT_FOUND
+    );
+  }
+
+  date.status = MedicalAppointmentDatesStatus.cancelled
+  await this.updateMedicalAppointmentDate(date)
 }
+
+
+
+}
+

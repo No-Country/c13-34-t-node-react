@@ -45,5 +45,6 @@ export enum MESSAGES {
   MEDICAL_APPOINTMENT_DESC_REQUIRED = 'La descripción es requerida.',
   MEDICAL_APPOINTMENT_DESC_MIN_LENGTH = 'La descripción debe ser más específica.',
   MEDICAL_APPOINTMENT_DESC_TYPE = 'La descrición debe ser un texto.',
-  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.'
+  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.',
+  MEDICAL_APPOINTMENT_DATE_CANCELLED = 'la fecha se cancelo correctamente.'
 }
