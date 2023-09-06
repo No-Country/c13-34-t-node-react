@@ -9,7 +9,7 @@ export const Testimonials = () => {
       <p className="text-center font-caudex text-2xl 2xl:text-3xl text-primary-green font-bold pt-5">
         Que dicen nuestros pacientes
       </p>
-      <p className="text-center text-xl 2xl:text-2xl mt-3 mx-4">
+      <p className="text-center text-xl 2xl:text-2xl font-bold mt-3 mx-4">
         Testimonios y experiencias
       </p>
 
