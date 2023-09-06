@@ -5,6 +5,7 @@ import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
 import { medicalAppointmentDatesService } from '../services'
 import { AppError } from '../utils/app.error'
+import { log } from 'console'
 
 export const createDates = async (
   req: Request,
@@ -41,3 +42,33 @@ export const createDates = async (
     next(err)
   }
 }
+
+export const cancelMedicalAppointmentDate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) =>{
+  try{
+    const {dateId} = req.params;
+
+    await medicalAppointmentDatesService.cancelMedicalAppointmentDate(dateId)
+    res.status(HTTPCODES.OK).json({
+    status: MESSAGES.SUCCESS,
+    message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CANCELLED,
+    })
+  }catch (err) {
+    console.log('error del controlador', err)
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_CANCELLED_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+  
+} 
+
