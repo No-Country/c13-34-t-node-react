@@ -14,7 +14,7 @@ export const getPatient = async (
     // obtener el id del paciente
     const { sessionUser } = req
     const patient = await patientService.findPatient(
-      { id: sessionUser?.id },
+      { user: { id: sessionUser?.id } },
       false,
       {
         medicalAppointments: {
@@ -23,7 +23,7 @@ export const getPatient = async (
           }
         }
       },
-      false
+      true
     )
 
     return res.status(HTTPCODES.OK).json({
