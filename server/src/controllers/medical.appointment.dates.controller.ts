@@ -1,11 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
+import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
 import { AppError } from '../utils/app.error'
-import { log } from 'console'
 
 export const createDates = async (
   req: Request,
@@ -21,8 +20,6 @@ export const createDates = async (
         date,
         hours
       )
-
-    //const datesToFrontEnd = medicalAppointmentDates
 
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
@@ -47,16 +44,16 @@ export const cancelMedicalAppointmentDate = async (
   req: Request,
   res: Response,
   next: NextFunction
-) =>{
-  try{
-    const {dateId} = req.params;
+) => {
+  try {
+    const { dateId } = req.params
 
     await medicalAppointmentDatesService.cancelMedicalAppointmentDate(dateId)
     res.status(HTTPCODES.OK).json({
-    status: MESSAGES.SUCCESS,
-    message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CANCELLED,
+      status: MESSAGES.SUCCESS,
+      message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CANCELLED
     })
-  }catch (err) {
+  } catch (err) {
     console.log('error del controlador', err)
     if (!(err instanceof AppError)) {
       next(
@@ -69,6 +66,4 @@ export const cancelMedicalAppointmentDate = async (
     }
     next(err)
   }
-  
-} 
-
+}
