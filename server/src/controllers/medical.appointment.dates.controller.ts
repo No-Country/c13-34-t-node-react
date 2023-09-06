@@ -1,11 +1,11 @@
-import dayjs from 'dayjs'
 import type { NextFunction, Request, Response } from 'express'
-import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
+import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
 import { AppError } from '../utils/app.error'
+import { secondsToDate } from '../utils/secondsToDate'
 
 export const createDates = async (
   req: Request,
@@ -25,7 +25,7 @@ export const createDates = async (
     const datesToFrontEnd = medicalAppointmentDates.map((ele) => {
       return {
         ...ele,
-        date: dayjs.unix(Number(ele.date)).format('YYYY-MM-DD HH:mm')
+        date: secondsToDate(ele.date)
       }
     })
 
@@ -35,7 +35,6 @@ export const createDates = async (
       medicalAppointmentDates: datesToFrontEnd
     })
   } catch (err) {
-    console.log('error del controlador', err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(
