@@ -112,8 +112,10 @@ export class MedicalAppointmentDatesService {
     return await this.entityFactory.updateOne(medicalAppoinmentDate)
   }
 
-  // Cambia el estado de la fecha de una cita médica a cancelado, si está pendiente
-  // o si está pendiente, lo cambia a cancelado
+  // Cambia el estado de la fecha de una cita médica a:
+  // selected --> cancelled
+  // pending <--> cancelled, y viceversa
+
   async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
     const date = await this.findMedicalAppointmentDate(
       { id },
