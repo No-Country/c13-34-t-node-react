@@ -11,17 +11,10 @@ export const Attention = () => {
         </div>
         <div className="flex flex-col">
           <div className="text-2xl 2xl:text-3xl pb-4 2xl:pb-8 font-bold text-dark-green 2xl:w-[500px] font-caudex tracking-[1px]">
-            <p>"Where clear vision meets compassionate care."</p>
+            <p>"Donde la excelencia médica se une a la compasión por su bienestar."</p>
           </div>
           <p className="font-opensans 2xl:w-[700px] pb-6 2xl:pb-16">
-            A specialized medical facility that provides diagnostic,
-            therapeutic, and surgical services related to the eyes and vision.
-            We are staffed by qualified ophthalmologists and optometrists who
-            are trained to diagnose and treat a wide range of eye conditions, We
-            are staffed by qualified ophthalmologists and optometrists who are
-            trained to diagnose and treat a wide range of eye conditions, such
-            as refractive errors, cataracts, glaucoma, macular degeneration, and
-            diabetic retinopathy.
+          En nuestro centro médico especializado, ofrecemos una amplia gama de servicios de atención médica para su salud en general. Nuestro equipo de médicos y profesionales de la salud altamente capacitados está dedicado a brindarle una atención excepcional en todas las etapas de su viaje hacia el bienestar. Desde diagnósticos precisos hasta tratamientos terapéuticos y atención quirúrgica cuando sea necesario, estamos comprometidos con su salud y su comodidad en todo momento.
           </p>
 
           <div className="grid 2xl:grid-cols-2">
@@ -32,7 +25,7 @@ export const Attention = () => {
                   alt="icon-1"
                   className="w-12 2xl:w-16 object-cover"
                 />
-                <p className="text-lg 2xl:text-2xl">We are certified</p>
+                <p className="text-lg 2xl:text-2xl">Estamos certificados</p>
               </div>
               <div className="flex items-center gap-1">
                 <img
@@ -40,7 +33,7 @@ export const Attention = () => {
                   alt="icon-3"
                   className="w-12 2xl:w-16 object-cover"
                 />
-                <p className="text-lg 2xl:text-2xl">We are certified</p>
+                <p className="text-lg 2xl:text-2xl">Estamos certificados</p>
               </div>
             </div>
 
@@ -51,7 +44,7 @@ export const Attention = () => {
                   alt="icon-2"
                   className="w-12 2xl:w-16 object-cover"
                 />
-                <p className="text-lg 2xl:text-2xl">We are certified</p>
+                <p className="text-lg 2xl:text-2xl">Estamos certificados</p>
               </div>
               <div className="flex items-center gap-1">
                 <img
@@ -59,7 +52,7 @@ export const Attention = () => {
                   alt="icon-4"
                   className="w-12 2xl:w-16 object-cover"
                 />
-                <p className="text-lg 2xl:text-2xl">We are certified</p>
+                <p className="text-lg 2xl:text-2xl">Estamos certificados</p>
               </div>
             </div>
           </div>
