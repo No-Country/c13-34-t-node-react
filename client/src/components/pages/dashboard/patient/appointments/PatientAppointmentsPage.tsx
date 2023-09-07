@@ -1,12 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { UsersService } from "@/services/users";
-import { RiEyeFill, RiEdit2Fill } from "react-icons/ri";
-import useSWR, { useSWRConfig } from "swr";
+import { RiEyeFill } from "react-icons/ri";
 // import { TAppointmentStatus, TUser } from "@/types/user";
 // import { Modal } from "@/components/common/Modal";
 // import { useState } from "react";
 
-const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
+// const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
 
 export const PatientAppointmentsPage = () => {
   // const { data, error } = useSWR(
