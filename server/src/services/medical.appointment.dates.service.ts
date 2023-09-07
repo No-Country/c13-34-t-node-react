@@ -168,9 +168,39 @@ export class MedicalAppointmentDatesService {
     )
 
     const filters = {
+      doctor: { id: doctorExists.id }
+    }
+
+    const relationAttributes = { doctor: true }
+
+    const [dates, count] = await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+
+    const convertedDates = dates.map((medicalAppoinmentDate) => {
+      return {
+        ...medicalAppoinmentDate,
+        date: secondsToDate(medicalAppoinmentDate.date)
+      }
+    })
+
+    return [convertedDates, count]
+  }
+
+  // Solo trae las fechas selected y pending
+  async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
       doctor: { id: doctorExists.id },
       status: In([
-        MedicalAppointmentDatesStatus.cancelled,
         MedicalAppointmentDatesStatus.pending,
         MedicalAppointmentDatesStatus.selected
       ])
