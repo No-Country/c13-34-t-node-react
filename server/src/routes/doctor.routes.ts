@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import {
   createDates,
-  getAllDateByDoctor,
+  getAllDatesByDoctor,
+  getAllHoursByDoctorDate,
   toggleStatusMedicalAppointmentDate
 } from '../controllers/medical.appointment.dates.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
@@ -26,4 +27,6 @@ doctorRouter.put(
   toggleStatusMedicalAppointmentDate
 )
 
-doctorRouter.get('/get-all-dates-by-doctor', getAllDateByDoctor)
+doctorRouter.get('/get-all-dates-by-doctor', getAllDatesByDoctor)
+
+doctorRouter.post('/get-all-hours-from-date-doctor', getAllHoursByDoctorDate)

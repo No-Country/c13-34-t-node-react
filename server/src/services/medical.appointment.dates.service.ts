@@ -26,7 +26,11 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
+<<<<<<< HEAD
   ): Promise<MedicalAppointmentDates[]> {
+=======
+  ): Promise<ConvertedMedicalAppointmentDates[]> {
+>>>>>>> 0d857d47310100290cfc9ad8f51f99f7660aa307
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
@@ -161,9 +165,39 @@ export class MedicalAppointmentDatesService {
     )
 
     const filters = {
+      doctor: { id: doctorExists.id }
+    }
+
+    const relationAttributes = { doctor: true }
+
+    const [dates, count] = await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+
+    const convertedDates = dates.map((medicalAppoinmentDate) => {
+      return {
+        ...medicalAppoinmentDate,
+        date: secondsToDate(medicalAppoinmentDate.date)
+      }
+    })
+
+    return [convertedDates, count]
+  }
+
+  // Solo trae las fechas selected y pending
+  async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
       doctor: { id: doctorExists.id },
       status: In([
-        MedicalAppointmentDatesStatus.cancelled,
         MedicalAppointmentDatesStatus.pending,
         MedicalAppointmentDatesStatus.selected
       ])
