@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 const serviceImages = [
   { title: "Exámenes médicos", path: "/images/service1.webp" },
-  { title: "Turnos", path: "/images/service2.jpg" },
+  { title: "Enfoque", path: "/images/service2.jpg" },
   { title: "Consultas", path: "/images/service3.jpg" },
   { title: "Especialidades", path: "/images/service4.jpg" },
 ];
@@ -9,20 +10,17 @@ const serviceImages = [
 export const Services = () => {
   const [imageSelected, setImageSelected] = useState(serviceImages[1]);
   return (
-    <div className="flex flex-col gap-12 items-center justify-center">
+    <div className="flex flex-col gap-4 items-center justify-center">
       <p className="text-3xl text-center font-caudex font-bold tracking-wide text-dark-green">
         "La atención médica más completa."
       </p>
       <div className="relative w-full flex xl:gap-32">
-        <div className="relative flex flex-col gap-8 w-full md:w-1/2 pt-6 px-2 xl:pl-36 xl:pr-6 bg-lightest-green">
-          <p className="font-caudex text-3xl tracking-wide">
+        <div className="relative flex flex-col gap-4 w-full md:w-1/2 pt-6 px-4 xl:pl-36 xl:pr-6 bg-lightest-green">
+          <p className="font-caudex text-center 2xl:text-left font-bold text-2xl tracking-wide">
             {imageSelected.title}
           </p>
           <p className="font-caudex text-xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum sed
-            culpa possimus consequatur? Assumenda neque reprehenderit odit odio,
-            vero tenetur error? Esse adipisci inventore optio ex iusto, quia
-            asperiores officia.
+          En Meddyplus, entendemos que la salud es un concepto integral. Por eso, no solo nos enfocamos en la curación de enfermedades, sino también en la prevención y el bienestar general. Nuestros programas de salud preventiva y cuidado continuo están diseñados para ayudarlo a mantenerse saludable a lo largo de su vida.
           </p>
           <div className="bg-white w-full sm:w-3/4 xl:w-fit flex justify-center gap-8 md:-bottom-20 md:absolute m-auto left-0 right-0 rounded-xl p-5 border-2 border-slate-300">
             {serviceImages.map((image) => (
@@ -45,9 +43,11 @@ export const Services = () => {
             src={imageSelected.path}
             className="h-80 rounded-md drop-shadow-lg"
           />
-          <button className="w-full absolute -bottom-20 py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
-            Conocer más
-          </button>
+          <NavLink to={"/sobre-nosotros"}>
+            <button className="w-full absolute -bottom-20 py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
+              Sobre nosotros
+            </button>
+          </NavLink>
         </div>
       </div>
     </div>

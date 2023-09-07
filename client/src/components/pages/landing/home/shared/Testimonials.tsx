@@ -1,13 +1,16 @@
+import image_testimonial_1 from "/images/doctor-testimonials1.png";
+import image_testimonial_2 from "/images/doctor-testimonials2.png";
+import image_testimonial_3 from "/images/doctor-testimonials3.png";
+
+
 export const Testimonials = () => {
   return (
     <div className="my-16 mx-auto md:px-6 bg-lightest-green">
-      <p className="text-center font-caudex text-3xl text-primary-green pt-5">
+      <p className="text-center font-caudex text-2xl 2xl:text-3xl text-primary-green font-bold pt-5">
         Que dicen nuestros pacientes
       </p>
-      <p className="text-center text-lg mt-3 mx-4">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam maiores
-        ex repellat amet iusto tempora, commodi optio veniam, sed tempore
-        laborum esse eveniet error, quis at!
+      <p className="text-center text-xl 2xl:text-2xl font-bold mt-3 mx-4">
+        Testimonios y experiencias
       </p>
 
       {/* flex-row flex-nowrap overflow-auto */}
@@ -61,15 +64,15 @@ export const Testimonials = () => {
             </svg>
           </div>
 
-          <p className="font-opensans text-base text-center mt-5 mx-5">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam
-            tenetur dolores eveniet voluptatibus saepe necessitatibus nihil
-            dolore sapiente, natus, repellat aspernatur, a non nostrum. Incidunt
-            veniam sunt dolorum minima accusamus!
-          </p>
+          <div className="grid">
+            <p className="justify-self-center font-opensans text-base text-left mt-5 mx-5">
+              En Meddyplus encuentro confianza y tranquilidad. Su compromiso con la atención de calidad brilla en cada consulta. Es un honor ser atendido por profesionales tan destacados. La excelencia es su sello distintivo. ¡Una clínica digna de cinco estrellas!
+            </p>
+          </div>
           <img
             className="rounded-full h-24 w-24 mx-auto mt-10"
-            src="../images/doctor.png"
+            src={image_testimonial_1}
+            alt="Imagen-testimonial-1"
           />
         </div>
         <div className="border-2 border-primary-green w-80 lg:w-96 h-80 lg:h-72 rounded-2xl mt-6 lg:mt-10 bg-white">
@@ -121,15 +124,15 @@ export const Testimonials = () => {
             </svg>
           </div>
 
-          <p className="font-opensans text-base text-center mt-5 mx-5">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam
-            tenetur dolores eveniet voluptatibus saepe necessitatibus nihil
-            dolore sapiente, natus, repellat aspernatur, a non nostrum. Incidunt
-            veniam sunt dolorum minima accusamus!
-          </p>
+          <div className="grid">
+            <p className="justify-self-center font-opensans text-base text-left mt-5 mx-5">
+              Elegir Meddyplus fue una excelente decisión. Su compromiso con la atención de calidad es evidente desde el primer momento. Los Logros y credenciales de sus profesionales hablan por sí mismos. La experiencia es siempre excepcional.
+            </p>
+          </div>
           <img
-            className="rounded-full h-24 w-24 mx-auto mt-10"
-            src="../images/doctor.png"
+            className="rounded-full w-24 mx-auto mt-10"
+            src={image_testimonial_2}
+            alt="Imagen-testimonial-2"
           />
         </div>
         <div className="border-2 border-primary-green w-80 lg:w-96 h-80 lg:h-72 rounded-2xl mt-6 lg:mt-10 bg-white">
@@ -181,15 +184,15 @@ export const Testimonials = () => {
             </svg>
           </div>
 
-          <p className="font-opensans text-base text-center mt-5 mx-5">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam
-            tenetur dolores eveniet voluptatibus saepe necessitatibus nihil
-            dolore sapiente, natus, repellat aspernatur, a non nostrum. Incidunt
-            veniam sunt dolorum minima accusamus!
-          </p>
+          <div className="grid">
+            <p className="justify-self-center font-opensans text-base text-left mt-5 mx-5">
+              No puedo elogiar lo suficiente a Meddyplus. Su dedicación al compromiso con la atención de calidad se nota en cada detalle. Cada profesional con el que he interactuado muestra una pasión genuina por el bienestar de los pacientes.
+            </p>
+          </div>
           <img
-            className="rounded-full h-24 w-24 mx-auto mt-10"
-            src="../images/doctor.png"
+            className="rounded-full w-24 mx-auto mt-10"
+            src={image_testimonial_3}
+            alt="Imagen-testimonial-3"
           />
         </div>
       </div>

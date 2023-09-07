@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export const Welcome = () => {
   return (
     <div className="grid 2xl:grid-cols-2 2xl:gap-24 max-sm:pt-4 2xl:h-[620px] w-full">
@@ -34,13 +36,24 @@ export const Welcome = () => {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center gap-4 2xl:gap-8">
-              <button className="w-full py-3 rounded-2xl text-xl hover:text-white text-primary-green bg-white hover:bg-primary-green border-primary-green border-[2px] transition duration-300 font-medium">
-                Reprogramar
-              </button>
-              <button className="w-full py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
-                Agendar
-              </button>
+            <div className="flex flex-col justify-center gap-4">
+              <div>
+                <p className="text-center pb-2">Tienes una cuenta</p>
+                <NavLink to="/acceso">
+                  <button className="w-full py-3 rounded-2xl text-xl hover:text-white text-primary-green bg-white hover:bg-primary-green border-primary-green border-[2px] transition duration-300 font-medium">
+                    Iniciar sesión
+                  </button>
+                </NavLink>
+              </div>
+
+              <div>  
+                <p className="text-center pb-2">No tienes una cuenta ?</p>
+                <NavLink to="/registro">
+                  <button className="w-full py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
+                    Crear cuenta
+                  </button>
+                </NavLink>
+              </div>
             </div>
           </div>
         </div>

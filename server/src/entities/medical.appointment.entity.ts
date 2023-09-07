@@ -19,11 +19,9 @@ export class MedicalAppointment extends BaseEntity {
 
   @OneToOne((_type) => MedicalAppointmentDates)
   @JoinColumn({ name: 'medical_appointment_date_id' })
-  medicalAppointmentDate: number
+  medicalAppointmentDate: MedicalAppointmentDates
 
   @ManyToOne((_type) => Patient, (patient) => patient.medicalAppointments)
+  @JoinColumn({ name: "patient_id" })
   patient: Patient
-
-  @Column({ type: 'date' })
-  date: Date
 }

@@ -1,7 +1,4 @@
 import { In, Not } from 'typeorm'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
-import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
 import type {
@@ -11,20 +8,21 @@ import type {
   UserDto,
   UserRepository
 } from '../types/user.types'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import { userDto } from '../dto/user.dto'
 import { UserRole, UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
 import { checkRoleForAssignment } from '../utils/check.role.for.assignment'
 import { generateJWT } from '../utils/jwt'
-import { EntityService } from './entity.service'
+import { EntityFactory } from './factory/entity.factory'
 
 export class UserService {
-  private readonly userRepository: UserRepository
-  private readonly entityService: EntityService
+  private readonly entityFactory: EntityFactory
 
   constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository
-    this.entityService = new EntityService(userRepository)
+    this.entityFactory = new EntityFactory(userRepository)
   }
 
   async findUser(
@@ -33,7 +31,7 @@ export class UserService {
     relationAttributes: object | false,
     error: boolean
   ): Promise<FindResult> {
-    return await this.entityService.findOne(
+    return await this.entityFactory.findOne(
       filters,
       attributes,
       relationAttributes,
@@ -46,7 +44,7 @@ export class UserService {
     attributes: object | false,
     relationAttributes: object | false
   ): Promise<FindResults> {
-    return await this.entityService.findAll(
+    return await this.entityFactory.findAll(
       filters,
       attributes,
       relationAttributes
@@ -88,7 +86,7 @@ export class UserService {
       role: true,
       id: true
     }
-    const userToBeUpdated = await this.entityService.findOne(
+    const userToBeUpdated = await this.entityFactory.findOne(
       filters,
       attributes,
       false,
@@ -104,7 +102,7 @@ export class UserService {
     userToBeUpdated.status = UserStatus.enable
 
     try {
-      return await this.entityService.updateOne(userToBeUpdated)
+      return await this.entityFactory.updateOne(userToBeUpdated)
     } catch (error) {
       throw new AppError(
         ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_ERROR,
@@ -126,7 +124,7 @@ export class UserService {
       role: true,
       id: true
     }
-    const userToBeCanceled = await this.entityService.findOne(
+    const userToBeCanceled = await this.entityFactory.findOne(
       filters,
       attributes,
       false,
@@ -146,7 +144,10 @@ export class UserService {
   async createUser(user: User): Promise<UserDto> {
     const assignedUser = checkRoleForAssignment(user)
     assignedUser.password = await hashPassword(user.password)
-    const userCreated = (await this.entityService.create(assignedUser)) as User
+    const userCreated = (await this.entityFactory.create(
+      assignedUser,
+      false
+    )) as User
     return userDto(userCreated)
   }
 
@@ -193,7 +194,7 @@ export class UserService {
     }
 
     try {
-      await this.entityService.updateOne(data)
+      await this.entityFactory.updateOne(data)
     } catch (e) {
       throw new AppError(
         ERROR_MSGS.PASSWORD_CHANGE_ERROR,
@@ -204,7 +205,7 @@ export class UserService {
 
   async disableUser(id: number) {
     try {
-      await this.entityService.updateOne({ id, status: UserStatus.disable })
+      await this.entityFactory.updateOne({ id, status: UserStatus.disable })
     } catch (e) {
       throw new AppError(
         ERROR_MSGS.USER_DISABLE_ERROR,

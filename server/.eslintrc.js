@@ -7,6 +7,7 @@ module.exports = {
   extends: ['standard-with-typescript', 'prettier'],
   overrides: [],
   parserOptions: {
+    // project: './c13-34-t-node-react/server/tsconfig.json',
     project: './tsconfig.json',
     ecmaVersion: 'latest',
     sourceType: 'module'
@@ -14,6 +15,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-misused-promises': 'off'
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/consistent-type-assertions': 'off'
   }
 }

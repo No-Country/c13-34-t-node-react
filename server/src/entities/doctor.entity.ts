@@ -22,7 +22,7 @@ export class Doctor extends BaseEntity {
 
   @OneToMany(
     (_type) => MedicalAppointmentDates,
-    (medicalAppointmentsDates) => medicalAppointmentsDates
+    (medicalAppointmentsDates) => medicalAppointmentsDates.doctor
   )
   medicalAppointmentDates: MedicalAppointmentDates[]
 

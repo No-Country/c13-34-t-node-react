@@ -1,19 +1,25 @@
-import { Doctor, MedicalAppointmentDates, User } from '../entities'
-import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
+import { In } from 'typeorm'
+import type { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { FindResult, FindResults } from '../types/entity.types'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import {
+  MedicalAppointmentDatesStatus,
+  type MedicalAppointmentDatesRepository
+} from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
+import { dateToSecondsToString } from '../utils/datejs'
 import { unifyDates } from '../utils/unify.dates'
-import { EntityService } from './entity.service'
-import { doctorService } from './factory/entities.factory'
+import { doctorService } from './'
+import { EntityFactory } from './factory/entity.factory'
 
 export class MedicalAppointmentDatesService {
-  private readonly medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
-  private readonly entityService: EntityService
+  private readonly entityFactory: EntityFactory
 
   constructor(
     medicalAppointmentDatesRepository: MedicalAppointmentDatesRepository
   ) {
-    this.medicalAppointmentDatesRepository = medicalAppointmentDatesRepository
-    this.entityService = new EntityService(medicalAppointmentDatesRepository)
+    this.entityFactory = new EntityFactory(medicalAppointmentDatesRepository)
   }
 
   async createMedicalAppointmentDates(
@@ -31,30 +37,170 @@ export class MedicalAppointmentDatesService {
       false,
       false
     )
-
     if (!doctorExists) {
       const doctorToCreate = {
         user: sessionUser
       }
       doctorCreated = await doctorService.createDoctor(doctorToCreate)
       if (!doctorCreated)
-        throw new AppError('El médico no se creo en la base de datos.', 500)
+        throw new AppError(
+          ERROR_MSGS.CREATE_DOCTOR_SERVICE_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
     }
 
-    const createDates = unifiedDates.map(async (date: unknown) => {
-      const dateType = date as Date
-      const createDate = { date: dateType } as MedicalAppointmentDates
-      createDate.doctor = doctorExists
-        ? doctorExists
-        : (doctorCreated as Doctor)
-      const dateCreated = await this.entityService.create(createDate)
+    const createDates = unifiedDates.map(async (date) => {
+      const idToCompared = doctorExists?.id || doctorCreated?.id
+      const dateInSeconds = dateToSecondsToString(date)
 
-      return dateCreated as MedicalAppointmentDates
+      // Función para crear una nueva cita
+      const createNewDate = async () => {
+        const createDate = { date: dateInSeconds } as MedicalAppointmentDates
+        createDate.doctor = doctorExists || (doctorCreated as Doctor)
+        return await (this.entityFactory.create(
+          createDate,
+          true
+        ) as Promise<MedicalAppointmentDates>)
+      }
+
+      // Busca la fecha en la BD para el doctor actual
+      const dateFromDB = await this.findMedicalAppointmentDate(
+        { date: dateInSeconds, doctor: { id: idToCompared } },
+        false,
+        { doctor: true },
+        false
+      )
+
+      if (!dateFromDB) {
+        return await createNewDate()
+      } else if (
+        dateFromDB.date === dateInSeconds &&
+        dateFromDB.doctor.id !== idToCompared
+      ) {
+        return await createNewDate()
+      }
+
+      return dateFromDB
     })
-    const datesCreated = await Promise.all(createDates)
 
-    return datesCreated
+    return await Promise.all(createDates)
   }
 
-  async getMedicalAppointmentDates() {}
+  async findMedicalAppointmentDate(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<MedicalAppointmentDates> {
+    return (await this.entityFactory.findOne(
+      filters,
+      attributes,
+      relationAttributes,
+      error
+    )) as MedicalAppointmentDates
+  }
+
+  async updateMedicalAppointmentDate(
+    medicalAppoinmentDate: MedicalAppointmentDates
+  ): Promise<FindResult> {
+    return await this.entityFactory.updateOne(medicalAppoinmentDate)
+  }
+
+  // Cambia el estado de la fecha de una cita médica a:
+  // selected --> cancelled
+  // pending <--> cancelled, y viceversa
+  async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
+    const date = await this.findMedicalAppointmentDate(
+      { id },
+      false,
+      false,
+      true
+    )
+
+    if (!date) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT,
+        HTTPCODES.NOT_FOUND
+      )
+    }
+
+    switch (date.status) {
+      case MedicalAppointmentDatesStatus.selected:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
+      case MedicalAppointmentDatesStatus.cancelled:
+        date.status = MedicalAppointmentDatesStatus.pending
+        break
+      case MedicalAppointmentDatesStatus.pending:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
+    }
+
+    await this.updateMedicalAppointmentDate(date)
+  }
+
+  async findMedicalAppointmentDates(
+    filters: object | object[],
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityFactory.findAll(
+      filters,
+      attributes,
+      relationAttributes
+    )
+  }
+
+  // Get para traer todas las fechas que un médico previamente subió al sistema
+  async getAllMedicalAppoitmentDates(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.cancelled,
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    return await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+  }
+
+  // Solo trae las fechas selected y pending
+  async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    return await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+  }
 }
