@@ -21,7 +21,7 @@ export const createDates = async (
         hours
       )
 
-    //const datesToFrontEnd = medicalAppointmentDates
+    // const datesToFrontEnd = medicalAppointmentDates
 
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
