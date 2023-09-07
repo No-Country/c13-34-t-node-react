@@ -1,7 +1,8 @@
+import { In } from 'typeorm'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
-import type { FindResult } from '../types/entity.types'
+import type { FindResult, FindResults } from '../types/entity.types'
 import {
   MedicalAppointmentDatesStatus,
   type ConvertedMedicalAppointmentDates,
@@ -115,7 +116,6 @@ export class MedicalAppointmentDatesService {
   // Cambia el estado de la fecha de una cita médica a:
   // selected --> cancelled
   // pending <--> cancelled, y viceversa
-
   async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
     const date = await this.findMedicalAppointmentDate(
       { id },
@@ -144,5 +144,53 @@ export class MedicalAppointmentDatesService {
     }
 
     await this.updateMedicalAppointmentDate(date)
+  }
+
+  async findMedicalAppointmentDates(
+    filters: object | object[],
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityFactory.findAll(
+      filters,
+      attributes,
+      relationAttributes
+    )
+  }
+
+  // Get para traer todas las fechas que un médico previamente subió al sistema
+  async getAllMedicalAppoitmentDates(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.cancelled,
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    const [dates, count] = await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+
+    const convertedDates = dates.map((medicalAppoinmentDate) => {
+      return {
+        ...medicalAppoinmentDate,
+        date: secondsToDate(medicalAppoinmentDate.date)
+      }
+    })
+
+    return [convertedDates, count]
   }
 }

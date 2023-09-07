@@ -65,3 +65,31 @@ export const toggleStatusMedicalAppointmentDate = async (
     next(err)
   }
 }
+
+export const getAllDateByDoctor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.sessionUser as User
+    const [dates, count] =
+      await medicalAppointmentDatesService.getAllMedicalAppoitmentDates(id)
+    res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      dates,
+      count
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}

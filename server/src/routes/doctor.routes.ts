@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createDates,
+  getAllDateByDoctor,
   toggleStatusMedicalAppointmentDate
 } from '../controllers/medical.appointment.dates.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
@@ -24,3 +25,5 @@ doctorRouter.put(
   schemaValidator(idSchema),
   toggleStatusMedicalAppointmentDate
 )
+
+doctorRouter.get('/get-all-dates-by-doctor', getAllDateByDoctor)

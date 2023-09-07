@@ -50,5 +50,6 @@ export enum ERROR_MSGS {
   PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.',
   MEDICAL_APPOINTMENT_DATE_CANCELLED_FAIL = 'Error al cancelar la fecha',
   DOCTORS_NOT_FOUND = 'No hay doctores cons disponibilidad horaria.',
-  DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.'
+  DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.',
+  GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor'
 }

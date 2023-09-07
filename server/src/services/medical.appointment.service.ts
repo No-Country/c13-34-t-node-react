@@ -1,12 +1,11 @@
-import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
-import type { MedicalAppointment, Patient, User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import type { MedicalAppointment, Patient, User } from '../entities'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
+import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
-import { EntityFactory } from './factory/entity.factory'
 import { medicalAppointmentDatesService, patientService } from './'
-import { MESSAGES } from '../constants/msgs'
+import { EntityFactory } from './factory/entity.factory'
 
 export class MedicalAppointmentService {
   private readonly entityFactory: EntityFactory
