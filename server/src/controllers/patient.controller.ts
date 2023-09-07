@@ -44,3 +44,28 @@ export const getPatient = async (
     next(err)
   }
 }
+
+// Cancelar cita de parte del paciente
+
+export const cancelPatientAppointment = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.safeData?.useParams
+    await patientService.cancelPatientAppointment(id)
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_INVALID_TYPE,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+    }
+  }
+}
