@@ -5,3 +5,6 @@ export const secondsToDate = (dateInSeconds: string): string =>
 
 export const dateToSecondsToString = (date: string): string =>
   dayjs(date).unix().toString()
+
+export const secondsToOnlyDate = (dateInSeconds: string): string =>
+  dayjs.unix(Number(dateInSeconds)).format('YYYY-MM-DD')

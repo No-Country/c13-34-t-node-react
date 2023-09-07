@@ -18,3 +18,20 @@ export type ConvertedMedicalAppointmentDates = Array<{
   status: MedicalAppointmentDatesStatus
   doctor: Doctor
 }>
+
+export interface ApiDate {
+  id?: number
+  date: string
+  status?: string
+  doctor?: Doc
+}
+
+export interface Doc {
+  id: number
+  specialty: string
+}
+
+export interface HoursType {
+  hour: string
+  status: string
+}
