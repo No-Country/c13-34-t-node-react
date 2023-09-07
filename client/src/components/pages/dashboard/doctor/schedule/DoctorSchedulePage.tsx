@@ -1,5 +1,5 @@
 import { RiEdit2Fill } from "react-icons/ri";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import { Modal } from "@/components/common/Modal";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
@@ -194,7 +194,6 @@ const StatusChipAcceptRejectButton = ({
   appoint: TAppointment;
 }) => {
   const [show, setShow] = useState(false);
-  const { mutate } = useSWRConfig();
 
   return (
     <>

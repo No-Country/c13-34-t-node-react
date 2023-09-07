@@ -22,11 +22,9 @@ export const DoctorAppointmentsPage = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleHourClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const handleHourClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    const hourSelected = e.target.value;
+    const hourSelected = e.currentTarget.value;
     const hours = hoursSelected.includes(hourSelected)
       ? hoursSelected.filter((x) => x !== hourSelected)
       : hoursSelected.concat(hourSelected);
