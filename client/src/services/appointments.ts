@@ -1,5 +1,19 @@
+import { client } from "@/config/client";
 import { TAppointment } from "@/types/appointments";
-import { client } from "../config/client";
+
+type TNewAppointment = {
+  description: string;
+};
+
+async function createAppointment(
+  dateId: number,
+  newAppointment: TNewAppointment,
+) {
+  return client.post(
+    "/api/v1/patients/medical-appointment/" + dateId,
+    newAppointment,
+  );
+}
 
 async function postDoctorAvailability(date: string, hours: string[]) {
   const res = await client.post("/api/v1/doctor/assign-available-dates", {
@@ -33,6 +47,7 @@ async function changeDoctorSchedule(id: number) {
 }
 
 export const AppointmentsService = {
+  createAppointment,
   postDoctorAvailability,
   getDoctorSchedule,
   changeDoctorSchedule,

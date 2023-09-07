@@ -156,7 +156,7 @@ export const Sidebar = () => {
               </li>
               <li>
                 <NavLink
-                  to="/plataforma/paciente/reservar-citas"
+                  to="/plataforma/paciente/reservar-cita"
                   className="text-black hover:text-dark-green font-bold flex items-center justify-start gap-4 hover:bg-lightest-green text-lg py-4 px-8 rounded-xl transition"
                 >
                   <RiCheckboxMultipleFill className="text-2xl" />
