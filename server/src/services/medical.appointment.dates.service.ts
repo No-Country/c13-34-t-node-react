@@ -177,4 +177,30 @@ export class MedicalAppointmentDatesService {
       relationAttributes
     )
   }
+
+  // Solo trae las fechas selected y pending
+  async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    return await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+  }
 }

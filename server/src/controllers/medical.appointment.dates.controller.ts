@@ -1,13 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { HoursType } from '../types/medical.appointment.dates.types'
+import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
-import type {
-  ConvertedMedicalAppointmentDates,
-  HoursType
-} from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 
 export const createDates = async (
@@ -119,17 +116,15 @@ export const getAllHoursByDoctorDate = async (
         return itemDate === date
       })
 
-      const hours: HoursType[] = matchingHours.map(
-        (item: ConvertedMedicalAppointmentDates) => {
-          const parts = item.date.split(' ')
-          const hour = parts[1]
-          const obj: HoursType = {
-            hour,
-            status: item.status ?? ''
-          }
-          return obj
+      const hours: HoursType[] = matchingHours.map((item) => {
+        const parts = item.date.split(' ')
+        const hour = parts[1]
+        const obj: HoursType = {
+          hour,
+          status: item.status ?? ''
         }
-      )
+        return obj
+      })
 
       res.status(HTTPCODES.OK).json({
         status: MESSAGES.SUCCESS,
