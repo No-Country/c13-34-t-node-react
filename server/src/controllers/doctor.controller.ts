@@ -5,7 +5,6 @@ import { HTTPCODES } from '../constants/httpCodes'
 import { doctorService } from '../services'
 import { MESSAGES } from '../constants/msgs'
 import { UserStatus } from '../types/user.types'
-import { DoctorSpecialty } from '../types/doctor.types'
 
 export const getDoctors = async (
   req: Request,
@@ -14,14 +13,22 @@ export const getDoctors = async (
 ) => {
   try {
     const [doctors, results] = await doctorService.findDoctors(
-      { specialty: DoctorSpecialty.general },
-      false,
       {
         user: {
           status: UserStatus.enable
+        }
+      },
+      {
+        user: {
+          firstName: true,
+          lastName: true,
+          email: true,
+          telephone: true,
+          status: true
         },
-        medicalAppointmentDates: true
-      }
+        medicalAppointmentDates: { id: true, date: true, status: true }
+      },
+      { user: true, medicalAppointmentDates: true }
     )
 
     return res.status(HTTPCODES.OK).json({
@@ -30,7 +37,6 @@ export const getDoctors = async (
       doctors
     })
   } catch (err) {
-    console.log(err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(
