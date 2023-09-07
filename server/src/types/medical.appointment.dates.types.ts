@@ -12,23 +12,11 @@ export enum MedicalAppointmentDatesStatus {
   cancelled = 'cancelled'
 }
 
-export type ConvertedMedicalAppointmentDates = Array<{
+export interface ConvertedMedicalAppointmentDates {
   date: string
-  id: number
-  status: MedicalAppointmentDatesStatus
-  doctor: Doctor
-}>
-
-export interface ApiDate {
   id?: number
-  date: string
-  status?: string
-  doctor?: Doc
-}
-
-export interface Doc {
-  id: number
-  specialty: string
+  status?: MedicalAppointmentDatesStatus
+  doctor?: Doctor
 }
 
 export interface HoursType {

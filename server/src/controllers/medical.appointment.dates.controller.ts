@@ -5,7 +5,7 @@ import { MESSAGES } from '../constants/msgs'
 import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
 import type {
-  ApiDate,
+  ConvertedMedicalAppointmentDates,
   HoursType
 } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
@@ -119,15 +119,17 @@ export const getAllHoursByDoctorDate = async (
         return itemDate === date
       })
 
-      const hours: HoursType[] = matchingHours.map((item: ApiDate) => {
-        const parts = item.date.split(' ')
-        const hour = parts[1]
-        const obj: HoursType = {
-          hour,
-          status: item.status ?? ''
+      const hours: HoursType[] = matchingHours.map(
+        (item: ConvertedMedicalAppointmentDates) => {
+          const parts = item.date.split(' ')
+          const hour = parts[1]
+          const obj: HoursType = {
+            hour,
+            status: item.status ?? ''
+          }
+          return obj
         }
-        return obj
-      })
+      )
 
       res.status(HTTPCODES.OK).json({
         status: MESSAGES.SUCCESS,

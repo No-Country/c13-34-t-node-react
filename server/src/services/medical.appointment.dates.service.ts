@@ -27,7 +27,7 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
-  ): Promise<ConvertedMedicalAppointmentDates> {
+  ): Promise<ConvertedMedicalAppointmentDates[]> {
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
