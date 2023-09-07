@@ -5,7 +5,7 @@ import { RiEyeFill, RiEdit2Fill, RiEditBoxLine } from "react-icons/ri";
 import useSWR, { useSWRConfig } from "swr";
 import { TRole, TUser, TUserStatus } from "@/types/user";
 import { Modal } from "@/components/common/Modal";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 
 const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
@@ -16,19 +16,38 @@ export const AdminUsersPage = () => {
     UsersService.getHighLevelRolesUsers,
   );
 
+  const [usersData, setUsersData] = useState<TUser[]>();
   const [selectedRole, setSelectedRole] = useState<TRole | "todos">("todos");
+  const [searchTerm, setSearchTerm] = useState("");
+  const originalUsers = useRef<TUser[]>([]);
 
-  if (error) return <div> Ha ocurrido un error</div>;
-  if (!data) return <div> Cargando...</div>;
+  useEffect(() => {
+    if (data) {
+      setUsersData(data.users);
+      originalUsers.current = data.users;
+    }
+  }, [data]);
 
-  const { users } = data;
+  const filteredUsersByInput = useMemo(() => {
+    const properties: (keyof TUser)[] = ["firstName", "lastName", "email"];
+    return searchTerm
+      ? usersData?.filter((user) =>
+          properties.some((property) =>
+            user[property]
+              .toString()
+              .toLocaleLowerCase()
+              .includes(searchTerm.toLocaleLowerCase()),
+          ),
+        )
+      : usersData;
+  }, [usersData, searchTerm]);
 
   const filteredUsers =
     selectedRole !== "todos"
-      ? users.filter((user) => user.role === selectedRole)
-      : users;
+      ? filteredUsersByInput?.filter((user) => user.role === selectedRole)
+      : filteredUsersByInput;
 
-  return (
+  return usersData ? (
     <div className="bg-gray-50">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
         <h2 className="text-lg font-bold uppercase">Usuarios</h2>
@@ -79,14 +98,15 @@ export const AdminUsersPage = () => {
           </button>
         </div>
         <div className="bg-gray-50 mx-4 my-0 p-4 flex items-center gap-8">
-          <form action="" className="relative">
+          <div className="relative">
             <RiSearchLine className="absolute text-gray-400 opacity-60 top-3 left-4 text-lg" />
             <input
               type="text"
-              placeholder="Buscar usuarios"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Buscar por nombre, apellido o correo"
               className="bg-white outline-none py-1.5 pl-12 pr-4 rounded-2xl text-lg text-dark-green border border-gray-200 w-96"
             />
-          </form>
+          </div>
           <button className="text-white items-center bg-primary-green hover:bg-dark-green text-lg py-1 px-6 rounded-xl border hover:border-dark-green transition">
             Agregar nuevo usuario +
           </button>
@@ -130,7 +150,7 @@ export const AdminUsersPage = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {filteredUsers.map((user) => (
+              {filteredUsers?.map((user) => (
                 <tr key={user.id} className="bg-white">
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <NavLink
@@ -186,6 +206,10 @@ export const AdminUsersPage = () => {
         </div>
       </div>
     </div>
+  ) : error ? (
+    <div> Ha ocurrido un error</div>
+  ) : (
+    <div> Cargando...</div>
   );
 };
 
@@ -243,7 +267,8 @@ const StatusChipAcceptRejectButton = ({ user }: { user: TUser }) => {
             </p>
             <div className="flex gap-2 justify-center">
               <button
-                className="bg-red-600 text-white rounded-xl py-1 px-2"
+                className="disabled:bg-slate-300 bg-red-600 text-white rounded-xl py-1 px-2"
+                disabled={user.status === "disable"}
                 onClick={async () => {
                   await UsersService.deletedHighLevelRoleUser(user.id);
                   await mutate(getHighLevelRolesUsersKey);
@@ -253,7 +278,8 @@ const StatusChipAcceptRejectButton = ({ user }: { user: TUser }) => {
                 Rechazar
               </button>
               <button
-                className="bg-green-600 text-white rounded-xl py-1 px-2"
+                className="disabled:bg-slate-300 bg-green-600 text-white rounded-xl py-1 px-2"
+                disabled={user.status === "enable"}
                 onClick={async () => {
                   await UsersService.acceptHighLevelRoleUser(user.id);
                   await mutate(getHighLevelRolesUsersKey);
