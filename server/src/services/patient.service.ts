@@ -26,6 +26,6 @@ export class PatientService {
   }
 
   async createPatient(patient: Patient): Promise<Patient> {
-    return (await this.entityFactory.create(patient)) as Patient
+    return (await this.entityFactory.create(patient, false)) as Patient
   }
 }

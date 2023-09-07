@@ -12,12 +12,10 @@ export const approveDoctorsAndAdminsRegistration = async (
 ) => {
   try {
     const { id } = req.safeData?.params
-    const updatedUser = await userService.approveAdminDocsRegistration(id)
+    await userService.approveAdminDocsRegistration(id)
 
-    return res.status(HTTPCODES.OK).json({
-      status: MESSAGES.SUCCESS,
-      message: MESSAGES.ADMIN_REGISTRATION_APPROVAL_OK,
-      updatedUser
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {

@@ -1,16 +1,17 @@
+import { In } from 'typeorm'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
-import type { FindResult } from '../types/entity.types'
-import type {
-  ConvertedMedicalAppointmentDates,
-  MedicalAppointmentDatesRepository
-} from '../types/medical.appointment.dates.types'
+import type { FindResult, FindResults } from '../types/entity.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import {
+  MedicalAppointmentDatesStatus,
+  type MedicalAppointmentDatesRepository
+} from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
+import { dateToSecondsToString } from '../utils/datejs'
 import { unifyDates } from '../utils/unify.dates'
-import { EntityFactory } from './factory/entity.factory'
 import { doctorService } from './'
-import { dateToSecondsToString, secondsToDate } from '../utils/datejs'
+import { EntityFactory } from './factory/entity.factory'
 
 export class MedicalAppointmentDatesService {
   private readonly entityFactory: EntityFactory
@@ -25,7 +26,7 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
-  ): Promise<ConvertedMedicalAppointmentDates> {
+  ): Promise<MedicalAppointmentDates[]> {
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
@@ -57,7 +58,8 @@ export class MedicalAppointmentDatesService {
         const createDate = { date: dateInSeconds } as MedicalAppointmentDates
         createDate.doctor = doctorExists || (doctorCreated as Doctor)
         return await (this.entityFactory.create(
-          createDate
+          createDate,
+          true
         ) as Promise<MedicalAppointmentDates>)
       }
 
@@ -80,15 +82,8 @@ export class MedicalAppointmentDatesService {
 
       return dateFromDB
     })
-    const datesCreated = await Promise.all(createDates)
-    const convertDates = datesCreated.map((medicalAppoinmentDate) => {
-      return {
-        ...medicalAppoinmentDate,
-        date: secondsToDate(medicalAppoinmentDate.date)
-      }
-    })
 
-    return convertDates
+    return await Promise.all(createDates)
   }
 
   async findMedicalAppointmentDate(
@@ -109,5 +104,103 @@ export class MedicalAppointmentDatesService {
     medicalAppoinmentDate: MedicalAppointmentDates
   ): Promise<FindResult> {
     return await this.entityFactory.updateOne(medicalAppoinmentDate)
+  }
+
+  // Cambia el estado de la fecha de una cita médica a:
+  // selected --> cancelled
+  // pending <--> cancelled, y viceversa
+  async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
+    const date = await this.findMedicalAppointmentDate(
+      { id },
+      false,
+      false,
+      true
+    )
+
+    if (!date) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT,
+        HTTPCODES.NOT_FOUND
+      )
+    }
+
+    switch (date.status) {
+      case MedicalAppointmentDatesStatus.selected:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
+      case MedicalAppointmentDatesStatus.cancelled:
+        date.status = MedicalAppointmentDatesStatus.pending
+        break
+      case MedicalAppointmentDatesStatus.pending:
+        date.status = MedicalAppointmentDatesStatus.cancelled
+        break
+    }
+
+    await this.updateMedicalAppointmentDate(date)
+  }
+
+  async findMedicalAppointmentDates(
+    filters: object | object[],
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityFactory.findAll(
+      filters,
+      attributes,
+      relationAttributes
+    )
+  }
+
+  // Get para traer todas las fechas que un médico previamente subió al sistema
+  async getAllMedicalAppoitmentDates(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.cancelled,
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    return await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
+  }
+
+  // Solo trae las fechas selected y pending
+  async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id } },
+      false,
+      false,
+      false
+    )
+
+    const filters = {
+      doctor: { id: doctorExists.id },
+      status: In([
+        MedicalAppointmentDatesStatus.pending,
+        MedicalAppointmentDatesStatus.selected
+      ])
+    }
+
+    const relationAttributes = { doctor: true }
+
+    return await this.findMedicalAppointmentDates(
+      filters,
+      false,
+      relationAttributes
+    )
   }
 }

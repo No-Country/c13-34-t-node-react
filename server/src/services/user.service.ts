@@ -19,11 +19,9 @@ import { generateJWT } from '../utils/jwt'
 import { EntityFactory } from './factory/entity.factory'
 
 export class UserService {
-  //private readonly userRepository: UserRepository
   private readonly entityFactory: EntityFactory
 
   constructor(userRepository: UserRepository) {
-    //this.userRepository = userRepository
     this.entityFactory = new EntityFactory(userRepository)
   }
 
@@ -146,7 +144,10 @@ export class UserService {
   async createUser(user: User): Promise<UserDto> {
     const assignedUser = checkRoleForAssignment(user)
     assignedUser.password = await hashPassword(user.password)
-    const userCreated = (await this.entityFactory.create(assignedUser)) as User
+    const userCreated = (await this.entityFactory.create(
+      assignedUser,
+      false
+    )) as User
     return userDto(userCreated)
   }
 

@@ -47,5 +47,10 @@ export enum ERROR_MSGS {
   MEDICAL_APPOINTMENT_DATES_HOURS_REPEATED = 'Algún horario esta repetido.',
   MEDICAL_APPOINTMENT_DATES_HOURS_INVALID_FORMAT = 'La hora tiene un formato incorrecto',
   MEDICAL_APPOINTMENT_DATE_NOT_EXISTS_OR_CANCELLED_OR_COMPLETED = 'La fecha que elegiste ya fue seleccionada, no existe o se ha concluido la cita médica.',
-  PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.'
+  PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.',
+  MEDICAL_APPOINTMENT_DATE_CANCELLED_FAIL = 'Error al cancelar la fecha',
+  DOCTORS_NOT_FOUND = 'No hay doctores cons disponibilidad horaria.',
+  DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.',
+  GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor',
+  GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL = 'Error al buscar las horas previamente elegidas por un doctor a partir de una fecha específica.'
 }

@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
@@ -19,5 +20,6 @@ export class MedicalRecord extends BaseEntity {
   description: string
 
   @ManyToOne((_type) => Patient, (patient) => patient.medicalRecords)
+  @JoinColumn({ name: 'patient_id' })
   patient: Patient
 }
