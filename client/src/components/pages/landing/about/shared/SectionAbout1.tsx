@@ -41,7 +41,7 @@ export const SectionAbout1 = () => {
 const Button: FC = () => {
   return (
     <button className="w-full 2xl:w-[325px] py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
-      botón de libro
+      Agendar
     </button>
   );
 };

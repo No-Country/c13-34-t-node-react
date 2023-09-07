@@ -36,10 +36,10 @@ export const Welcome = () => {
 
             <div className="flex flex-col justify-center gap-4 2xl:gap-8">
               <button className="w-full py-3 rounded-2xl text-xl hover:text-white text-primary-green bg-white hover:bg-primary-green border-primary-green border-[2px] transition duration-300 font-medium">
-                botón reprogramar
+                Reprogramar
               </button>
               <button className="w-full py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
-                botón de libro
+                Agendar
               </button>
             </div>
           </div>
