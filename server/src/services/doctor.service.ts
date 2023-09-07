@@ -5,6 +5,7 @@ import { HTTPCODES } from '../constants/httpCodes'
 import { FindResults } from '../types/entity.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
+import { UserStatus } from '../types/user.types'
 
 export class DoctorService {
   private readonly doctorRepository: DoctorRepository

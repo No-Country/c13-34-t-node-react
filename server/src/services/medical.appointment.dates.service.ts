@@ -1,15 +1,14 @@
 import { In } from 'typeorm'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
 import type { Doctor, MedicalAppointmentDates, User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
 import {
   MedicalAppointmentDatesStatus,
-  type ConvertedMedicalAppointmentDates,
   type MedicalAppointmentDatesRepository
 } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
-import { dateToSecondsToString, secondsToDate } from '../utils/datejs'
+import { dateToSecondsToString } from '../utils/datejs'
 import { unifyDates } from '../utils/unify.dates'
 import { doctorService } from './'
 import { EntityFactory } from './factory/entity.factory'
@@ -27,7 +26,7 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
-  ): Promise<ConvertedMedicalAppointmentDates> {
+  ): Promise<MedicalAppointmentDates[]> {
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
@@ -59,7 +58,8 @@ export class MedicalAppointmentDatesService {
         const createDate = { date: dateInSeconds } as MedicalAppointmentDates
         createDate.doctor = doctorExists || (doctorCreated as Doctor)
         return await (this.entityFactory.create(
-          createDate
+          createDate,
+          true
         ) as Promise<MedicalAppointmentDates>)
       }
 
@@ -82,15 +82,8 @@ export class MedicalAppointmentDatesService {
 
       return dateFromDB
     })
-    const datesCreated = await Promise.all(createDates)
-    const convertDates = datesCreated.map((medicalAppoinmentDate) => {
-      return {
-        ...medicalAppoinmentDate,
-        date: secondsToDate(medicalAppoinmentDate.date)
-      }
-    })
 
-    return convertDates
+    return await Promise.all(createDates)
   }
 
   async findMedicalAppointmentDate(
@@ -178,19 +171,10 @@ export class MedicalAppointmentDatesService {
 
     const relationAttributes = { doctor: true }
 
-    const [dates, count] = await this.findMedicalAppointmentDates(
+    return await this.findMedicalAppointmentDates(
       filters,
       false,
       relationAttributes
     )
-
-    const convertedDates = dates.map((medicalAppoinmentDate) => {
-      return {
-        ...medicalAppoinmentDate,
-        date: secondsToDate(medicalAppoinmentDate.date)
-      }
-    })
-
-    return [convertedDates, count]
   }
 }

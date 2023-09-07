@@ -22,5 +22,6 @@ export class MedicalAppointment extends BaseEntity {
   medicalAppointmentDate: MedicalAppointmentDates
 
   @ManyToOne((_type) => Patient, (patient) => patient.medicalAppointments)
+  @JoinColumn({ name: "patient_id" })
   patient: Patient
 }

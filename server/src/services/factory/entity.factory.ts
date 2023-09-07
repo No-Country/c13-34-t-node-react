@@ -46,10 +46,13 @@ export class EntityFactory {
     return entity
   }
 
-  async create(data: ObjectLiteral): Promise<ObjectLiteral> {
+  async create(
+    data: ObjectLiteral,
+    listeners: boolean
+  ): Promise<ObjectLiteral> {
     const created = this.entityRepository.create(data)
     try {
-      return await this.entityRepository.save(created, { listeners: false })
+      return await this.entityRepository.save(created, { listeners })
     } catch (e) {
       console.log(e)
       throw new AppError(

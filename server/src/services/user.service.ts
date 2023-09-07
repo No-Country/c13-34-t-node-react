@@ -1,7 +1,4 @@
 import { In, Not } from 'typeorm'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
-import { userDto } from '../dto/user.dto'
 import type { User } from '../entities'
 import type { FindResult, FindResults } from '../types/entity.types'
 import type {
@@ -11,6 +8,9 @@ import type {
   UserDto,
   UserRepository
 } from '../types/user.types'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HTTPCODES } from '../constants/httpCodes'
+import { userDto } from '../dto/user.dto'
 import { UserRole, UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 import { comparePasswords, hashPassword } from '../utils/bcrypt'
@@ -144,7 +144,10 @@ export class UserService {
   async createUser(user: User): Promise<UserDto> {
     const assignedUser = checkRoleForAssignment(user)
     assignedUser.password = await hashPassword(user.password)
-    const userCreated = (await this.entityFactory.create(assignedUser)) as User
+    const userCreated = (await this.entityFactory.create(
+      assignedUser,
+      false
+    )) as User
     return userDto(userCreated)
   }
 

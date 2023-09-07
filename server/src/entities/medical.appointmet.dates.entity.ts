@@ -1,4 +1,6 @@
 import {
+  AfterInsert,
+  AfterLoad,
   BaseEntity,
   Column,
   Entity,
@@ -8,6 +10,7 @@ import {
 } from 'typeorm'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 import { Doctor } from './doctor.entity'
+import { secondsToDate } from '../utils/datejs'
 
 @Entity({ name: 'medical_appointments_dates' })
 export class MedicalAppointmentDates extends BaseEntity {
@@ -16,6 +19,12 @@ export class MedicalAppointmentDates extends BaseEntity {
 
   @Column({ type: 'varchar' })
   date: string
+
+  @AfterLoad()
+  @AfterInsert()
+  convertDate() {
+    this.date = secondsToDate(this.date)
+  }
 
   @Column({
     type: 'enum',

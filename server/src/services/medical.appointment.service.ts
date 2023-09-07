@@ -81,7 +81,8 @@ export class MedicalAppointmentService {
     } as MedicalAppointment
     // devolver la cita creada
     return (await this.entityFactory.create(
-      medicalAppoinment
+      medicalAppoinment,
+      false
     )) as MedicalAppointment
   }
 }
