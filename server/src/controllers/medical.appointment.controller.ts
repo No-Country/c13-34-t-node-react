@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { User } from '../entities'
-import { AppError } from '../utils/app.error'
-import { medicalAppointmentService, patientService } from '../services'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { ERROR_MSGS } from '../constants/errorMsgs'
+import type { User } from '../entities'
+import { medicalAppointmentService } from '../services'
+import { AppError } from '../utils/app.error'
 
 export const createMedicalAppointment = async (
   req: Request,
