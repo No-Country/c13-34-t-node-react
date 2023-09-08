@@ -9,9 +9,9 @@ export const Navbar = () => {
 
   return (
     <div className="fixed xl:static z-50 w-full flex justify-between items-center py-3 px-4 xl:px-36 bg-white text-black text-2xl">
-      <div className="flex items-center gap-1 bg-white">
+      <NavLink to="/" className="flex items-center gap-1 bg-white">
         <img src={logo} alt="logo" className="h-[50px] relative z-50" />
-      </div>
+      </NavLink>
       <nav
         className={` ${
           showSideMenu ? "flex" : "hidden"
@@ -30,9 +30,9 @@ export const Navbar = () => {
               stroke="currentColor"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M6 18L18 6M6 6l12 12"
               ></path>
             </svg>

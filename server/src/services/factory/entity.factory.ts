@@ -1,15 +1,15 @@
-import { type ObjectLiteral } from 'typeorm'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { HTTPCODES } from '../constants/httpCodes'
+import type { ObjectLiteral } from 'typeorm'
+import type { OptionalObjectType } from '../../types/global.types'
+import { ERROR_MSGS } from '../../constants/errorMsgs'
+import { HTTPCODES } from '../../constants/httpCodes'
 import {
   type FindResult,
   type FindResults,
   type RepositoryType
-} from '../types/entity.types'
-import { type OptionalObjectType } from '../types/global.types'
-import { AppError } from '../utils/app.error'
+} from '../../types/entity.types'
+import { AppError } from '../../utils/app.error'
 
-export class EntityService {
+export class EntityFactory {
   private readonly entityRepository: RepositoryType
 
   constructor(repository: RepositoryType) {
@@ -46,11 +46,15 @@ export class EntityService {
     return entity
   }
 
-  async create(data: ObjectLiteral): Promise<ObjectLiteral> {
+  async create(
+    data: ObjectLiteral,
+    listeners: boolean
+  ): Promise<ObjectLiteral> {
     const created = this.entityRepository.create(data)
     try {
-      return await this.entityRepository.save(created, { listeners: false })
+      return await this.entityRepository.save(created, { listeners })
     } catch (e) {
+      console.log(e)
       throw new AppError(
         ERROR_MSGS.RESOURCE_CREATION_ERROR,
         HTTPCODES.INTERNAL_SERVER_ERROR

@@ -1,3 +1,8 @@
 export const DoctorDashboardPage = () => {
-  return <div>Doctor: Dashboard</div>;
+  return (
+    <div className="p-8 bg-white">
+      <div>Doctor</div>
+      <div></div>
+    </div>
+  );
 };

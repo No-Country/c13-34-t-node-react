@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { DecodedAuth } from '../types/global.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { userService } from '../services/factory/entities.factory'
-import type { DecodedAuth } from '../types/global.types'
+import { userService } from '../services'
 import { AppError } from '../utils/app.error'
 import { verifyJWT } from '../utils/jwt'
 
@@ -43,14 +43,14 @@ export const protect = async (
     return
   }
 
-  const attributes = {
-    password: false,
-    status: false
-  }
+  // const attributes = {
+  //   password: false,
+  //   status: false
+  // }
 
   const userExists = await userService.findUser(
     { id: decoded.id },
-    attributes,
+    false,
     false,
     false
   )

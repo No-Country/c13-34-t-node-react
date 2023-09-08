@@ -11,7 +11,7 @@ export default {
         "lightest-green": "#EBFFF5",
         "other-red": "#DC143C",
         "other-blue": "#3E68FF",
-        "other-yellow": "#FEEB97",
+        "other-yellow": "#d8be48",
       },
       fontFamily: {
         caudex: ["Caudex", "serif"],
@@ -19,5 +19,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    
+  ],
 };

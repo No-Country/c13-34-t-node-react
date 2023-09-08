@@ -1,6 +1,9 @@
 export type TRole = "patient" | "doctor" | "admin";
+export type TUserStatus = "disable" | "enable" | "pending";
+export type TAppointmentStatus = "selected" | "pending";
 
 export type TUser = {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -8,9 +11,11 @@ export type TUser = {
   dateOfBirth: string;
   genre: "male" | "female";
   role: TRole;
+  status: TUserStatus;
+  appointment: TAppointmentStatus;
 };
 
-export type TNewUser = TUser & {
+export type TNewUser = Omit<TUser, "id" | "status" | "appointment"> & {
   password: string;
   confirmPassword: string;
 };

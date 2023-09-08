@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { User } from '../entities/'
+import type { Login } from '../types/user.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { type User } from '../entities/'
-import { userService } from '../services/factory/entities.factory'
-import { type Login } from '../types/user.types'
+import { userService } from '../services'
 import { AppError } from '../utils/app.error'
 
 export const signUp = async (

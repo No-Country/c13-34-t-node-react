@@ -7,8 +7,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { MedicalAppointment } from './medical.appointment.entity'
-import { MedicalRecord } from './medical.record.entity'
+import { DoctorSpecialty } from '../types/doctor.types'
+import { MedicalAppointmentDates } from './medical.appointmet.dates.entity'
 import { User } from './user.entity'
 
 @Entity({ name: 'doctors' })
@@ -21,14 +21,11 @@ export class Doctor extends BaseEntity {
   user: User
 
   @OneToMany(
-    (_type) => MedicalAppointment,
-    (medicalAppointment) => medicalAppointment.doctor
+    (_type) => MedicalAppointmentDates,
+    (medicalAppointmentsDates) => medicalAppointmentsDates.doctor
   )
-  medicalApointments: MedicalAppointment[]
+  medicalAppointmentDates: MedicalAppointmentDates[]
 
-  @OneToMany((_type) => MedicalRecord, (medicalRecord) => medicalRecord.doctor)
-  medicalRecords: MedicalRecord[]
-
-  @Column({ type: 'varchar' })
-  speciality: string
+  @Column({ type: 'varchar', default: DoctorSpecialty.general })
+  specialty: string
 }

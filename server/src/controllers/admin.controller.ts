@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from 'express'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { userService } from '../services/factory/entities.factory'
+import { userService } from '../services'
 import { AppError } from '../utils/app.error'
 
 export const approveDoctorsAndAdminsRegistration = async (
@@ -11,23 +11,11 @@ export const approveDoctorsAndAdminsRegistration = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.params
-    const updatedUser = await userService.approveAdminDocsRegistration(
-      Number(userId)
-    )
+    const { id } = req.safeData?.params
+    await userService.approveAdminDocsRegistration(id)
 
-    if (updatedUser == null) {
-      return res.status(HTTPCODES.BAD_REQUEST).json({
-        status: ERROR_MSGS.FAIL,
-        message: ERROR_MSGS.ADMIN_REGISTRATION_APPROVAL_FAIL,
-        updatedUser
-      })
-    }
-
-    return res.status(HTTPCODES.OK).json({
-      status: MESSAGES.SUCCESS,
-      message: MESSAGES.ADMIN_REGISTRATION_APPROVAL_OK,
-      updatedUser
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
@@ -49,23 +37,11 @@ export const cancelDoctorsAndAdminsRegistration = async (
   next: NextFunction
 ) => {
   try {
-    const { userId } = req.params
-    const canceledUser = await userService.cancelAdminDocsRegistration(
-      Number(userId)
-    )
+    const { id } = req.safeData?.params
+    await userService.cancelAdminDocsRegistration(id)
 
-    if (canceledUser == null) {
-      return res.status(HTTPCODES.BAD_REQUEST).json({
-        status: ERROR_MSGS.FAIL,
-        message: ERROR_MSGS.ADMIN_REGISTRATION_CANCELATION_FAIL,
-        canceledUser
-      })
-    }
-
-    return res.status(HTTPCODES.OK).json({
-      status: MESSAGES.SUCCESS,
-      message: MESSAGES.ADMIN_REGISTRATION_CANCELATION_OK,
-      canceledUser
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
@@ -88,7 +64,7 @@ export const getAllDoctorsAndAdmins = async (
 ) => {
   try {
     const requesterId = req.sessionUser?.id
-    const { users, count } =
+    const [users, count] =
       await userService.findAllDoctorsAndAdmins(requesterId)
 
     return res.status(HTTPCODES.OK).json({

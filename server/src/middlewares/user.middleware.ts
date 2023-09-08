@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import type { User } from '../entities'
-import { userService } from '../services/factory/entities.factory'
+import { userService } from '../services'
 import { UserStatus } from '../types/user.types'
 import { AppError } from '../utils/app.error'
 

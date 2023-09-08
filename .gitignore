@@ -8,11 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Client
-client/node_modules
-client/dist
-client/.next
 client/.DS_Store
-client/.env
 
 # Server
 server/dist
@@ -33,7 +29,7 @@ server/postgres
 *.njsproj
 *.sln
 *.sw?
-.env
+/.env
 
 
 dist-ssr

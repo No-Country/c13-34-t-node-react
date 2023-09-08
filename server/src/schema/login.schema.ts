@@ -1,7 +1,7 @@
 import validator from 'validator'
 import z from 'zod'
 import { MESSAGES } from '../constants/msgs'
-import { userService } from '../services/factory/entities.factory'
+import { userService } from '../services'
 import { UserStatus } from '../types/user.types'
 
 export const loginSchema = z.object({
