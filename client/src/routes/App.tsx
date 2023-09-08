@@ -35,7 +35,7 @@ import { PatientDashboardPage } from "@/components/pages/dashboard/patient/dashb
 import { PatientAppointmentsPage } from "@/components/pages/dashboard/patient/appointments/PatientAppointmentsPage";
 import { PatientBookAppointmentPage } from "@/components/pages/dashboard/patient/book-appointment/PatientBookAppointmentPage";
 import { PatientDoctorsPage } from "@/components/pages/dashboard/patient/doctors/PatientDoctorsPage";
-import { PatientDoctorPage } from "@/components/pages/dashboard/patient/doctors/PatientDoctorPage";
+// import { PatientDoctorPage } from "@/components/pages/dashboard/patient/doctors/PatientDoctorPage";
 import { PatientMedicalRecordsPage } from "@/components/pages/dashboard/patient/medical-records/PatientMedicalRecordsPage";
 // 404
 import { NotFound } from "@/components/pages/NotFound";
@@ -100,9 +100,8 @@ export const App = () => {
                   />
                   <Route path="panel" element={<PatientDashboardPage />} />
                   <Route path="doctores" element={<PatientDoctorsPage />} />
-                  <Route path="doctor" element={<PatientDoctorPage />} />
                   <Route
-                    path="reservar-citas"
+                    path="reservar-cita"
                     element={<PatientBookAppointmentPage />}
                   />
                   <Route path="citas" element={<PatientAppointmentsPage />} />

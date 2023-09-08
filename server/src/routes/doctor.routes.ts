@@ -21,7 +21,7 @@ doctorRouter.post(
   createDates
 )
 
-doctorRouter.put(
+doctorRouter.patch(
   '/toggle-medical-appointment-date-status/:id',
   schemaValidator(idSchema),
   toggleStatusMedicalAppointmentDate
