@@ -4,6 +4,7 @@ import { adminRouter } from './admin.routes'
 import { doctorRouter } from './doctor.routes'
 import { patientRouter } from './patient.routes'
 import { userRouter } from './user.routes'
+import { patientRouter } from './patient.routes'
 
 export const router = Router()
 
