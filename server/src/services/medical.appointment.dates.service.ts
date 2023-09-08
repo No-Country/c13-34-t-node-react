@@ -1,8 +1,8 @@
 import { In } from 'typeorm'
-import type { Doctor, MedicalAppointmentDates, User } from '../entities'
-import type { FindResult, FindResults } from '../types/entity.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import type { Doctor, MedicalAppointmentDates, User } from '../entities'
+import type { FindResult, FindResults } from '../types/entity.types'
 import {
   MedicalAppointmentDatesStatus,
   type MedicalAppointmentDatesRepository
@@ -109,13 +109,26 @@ export class MedicalAppointmentDatesService {
   // Cambia el estado de la fecha de una cita médica a:
   // selected --> cancelled
   // pending <--> cancelled, y viceversa
-  async toggleStatusMedicalAppointmentDate(id: string): Promise<void> {
+  async toggleStatusMedicalAppointmentDate(
+    id: string,
+    sessionUser: User
+  ): Promise<void> {
+    const doctorExists = await doctorService.findDoctor(
+      { user: { id: sessionUser.id } },
+      false,
+      false,
+      false
+    )
     const date = await this.findMedicalAppointmentDate(
       { id },
       false,
-      false,
+      { doctor: true },
       true
     )
+
+    if (date.doctor.id !== doctorExists.id) {
+      throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
+    }
 
     if (!date) {
       throw new AppError(
