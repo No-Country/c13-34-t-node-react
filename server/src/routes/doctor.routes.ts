@@ -10,6 +10,7 @@ import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
 import { medicalAppointmentsDatesSchema } from '../schema/medical.appointments.dates.schema'
 import { UserRole } from '../types/user.types'
+import { createMedicalRecord } from '../controllers/medical.records.controller'
 
 export const doctorRouter = Router()
 
@@ -20,8 +21,13 @@ doctorRouter.post(
   schemaValidator(medicalAppointmentsDatesSchema),
   createDates
 )
+doctorRouter.post(
+  '/create-medical-record/:id',
+  schemaValidator(idSchema),
+  createMedicalRecord
+)
 
-doctorRouter.put(
+doctorRouter.patch(
   '/toggle-medical-appointment-date-status/:id',
   schemaValidator(idSchema),
   toggleStatusMedicalAppointmentDate

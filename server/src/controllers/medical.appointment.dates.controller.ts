@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { HoursType } from '../types/medical.appointment.dates.types'
-import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
+import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
+import type { HoursType } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 
 export const createDates = async (
@@ -21,8 +21,6 @@ export const createDates = async (
         date,
         hours
       )
-
-    //const datesToFrontEnd = medicalAppointmentDates
 
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
@@ -50,8 +48,10 @@ export const toggleStatusMedicalAppointmentDate = async (
 ) => {
   try {
     const { id } = req.params
-
-    await medicalAppointmentDatesService.toggleStatusMedicalAppointmentDate(id)
+    await medicalAppointmentDatesService.toggleStatusMedicalAppointmentDate(
+      id,
+      req?.sessionUser as User
+    )
     res.status(HTTPCODES.NO_CONTENT).json({
       status: MESSAGES.SUCCESS
     })

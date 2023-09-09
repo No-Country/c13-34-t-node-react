@@ -1,246 +1,167 @@
 import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
+import { RiEyeFill } from "react-icons/ri";
+import { useState, useMemo } from "react";
+import { TDoctor, TStatus } from "@/types/doctor";
+import { Modal } from "@/components/common/Modal";
+import { UsersService } from "@/services/users";
+import useSWR from "swr";
+
+const getDoctorsKey = "getDoctors";
 
 export const PatientDoctorsPage = () => {
+  const { data, error } = useSWR(getDoctorsKey, UsersService.getDoctors);
+
+  if (error) return <div> Ha ocurrido un error</div>;
+  if (!data) return <div> Cargando...</div>;
+
+  const { doctors } = data;
+
   return (
     <div className="bg-gray-50">
-      <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
-        <h2 className="text-lg font-bold">Mis Doctores</h2>
-        <div>Notificación</div>
-      </div>
+      <div className="bg-dark-green h-52">
+        <div className="text-white px-8 py-10 flex justify-between text-lg font-bold uppercase">
+          <h2>Doctores</h2>
+          <h2>Notificación</h2>
+        </div>
 
-      <div className="bg-white m-8 rounded-tl-2xl rounded-tr-2xl">
-        <div className="p-4 flex justify-end gap-6 pr-24">
-          {/* <p className="py-1.5 font-semibold">Mostrar</p> */}
-          <button className="bg-other-blue py-2 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border  hover:border-other-blue uppercase transition text-xs font-medium">
-            Ver Todo
-          </button>
-        </div>
-        <div className="bg-gray-50 mx-4 my-0 p-4 flex items-center gap-8">
-          <form action="" className="relative">
-            <RiSearchLine className="absolute text-gray-400 opacity-60 top-3 left-4 text-lg" />
-            <input
-              type="text"
-              placeholder="Buscar doctores disponibles"
-              className="bg-white outline-none py-2 pl-12 pr-4 rounded-2xl text-lg text-gray-400 border border-gray-200 w-96"
-            />
-          </form>
-        </div>
-        <div className="overflow-auto">
-          <table className="table-auto bg-white px-4 py-8 w-full">
-            <thead className="bg-white border-b-2 border-gray-200">
-              <tr>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  No.
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Doctores
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Apellidos
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Especialidad
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Teléfono
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Correo
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Fecha
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Hora
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Cita para
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Descripcion
-                </th>
-                {/* <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Estado
-                </th> */}
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                  Opciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              <tr className="bg-gray-50">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="font-bold text-blue-500 hover:underline"
-                  >
-                    001
-                  </NavLink>
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Esmeralda Carolina
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Campos Hernandez
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Neurología
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  0123456789
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  esmeralda.usuario.2023@gmail.com
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  1988-02-08
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  12:00 PM
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Desprendimiento de retina
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Me duele mi ojo
-                </td>
-                {/* <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-green-800 bg-green-200 rounded-lg bg-opacity-50">
-                    Completado
-                  </span>
-                </td> */}
-                <td className="p-3 text-sm text-gray-700 flex items-center gap-6 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="text-white hover:bg-green-700 py-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-green-500 rounded-xl transition"
-                  >
-                    Reservar Cita
-                  </NavLink>
-                  {/* <NavLink
-                    to="/"
-                    className="text-white hover:bg-[#6d5d17] p-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-other-yellow rounded-xl transition"
-                  >
-                    Editar
-                  </NavLink> */}
-                </td>
-              </tr>
-              <tr className="bg-white">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="font-bold text-blue-500 hover:underline"
-                  >
-                    002
-                  </NavLink>
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Esmeralda Carolina
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Campos Hernandez
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Neurología
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  0123456789
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  esmeralda.usuario.2023@gmail.com
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  1988-02-08
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  11:00 AM
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Infección ocular
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Me duele mi cabeza
-                </td>
-                {/* <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-blue-800 bg-[#0b30b5] rounded-lg bg-opacity-50">
-                    Próximo
-                  </span>
-                </td> */}
-                <td className="p-3 text-sm text-gray-700  flex items-center gap-6 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="text-white hover:bg-[#870620] py-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-other-red rounded-xl transition"
-                  >
-                    Cancelar Cita
-                  </NavLink>
-                  {/* <NavLink
-                    to="/"
-                    className="text-white hover:bg-[#6d5d17] p-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-other-yellow rounded-xl transition"
-                  >
-                    Editar
-                  </NavLink> */}
-                </td>
-              </tr>
-              <tr className="bg-gray-50">
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="font-bold text-blue-500 hover:underline"
-                  >
-                    003
-                  </NavLink>
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Esmeralda Carolina
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Campos Hernandez
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Neurología
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  0123456789
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  esmeralda.usuario.2023@gmail.com
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  1988-02-08
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  7:00 PM
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Glaucoma
-                </td>
-                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  Me duele mi barriga
-                </td>
-                {/* <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                  <span className="p-1.5 text-xs font-medium uppercase tracking-wider text-red-800 bg-red-200 rounded-lg bg-opacity-50">
-                    Cancelado
-                  </span>
-                </td> */}
-                <td className="p-3 text-sm text-gray-700 flex items-center gap-6 whitespace-nowrap">
-                  <NavLink
-                    to="/"
-                    className="text-white hover:bg-[#870620] py-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-other-red rounded-xl transition"
-                  >
-                    Cancelar Cita
-                  </NavLink>
-                  {/* <NavLink
-                    to="/"
-                    className="text-white hover:bg-[#6d5d17] p-1.5 px-4 text-xs font-medium uppercase tracking-wider bg-other-yellow rounded-xl transition"
-                  >
-                    Editar
-                  </NavLink> */}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div className="bg-white mx-8 p-4 rounded-tl-2xl rounded-tr-2xl shadow-xl">
+          <div className="p-4 flex justify-between gap-6 pr-6">
+            <h2 className="text-2xl text-dark-green font-medium">
+              Lista de doctores disponibles
+            </h2>
+            <button className="bg-other-blue py-2 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border hover:border-other-blue uppercase transition text-xs font-medium">
+              Ver Todo
+            </button>
+          </div>
+          <div className="bg-gray-50 my-0 p-4 flex items-center gap-8 rounded-tl-2xl rounded-tr-2xl">
+            <form action="" className="relative">
+              <RiSearchLine className="absolute text-gray-400 opacity-60 top-3 left-4 text-lg" />
+              <input
+                type="text"
+                placeholder="Buscar doctores disponibles"
+                className="bg-white outline-none py-2 pl-12 pr-4 rounded-2xl text-lg text-gray-400 border border-gray-200 w-96"
+              />
+            </form>
+          </div>
+
+          <div className="overflow-auto">
+            <table className="table-auto bg-white px-4 py-8 w-full">
+              <thead className="bg-white border-b-2 border-gray-200">
+                <tr>
+                  <th className="p-3 w-16 text-sm font-semibold tracking-wide text-left uppercase">
+                    No.
+                  </th>
+                  <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
+                    Doctores
+                  </th>
+                  <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
+                    Apellidos
+                  </th>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Especialidad
+                  </th>
+                  <th className="p-3 flex justify-end text-sm font-semibold tracking-wide text-left uppercase pr-6">
+                    Opciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {doctors.map((doctor) => (
+                  <tr key={doctor.id} className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <NavLink
+                        to="/"
+                        className="font-bold text-blue-500 hover:underline"
+                      >
+                        {doctor.id}
+                      </NavLink>
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {doctor.user.firstName}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {doctor.user.lastName}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {doctor.specialty}
+                    </td>
+                    <td className="flex justify-end gap-3 pr-6">
+                      <DatesButton doctor={doctor} />
+
+                      <NavLink
+                        to={`/plataforma/paciente/reservar-cita?doctorId=${doctor.id}`}
+                        className="text-white hover:bg-green-700 py-1.5 my-2 px-4 text-xs font-medium uppercase tracking-wider bg-green-500 rounded-xl transition"
+                      >
+                        Reservar Cita
+                      </NavLink>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
+  );
+};
+
+const DatesButton = ({ doctor }: { doctor: TDoctor }) => {
+  const [show, setShow] = useState(false);
+
+  const dates = useMemo(() => {
+    const clonedDates = structuredClone(doctor.medicalAppointmentDates);
+    clonedDates.sort((a, b) => (a.date > b.date ? 1 : -1));
+    return clonedDates;
+  }, [doctor]);
+
+  return (
+    <>
+      <button
+        onClick={() => setShow(true)}
+        className="text-blue-500 hover:text-blue-700 transition"
+      >
+        <RiEyeFill className="text-4xl" />
+      </button>
+
+      <Modal
+        showModal={show}
+        onClose={() => setShow(false)}
+        message={
+          <div className="flex flex-col items-center justify-center xl:w-[350px] bg-dark-green rounded-md shadow-2xl pb-6">
+            <h1 className="text-white pt-4 py-4 capitalize font-caudex text-2xl">
+              {doctor.user.firstName} {doctor.user.lastName}
+            </h1>
+            <table className="table-auto">
+              <thead>
+                <tr className="text-white flex justify-between font-caudex text-xl mb-2">
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {dates.map((d) => (
+                  <tr
+                    key={d.id}
+                    className="flex items-center gap-5 font-caudex text-xl text-white"
+                  >
+                    <td>{d.date}</td>
+
+                    <td>
+                      {d.status === TStatus.Selected ? (
+                        <span className="text-red-500">Ocupado</span>
+                      ) : (
+                        <span className="text-green-500">Disponible</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        }
+      />
+    </>
   );
 };
