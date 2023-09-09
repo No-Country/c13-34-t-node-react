@@ -24,7 +24,8 @@ patientRouter.post(
   createMedicalAppointment
 )
 
-patientRouter.get(
+// cancelar cita de parte del paciente
+patientRouter.put(
   '/cancel-appointment/:id',
   schemaValidator(idSchema),
   schemaValidator(medicalAppointmentSchema),
