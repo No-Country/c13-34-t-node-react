@@ -3,9 +3,12 @@ import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
 import { createMedicalAppointment } from '../controllers/medical.appointment.controller'
 import { medicalAppointmentSchema } from '../schema/medical.appointment.schema'
+import {
+  cancelPatientAppointment,
+  getPatient
+} from '../controllers/patient.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { UserRole } from '../types/user.types'
-import { getPatient } from '../controllers/patient.controller'
 import { getDoctors } from '../controllers/doctor.controller'
 
 export const patientRouter = Router()
@@ -19,4 +22,12 @@ patientRouter.post(
   schemaValidator(idSchema),
   schemaValidator(medicalAppointmentSchema),
   createMedicalAppointment
+)
+
+// cancelar cita de parte del paciente
+patientRouter.put(
+  '/cancel-appointment/:id',
+  schemaValidator(idSchema),
+  schemaValidator(medicalAppointmentSchema),
+  cancelPatientAppointment
 )
