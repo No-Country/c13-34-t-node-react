@@ -37,6 +37,7 @@ export class MedicalRecordService {
     )
     const medicalRecordToCreate = {
       ...data,
+      date: new Date().toLocaleDateString(),
       patient
     }
 

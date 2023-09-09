@@ -43,7 +43,7 @@ export const createMedicalRecord = async (
       safeData?.params.id
     )
 
-    return res.status(HTTPCODES.OK).json({
+    return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       medicalRecord
     })
