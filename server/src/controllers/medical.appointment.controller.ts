@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { User } from '../entities'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import type { User } from '../entities'
 import { medicalAppointmentService } from '../services'
 import { AppError } from '../utils/app.error'
 

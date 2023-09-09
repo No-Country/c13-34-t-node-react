@@ -53,8 +53,10 @@ export const cancelPatientAppointment = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.safeData?.useParams
+    const { id } = req.safeData?.params
+
     await patientService.cancelPatientAppointment(id)
+
     return res.status(HTTPCODES.NO_CONTENT).json({
       status: MESSAGES.SUCCESS
     })

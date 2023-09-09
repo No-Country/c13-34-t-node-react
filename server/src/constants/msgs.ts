@@ -43,5 +43,15 @@ export enum MESSAGES {
   MEDICAL_APPOINTMENT_DESC_REQUIRED = 'La descripción es requerida.',
   MEDICAL_APPOINTMENT_DESC_MIN_LENGTH = 'La descripción debe ser más específica.',
   MEDICAL_APPOINTMENT_DESC_TYPE = 'La descrición debe ser un texto.',
-  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.'
+  MEDICAL_APPOINTMENT_DATE_CREATED = 'Tus fechas de cita médica se crearon correctamente.',
+  ALLERGIES_REQUIRED = 'Especifica si el paciente tiene o no alergias.',
+  ALLERGIES_WRONG_TYPE = 'Las alergias deben ser un texto.',
+  ALLERGIES_MIN_LENGTH = 'Las alergias deben ser de minimo 8 caracteres.',
+  ALLERGIES_MAX_LENGTH = 'Las alergias no deben superar los 255 caracteres.',
+  PREVIOUS_MEDICAL_CONDITIONS_REQUIRED = 'Especifica si el paciente tiene o no condiciones médicas previas.',
+  PREVIOUS_MEDICAL_CONDITIONS_WRONG_TYPE = 'Las condiciones médicas previas deben ser un texto.',
+  PREVIOUS_MEDICAL_CONDITIONS_MIN_LENGTH = 'La condiciones médicas previas deben ser más especificas.',
+  FAMILY_MEDICAL_HISTORY_REQUIRED = 'Especifica si el paciente tiene o no historial médico familiar.',
+  FAMILY_MEDICAL_HISTORY_WRONG_TYPE = 'El historial médico familiar debe ser un texto.',
+  FAMILY_MEDICAL_HISTORY_MIN_LENGTH = 'El historial médico familiar debe ser más especifico.'
 }

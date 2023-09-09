@@ -10,12 +10,17 @@ import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
 import { medicalAppointmentsDatesSchema } from '../schema/medical.appointments.dates.schema'
 import { UserRole } from '../types/user.types'
-import { createMedicalRecord } from '../controllers/medical.records.controller'
+import {
+  createMedicalRecord
+  //getMedicalRecord
+} from '../controllers/medical.records.controller'
+import { medicalRecordSchema } from '../schema/medical.record.schema'
 
 export const doctorRouter = Router()
 
 doctorRouter.use(protect, restrictTo(UserRole.doctor))
-
+// ruta de prueba para verificar relaciones correctamente
+//doctorRouter.get('/:id', schemaValidator(idSchema), getMedicalRecord)
 doctorRouter.post(
   '/assign-available-dates',
   schemaValidator(medicalAppointmentsDatesSchema),
@@ -24,6 +29,7 @@ doctorRouter.post(
 doctorRouter.post(
   '/create-medical-record/:id',
   schemaValidator(idSchema),
+  schemaValidator(medicalRecordSchema),
   createMedicalRecord
 )
 
