@@ -1,11 +1,10 @@
-import type { Doctor } from '../entities'
-import type { DoctorRepository } from '../types/doctor.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { FindResults } from '../types/entity.types'
+import type { Doctor } from '../entities'
+import type { DoctorRepository } from '../types/doctor.types'
+import type { FindResults } from '../types/entity.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
-import { UserStatus } from '../types/user.types'
 
 export class DoctorService {
   private readonly doctorRepository: DoctorRepository

@@ -9,6 +9,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
     // project: './c13-34-t-node-react/server/tsconfig.json',
+    project: './tsconfig.json',
     ecmaVersion: 'latest',
     sourceType: 'module'
   },

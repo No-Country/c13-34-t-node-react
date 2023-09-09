@@ -7,7 +7,7 @@ import { MESSAGES } from '../constants/msgs'
 import { UserStatus } from '../types/user.types'
 
 export const getDoctors = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {

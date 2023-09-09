@@ -3,25 +3,29 @@ import {
   Doctor,
   MedicalAppointment,
   MedicalAppointmentDates,
-  Patient
+  Patient,
+  MedicalRecord
 } from '../entities'
 import type { UserRepository } from '../types/user.types'
 import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import type { MedicalAppointmentDatesRepository } from '../types/medical.appointment.dates.types'
 import type { DoctorRepository } from '../types/doctor.types'
+import type { PatientRepository } from '../types/patient.types'
+import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppDataSrc } from './database/database.config'
 import { DoctorService } from './doctor.service'
 import { MedicalAppointmentDatesService } from './medical.appointment.dates.service'
 import { UserService } from './user.service'
 import { PatientService } from './patient.service'
-import type { PatientRepository } from '../types/patient.types'
 import { MedicalAppointmentService } from './medical.appointment.service'
+import { MedicalRecordService } from './medical.records.service'
 
 export let userService: UserService,
   medicalAppointmentDatesService: MedicalAppointmentDatesService,
   doctorService: DoctorService,
   medicalAppointmentService: MedicalAppointmentService,
-  patientService: PatientService
+  patientService: PatientService,
+  medicalRecordService: MedicalRecordService
 
 const userRepository: UserRepository = AppDataSrc.getRepository(User)
 
@@ -35,8 +39,8 @@ const medicalAppointmentDatesRespository: MedicalAppointmentDatesRepository =
 const medicalAppointmentRepository: MedicalAppointmentRepository =
   AppDataSrc.getRepository(MedicalAppointment)
 
-// const medicalRecordRepository: Repository<MedicalRecord> =
-//   AppDataSrc.getRepository(MedicalRecord)
+const medicalRecordRepository: MedicalRecordRepository =
+  AppDataSrc.getRepository(MedicalRecord)
 
 // const patientMedicalHistoryRepository: Repository<PatientMedicalHistory> =
 //   AppDataSrc.getRepository(PatientMedicalHistory)
@@ -51,4 +55,5 @@ const medicalAppointmentRepository: MedicalAppointmentRepository =
     medicalAppointmentRepository
   )
   patientService = new PatientService(patientRepository)
+  medicalRecordService = new MedicalRecordService(medicalRecordRepository)
 })()

@@ -3,8 +3,9 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn
+  OneToOne,
+  PrimaryGeneratedColumn,
+  CreateDateColumn
 } from 'typeorm'
 import { Patient } from './'
 
@@ -13,13 +14,19 @@ export class MedicalRecord extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number
 
-  @Column({ type: 'date' })
-  date: Date
+  @Column({ type: 'varchar' })
+  allergies: string
 
-  @Column({ type: 'text' })
-  description: string
+  @Column({ type: 'text', name: 'previous_medical_conditions' })
+  previousMedicalConditions: string
 
-  @ManyToOne((_type) => Patient, (patient) => patient.medicalRecords)
+  @Column({ type: 'text', name: 'family_medical_history' })
+  familyMedicalHistory: string
+
+  @OneToOne((_type) => Patient)
   @JoinColumn({ name: 'patient_id' })
   patient: Patient
+
+  @CreateDateColumn()
+  createdDateAt: Date
 }
