@@ -148,7 +148,7 @@ export class MedicalAppointmentDatesService {
         date.status = MedicalAppointmentDatesStatus.cancelled
         break
     }
-
+    // controlar en dado caso que falle la actualización
     await this.updateMedicalAppointmentDate(date)
   }
 
@@ -166,6 +166,7 @@ export class MedicalAppointmentDatesService {
 
   // Get para traer todas las fechas que un médico previamente subió al sistema
   async getAllMedicalAppoitmentDates(id: number) {
+    //controlar en dado caso que un médico no se haya creado en la bd
     const doctorExists = await doctorService.findDoctor(
       { user: { id } },
       false,
@@ -193,6 +194,7 @@ export class MedicalAppointmentDatesService {
 
   // Solo trae las fechas selected y pending
   async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
+    // controlar en dado caso que el doctor no exista en la bd
     const doctorExists = await doctorService.findDoctor(
       { user: { id } },
       false,
