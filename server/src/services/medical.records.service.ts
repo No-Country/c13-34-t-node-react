@@ -1,9 +1,10 @@
 import { patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { MedicalRecordRepository } from '../types/medical.record.types'
+import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
+import { medicalRecordSchema } from '../schema/medical.record.schema'
 
 export class MedicalRecordService {
   private readonly entityFactory: EntityFactory
@@ -46,6 +47,32 @@ export class MedicalRecordService {
     } catch (err) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_RECORD_FAIL_SAVE,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+  }
+
+  async getMedicalRecord(data: any) {
+    try {
+      // busco el medicalRecord por findOne mediante el id del medicalRecordSchema
+      const medicalRecord = await this.entityFactory.findOne(
+        { id: medicalRecordSchema },
+        false,
+        false,
+        false
+      )
+      // si el medicalRecord tiene un valor falsy, envia al usuario "El registro médico aún no se ha creado"
+      if (!medicalRecord) {
+        throw new AppError(
+          ERROR_MSGS.MEDICAL_RECORD_NOT_FOUND,
+          HTTPCODES.NOT_FOUND
+        )
+      }
+
+      return medicalRecord
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_RECORD_NOT_CREATED,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }

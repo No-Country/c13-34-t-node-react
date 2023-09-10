@@ -54,5 +54,7 @@ export enum ERROR_MSGS {
   DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.',
   GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor',
   GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL = 'Error al buscar las horas previamente elegidas por un doctor a partir de una fecha específica.',
-  MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.'
+  MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.',
+  MEDICAL_RECORD_NOT_CREATED = 'El registro médico aún no se ha creado.',
+  MEDICAL_RECORD_NOT_FOUND = 'El registro médico no ha sido encontrado.'
 }
