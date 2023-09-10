@@ -8,8 +8,8 @@ export const MedicalSpecialties = () => {
         Diversidad de especialidades médicas
       </h2>
 
-      <div className="2xl:flex mt-5 mb-4">
-        <div className="w-[90%] mx-auto 2xl:py-0 2xl:w-1/2 mt-2 2xl:text-xl 2xl:grid 2xl:p-32">
+      <div className="2xl:flex mt-5 mb-">
+        <div className="w-[90%] mx-auto 2xl:py-0 2xl:w-1/2 mt-2 2xl:text-lg 2xl:grid 2xl:p-32">
           <div className="2xl:justify-center">
             <p>
               En nuestra clínica de medicina integral, te presentamos a un equipo
@@ -29,13 +29,13 @@ export const MedicalSpecialties = () => {
               Te invitamos a formar parte de nuestra comunidad de cuidado de la salud y confiamos en que te sentirás respaldado en cada paso del camino. ¡Estamos aquí para ti!
             </p>
 
-            <div className="grid">
-              <NavLink to={"/sobre-nosotros"}>
+            <NavLink to={"/sobre-nosotros"}>
+              <div className="grid">
                 <button className="w-[287.2px] h-[55.2px] justify-self-center mt-4 2xl:justify-self-auto 2xl:w-[360px] 2xl:mt-8 2xl:py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border transition duration-300">
                   Conócenos mejor
                 </button>
-              </NavLink>
-            </div>
+              </div>
+            </NavLink>
           </div>
         </div>
 
@@ -46,10 +46,10 @@ export const MedicalSpecialties = () => {
             alt="imagen-vista-2"
           />
 
-          <p className="justify-self-center 2xl:text-2xl font-bold">
+          <p className="justify-self-center 2xl:text-lg font-bold">
             Dra. María Eugenia Becerra
           </p>
-          <p className="justify-self-center pb-6 2xl:text-xl rounded-b-lg">MP: 39658</p>
+          <p className="justify-self-center pb-6 2xl:text-lg rounded-b-lg">MP: 39658</p>
         </div>
       </div>
     </>
