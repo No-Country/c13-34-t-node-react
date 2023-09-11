@@ -126,19 +126,22 @@ export class MedicalAppointmentDatesService {
       true
     )
 
-    if (doctorExists === null) {
-      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
-    }
-
-    if (date.doctor.id !== doctorExists.id) {
-      throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
-    }
-
     if (!date) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT,
         HTTPCODES.NOT_FOUND
       )
+    }
+
+    if (doctorExists === null) {
+      throw new AppError(
+        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
+        HTTPCODES.NOT_FOUND
+      )
+    }
+
+    if (date.doctor.id !== doctorExists.id) {
+      throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
     }
 
     switch (date.status) {
@@ -184,7 +187,10 @@ export class MedicalAppointmentDatesService {
     )
 
     if (doctorExists === null) {
-      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
+      throw new AppError(
+        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
+        HTTPCODES.NOT_FOUND
+      )
     }
 
     const filters = {
@@ -215,7 +221,10 @@ export class MedicalAppointmentDatesService {
     )
 
     if (doctorExists === null) {
-      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
+      throw new AppError(
+        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
+        HTTPCODES.NOT_FOUND
+      )
     }
 
     const filters = {

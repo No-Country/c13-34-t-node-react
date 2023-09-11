@@ -5,22 +5,22 @@ import {
   getAllHoursByDoctorDate,
   toggleStatusMedicalAppointmentDate
 } from '../controllers/medical.appointment.dates.controller'
+import {
+  createMedicalRecord
+  // getMedicalRecord
+} from '../controllers/medical.records.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
 import { medicalAppointmentsDatesSchema } from '../schema/medical.appointments.dates.schema'
-import { UserRole } from '../types/user.types'
-import {
-  createMedicalRecord
-  //getMedicalRecord
-} from '../controllers/medical.records.controller'
 import { medicalRecordSchema } from '../schema/medical.record.schema'
+import { UserRole } from '../types/user.types'
 
 export const doctorRouter = Router()
 
 doctorRouter.use(protect, restrictTo(UserRole.doctor))
 // ruta de prueba para verificar relaciones correctamente
-//doctorRouter.get('/:id', schemaValidator(idSchema), getMedicalRecord)
+// doctorRouter.get('/:id', schemaValidator(idSchema), getMedicalRecord)
 doctorRouter.post(
   '/assign-available-dates',
   schemaValidator(medicalAppointmentsDatesSchema),

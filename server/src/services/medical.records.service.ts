@@ -1,7 +1,7 @@
 import { patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { MedicalRecordRepository } from '../types/medical.record.types'
+import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
 

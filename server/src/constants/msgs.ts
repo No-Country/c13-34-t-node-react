@@ -53,5 +53,21 @@ export enum MESSAGES {
   PREVIOUS_MEDICAL_CONDITIONS_MIN_LENGTH = 'La condiciones médicas previas deben ser más especificas.',
   FAMILY_MEDICAL_HISTORY_REQUIRED = 'Especifica si el paciente tiene o no historial médico familiar.',
   FAMILY_MEDICAL_HISTORY_WRONG_TYPE = 'El historial médico familiar debe ser un texto.',
-  FAMILY_MEDICAL_HISTORY_MIN_LENGTH = 'El historial médico familiar debe ser más especifico.'
+  FAMILY_MEDICAL_HISTORY_MIN_LENGTH = 'El historial médico familiar debe ser más especifico.',
+  NOTES_REQUIRED = 'Las notas del paciente son requeridas.',
+  NOTES_WRONG_TYPE = 'Las notas del paciente deben ser un texto.',
+  NOTES_MIN_LENGTH = 'Las notas del paciente deben ser más específicas.',
+  NOTES_MAX_LENGTH = 'Las notas del paciente no deben superar los 255 caracteres.',
+  SYMPTOMS_REQUIRED = 'Los síntomas del paciente son requeridos.',
+  SYMPTOMS_WRONG_TYPE = 'Los síntomas del paciente deben ser un texto.',
+  SYMPTOMS_MIN_LENGTH = 'Los síntomas del paciente deben ser más específicos.',
+  SYMPTOMS_MAX_LENGTH = 'Los síntomas del paciente no deben superar los 255 caracteres.',
+  TREATMENTS_REQUIRED = 'Los tratamientos del paciente son requeridos.',
+  TREATMENTS_WRONG_TYPE = 'Los tratamientos del paciente deben ser un texto.',
+  TREATMENTS_MIN_LENGTH = 'Los tratamientos del paciente deben ser más específicos.',
+  TREATMENTS_MAX_LENGTH = 'Los tratamientos del paciente no deben superar los 255 caracteres.',
+  MEDICATION_REQUIRED = 'La medicación del paciente es requerida.',
+  MEDICATION_WRONG_TYPE = 'La medicación del paciente debe ser un texto.',
+  MEDICATION_MIN_LENGTH = 'La medicación del paciente debe ser más específica.',
+  MEDICATION_MAX_LENGTH = 'La medicación del paciente no debe superar los 255 caracteres.'
 }
