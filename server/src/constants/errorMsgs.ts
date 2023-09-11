@@ -51,8 +51,10 @@ export enum ERROR_MSGS {
   PATIENT_NOT_FOUND = 'El paciente no pudo encontrarse.',
   MEDICAL_APPOINTMENT_DATE_CANCELLED_FAIL = 'Error al cancelar la fecha',
   DOCTORS_NOT_FOUND = 'No hay doctores con disponibilidad horaria.',
+  DOCTOR_NOT_FOUND = 'No se pudo encontrar el doctor en la BD.',
   DOCTORS_INTERNAL_NOT_FOUND = 'No se pudieron encontrar los doctores debido a un error interno.',
   GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor',
   GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL = 'Error al buscar las horas previamente elegidas por un doctor a partir de una fecha específica.',
-  MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.'
+  MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.',
+  TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL = 'Error al cambiar el estado de la fecha de la cita médica.'
 }

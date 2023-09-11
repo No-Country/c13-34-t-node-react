@@ -126,6 +126,10 @@ export class MedicalAppointmentDatesService {
       true
     )
 
+    if (doctorExists === null) {
+      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
+    }
+
     if (date.doctor.id !== doctorExists.id) {
       throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
     }
@@ -148,8 +152,14 @@ export class MedicalAppointmentDatesService {
         date.status = MedicalAppointmentDatesStatus.cancelled
         break
     }
-    // controlar en dado caso que falle la actualización
-    await this.updateMedicalAppointmentDate(date)
+    try {
+      await this.updateMedicalAppointmentDate(date)
+    } catch (error) {
+      throw new AppError(
+        ERROR_MSGS.TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
   }
 
   async findMedicalAppointmentDates(
@@ -166,13 +176,16 @@ export class MedicalAppointmentDatesService {
 
   // Get para traer todas las fechas que un médico previamente subió al sistema
   async getAllMedicalAppoitmentDates(id: number) {
-    //controlar en dado caso que un médico no se haya creado en la bd
     const doctorExists = await doctorService.findDoctor(
       { user: { id } },
       false,
       false,
       false
     )
+
+    if (doctorExists === null) {
+      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
+    }
 
     const filters = {
       doctor: { id: doctorExists.id },
@@ -194,13 +207,16 @@ export class MedicalAppointmentDatesService {
 
   // Solo trae las fechas selected y pending
   async getAllMedicalAppoitmentDatesPendingAndSelected(id: number) {
-    // controlar en dado caso que el doctor no exista en la bd
     const doctorExists = await doctorService.findDoctor(
       { user: { id } },
       false,
       false,
       false
     )
+
+    if (doctorExists === null) {
+      throw new AppError(ERROR_MSGS.DOCTOR_NOT_FOUND, HTTPCODES.NOT_FOUND)
+    }
 
     const filters = {
       doctor: { id: doctorExists.id },
