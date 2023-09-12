@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express'
+import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import { MESSAGES } from '../constants/msgs'
 import { patientService } from '../services'
 import { AppError } from '../utils/app.error'
-import { MESSAGES } from '../constants/msgs'
-import { ERROR_MSGS } from '../constants/errorMsgs'
 
 export const getPatient = async (
   req: Request,
@@ -69,5 +69,36 @@ export const cancelPatientAppointment = async (
         )
       )
     }
+  }
+}
+
+export const patientInfo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.safeData?.params
+    const { patientInfo, medicalRecordInfo, patientMedicalHistories } =
+      await patientService.getPatientInfo(id)
+
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      patientInfo,
+      medicalRecordInfo,
+      patientMedicalHistories
+    })
+  } catch (err) {
+    console.log(err)
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.PATIENT_NOT_FOUND,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
   }
 }

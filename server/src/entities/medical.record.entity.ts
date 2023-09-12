@@ -3,10 +3,11 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { Patient } from './'
+import { Patient, PatientMedicalHistory } from './'
 
 @Entity({ name: 'medical_records' })
 export class MedicalRecord extends BaseEntity {
@@ -28,4 +29,10 @@ export class MedicalRecord extends BaseEntity {
   @OneToOne((_type) => Patient)
   @JoinColumn({ name: 'patient_id' })
   patient: Patient
+
+  @OneToMany(
+    (_type) => PatientMedicalHistory,
+    (patientMedicalHistory) => patientMedicalHistory.medicalRecord
+  )
+  patientMedicalHistory: PatientMedicalHistory[]
 }

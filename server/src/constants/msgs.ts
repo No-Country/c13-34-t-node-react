@@ -69,5 +69,14 @@ export enum MESSAGES {
   MEDICATION_REQUIRED = 'La medicación del paciente es requerida.',
   MEDICATION_WRONG_TYPE = 'La medicación del paciente debe ser un texto.',
   MEDICATION_MIN_LENGTH = 'La medicación del paciente debe ser más específica.',
-  MEDICATION_MAX_LENGTH = 'La medicación del paciente no debe superar los 255 caracteres.'
+  MEDICATION_MAX_LENGTH = 'La medicación del paciente no debe superar los 255 caracteres.',
+  HEIGTH_REQUIRED = 'La altura del paciente es requerida.',
+  HEIGTH_WRONG_TYPE = 'La altura del paciente debe ser un número.',
+  HEIGTH_INVALID_LENGTH = 'La altura del paciente debe ser de 2 a 3 dígitos.',
+  BLOOD_PRESSURE_REQUIRED = 'La presión arterial del paciente es requerida.',
+  BLOOD_PRESSURE_WRONG_TYPE = 'La presión arterial del paciente debe ser un texto.',
+  BLOOD_PRESSURE_REGEX_WRONG_TYPE = 'La presión arterial del paciente debe tener un formato correcto, el cual es: sistólica/diastólica.',
+  WEIGHT_REQUIRED = 'El peso del paciente es requerido.',
+  WEIGHT_WRONG_TYPE = 'El peso del paciente debe ser un número.',
+  WEIGHT_INVALID_LENGTH = 'El peso del paciente debe ser de 2 a 3 dígitos.'
 }

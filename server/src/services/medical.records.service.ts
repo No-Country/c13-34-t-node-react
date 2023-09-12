@@ -1,6 +1,7 @@
 import { patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import { type MedicalRecord } from '../entities'
 import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
@@ -49,5 +50,19 @@ export class MedicalRecordService {
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
+  }
+
+  async findMedicalRecord(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<MedicalRecord | null> {
+    return (await this.entityFactory.findOne(
+      filters,
+      attributes,
+      relationAttributes,
+      error
+    )) as MedicalRecord | null
   }
 }

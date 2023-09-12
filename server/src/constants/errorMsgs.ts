@@ -56,5 +56,7 @@ export enum ERROR_MSGS {
   GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor',
   GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL = 'Error al buscar las horas previamente elegidas por un doctor a partir de una fecha específica.',
   MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.',
-  TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL = 'Error al cambiar el estado de la fecha de la cita médica.'
+  TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL = 'Error al cambiar el estado de la fecha de la cita médica.',
+  MEDICAL_RECORD_NOT_FOUND = 'No se encontró el registro médico.',
+  PATIENT_MEDICAL_HISTORY_SAVE_FAIL = 'No se pudo guardar el historial médico del paciente.'
 }
