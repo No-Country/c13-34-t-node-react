@@ -12,7 +12,7 @@ import { medicalAppointmentsDatesSchema } from '../schema/medical.appointments.d
 import { UserRole } from '../types/user.types'
 import {
   createMedicalRecord,
-  getMedicalRecord
+  updateMedicalRecord
 } from '../controllers/medical.records.controller'
 import { medicalRecordSchema } from '../schema/medical.record.schema'
 
@@ -44,7 +44,8 @@ doctorRouter.get('/get-all-dates-by-doctor', getAllDatesByDoctor)
 doctorRouter.post('/get-all-hours-from-date-doctor', getAllHoursByDoctorDate)
 
 doctorRouter.patch(
-  '/update-medical-record',
+  '/update-medical-record/:id',
+  schemaValidator(idSchema),
   schemaValidator(medicalRecordSchema.partial()),
-  getMedicalRecord
+  updateMedicalRecord
 )

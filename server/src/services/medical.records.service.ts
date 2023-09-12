@@ -52,11 +52,11 @@ export class MedicalRecordService {
     }
   }
 
-  async getMedicalRecord(data: any) {
+  async updateMedicalRecord(medicalRecordId: number, data: any) {
     try {
       // busco el medicalRecord por findOne mediante el id del medicalRecordSchema
       const medicalRecord = await this.entityFactory.findOne(
-        { id: medicalRecordSchema },
+        { id: medicalRecordId },
         false,
         false,
         false
@@ -68,11 +68,20 @@ export class MedicalRecordService {
           HTTPCODES.NOT_FOUND
         )
       }
-
-      return medicalRecord
     } catch (err) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_RECORD_NOT_CREATED,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    data.id = medicalRecordId
+
+    try {
+      await this.entityFactory.updateOne(data)
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_RECORD_NOT_UPDATED,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
