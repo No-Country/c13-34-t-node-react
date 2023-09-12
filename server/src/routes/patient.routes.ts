@@ -3,7 +3,8 @@ import { getDoctors } from '../controllers/doctor.controller'
 import { createMedicalAppointment } from '../controllers/medical.appointment.controller'
 import {
   cancelPatientAppointment,
-  getPatient
+  getPatient,
+  patientInfo
 } from '../controllers/patient.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { schemaValidator } from '../middlewares/schema.middleware'
@@ -17,6 +18,11 @@ patientRouter.use(protect, restrictTo(UserRole.patient))
 
 patientRouter.get('/doctors', getDoctors)
 patientRouter.get('/medical-appointment', getPatient)
+patientRouter.get(
+  '/get-patient-info/:id', // este id es el id del paciente
+  schemaValidator(idSchema),
+  patientInfo
+)
 patientRouter.post(
   '/medical-appointment/:id',
   schemaValidator(idSchema),

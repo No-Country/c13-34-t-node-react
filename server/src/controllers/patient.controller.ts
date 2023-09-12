@@ -5,6 +5,60 @@ import { MESSAGES } from '../constants/msgs'
 import { patientService } from '../services'
 import { AppError } from '../utils/app.error'
 
+export const getPatients = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { sessionUser } = req
+    const [patients, results] = await patientService.findPatients(
+      {
+        medicalAppointments: {
+          medicalAppointmentDate: {
+            doctor: {
+              user: {
+                id: sessionUser?.id
+              }
+            }
+          }
+        }
+      },
+      {
+        user: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          dateOfBirth: true,
+          telephone: true,
+          genre: true
+        }
+      },
+      {
+        user: true
+      }
+    )
+
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      patients,
+      results
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.PATIENT_INFO_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
+
 export const getPatient = async (
   req: Request,
   res: Response,
@@ -31,7 +85,6 @@ export const getPatient = async (
       patient
     })
   } catch (err) {
-    console.log(err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(
@@ -89,11 +142,10 @@ export const patientInfo = async (
       patientMedicalHistories
     })
   } catch (err) {
-    console.log(err)
     if (!(err instanceof AppError)) {
       next(
         new AppError(
-          ERROR_MSGS.PATIENT_NOT_FOUND,
+          ERROR_MSGS.PATIENT_INFO_FAIL,
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
       )

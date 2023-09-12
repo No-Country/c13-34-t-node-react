@@ -9,7 +9,7 @@ import {
   createMedicalRecord
   // getMedicalRecord
 } from '../controllers/medical.records.controller'
-import { patientInfo } from '../controllers/patient.controller'
+import { getPatients, patientInfo } from '../controllers/patient.controller'
 import { createPatientMedicalHistory } from '../controllers/patient.medical.history.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { schemaValidator } from '../middlewares/schema.middleware'
@@ -24,6 +24,14 @@ export const doctorRouter = Router()
 doctorRouter.use(protect, restrictTo(UserRole.doctor))
 // ruta de prueba para verificar relaciones correctamente
 // doctorRouter.get('/:id', schemaValidator(idSchema), getMedicalRecord)
+doctorRouter.get('/get-doctor-patients', getPatients)
+doctorRouter.get('/get-all-dates-by-doctor', getAllDatesByDoctor)
+doctorRouter.get(
+  '/get-patient-info/:id', // este id es el id del paciente
+  schemaValidator(idSchema),
+  patientInfo
+)
+
 doctorRouter.post(
   '/assign-available-dates',
   schemaValidator(medicalAppointmentsDatesSchema),
@@ -41,19 +49,10 @@ doctorRouter.post(
   schemaValidator(patientMedicalHistorySchema),
   createPatientMedicalHistory
 )
-
 doctorRouter.post('/get-all-hours-from-date-doctor', getAllHoursByDoctorDate)
 
 doctorRouter.patch(
   '/toggle-medical-appointment-date-status/:id',
   schemaValidator(idSchema),
   toggleStatusMedicalAppointmentDate
-)
-
-doctorRouter.get('/get-all-dates-by-doctor', getAllDatesByDoctor)
-
-doctorRouter.get(
-  '/get-patient-info/:id', // este id es el id del paciente
-  schemaValidator(idSchema),
-  patientInfo
 )

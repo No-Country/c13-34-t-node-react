@@ -58,5 +58,6 @@ export enum ERROR_MSGS {
   MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.',
   TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL = 'Error al cambiar el estado de la fecha de la cita médica.',
   MEDICAL_RECORD_NOT_FOUND = 'No se encontró el registro médico.',
-  PATIENT_MEDICAL_HISTORY_SAVE_FAIL = 'No se pudo guardar el historial médico del paciente.'
+  PATIENT_MEDICAL_HISTORY_SAVE_FAIL = 'No se pudo guardar el historial médico del paciente.',
+  PATIENT_INFO_FAIL = 'La información del paciente no se pudo recuperar.'
 }
