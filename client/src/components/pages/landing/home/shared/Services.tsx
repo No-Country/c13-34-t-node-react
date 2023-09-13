@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 const serviceImages = [
   { title: "Exámenes médicos", path: "/images/service1.webp" },
   { title: "Enfoque", path: "/images/service2.jpg" },
@@ -11,7 +11,7 @@ export const Services = () => {
   const [imageSelected, setImageSelected] = useState(serviceImages[1]);
   return (
     <div className="flex flex-col gap-2 2xl:gap-4 items-center justify-center">
-      <p className="text-2xl 2xl:text-3xl text-center font-caudex font-bold tracking-wide text-dark-green">
+      <p className="text-2xl 2xl:text-3xl text-center font-caudex font-bold tracking-wide text-dark-green pb-5">
         "La atención médica más completa."
       </p>
       <div className="relative w-full flex xl:gap-32">
@@ -20,7 +20,11 @@ export const Services = () => {
             {imageSelected.title}
           </p>
           <p className="2xl:text-lg">
-          En Meddyplus, entendemos que la salud es un concepto integral. Por eso, no solo nos enfocamos en la curación de enfermedades, sino también en la prevención y el bienestar general. Nuestros programas de salud preventiva y cuidado continuo están diseñados para ayudarlo a mantenerse saludable a lo largo de su vida.
+            En Meddyplus, entendemos que la salud es un concepto integral. Por
+            eso, no solo nos enfocamos en la curación de enfermedades, sino
+            también en la prevención y el bienestar general. Nuestros programas
+            de salud preventiva y cuidado continuo están diseñados para ayudarlo
+            a mantenerse saludable a lo largo de su vida.
           </p>
           <div className="bg-white w-full sm:w-3/4 xl:w-fit flex justify-center gap-8 md:-bottom-20 md:absolute m-auto left-0 right-0 rounded-xl p-5 border-2 border-slate-300">
             {serviceImages.map((image) => (
@@ -41,13 +45,13 @@ export const Services = () => {
         <div className="hidden md:flex relative justify-center w-80 ml-20">
           <img
             src={imageSelected.path}
-            className="h-80 rounded-md drop-shadow-lg"
+            className="w-80 rounded-md drop-shadow-lg"
           />
-          <NavLink to={"/sobre-nosotros"}>
+          {/* <NavLink to="/sobre-nosotros">
             <button className="w-full absolute -bottom-20 py-3 rounded-2xl text-xl text-white hover:text-primary-green bg-primary-green hover:bg-white border-primary-green border-[2px] transition duration-300 font-medium">
               Sobre nosotros
             </button>
-          </NavLink>
+          </NavLink> */}
         </div>
       </div>
     </div>

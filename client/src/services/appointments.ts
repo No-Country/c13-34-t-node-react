@@ -1,5 +1,6 @@
 import { client } from "@/config/client";
 import { TAppointment } from "@/types/appointments";
+import { TMedicalAppointment } from "../types/appointments";
 
 type TNewAppointment = {
   description: string;
@@ -13,6 +14,26 @@ async function createAppointment(
     "/api/v1/patients/medical-appointment/" + dateId,
     newAppointment,
   );
+}
+
+async function getPatientAppointments() {
+  type TGetData = {
+    status: string;
+    patient: {
+      id: number;
+      medicalAppointments: TMedicalAppointment[];
+    };
+  };
+
+  const res = await client.get<TGetData>(
+    "/api/v1/patients/medical-appointment",
+  );
+
+  return res.data.patient.medicalAppointments;
+}
+
+async function canceledAppointmentPatient(appointmentId: number) {
+  return client.delete("/api/v1/patients/cancel-appointment/" + appointmentId);
 }
 
 async function postDoctorAvailability(date: string, hours: string[]) {
@@ -48,6 +69,8 @@ async function changeDoctorSchedule(id: number) {
 
 export const AppointmentsService = {
   createAppointment,
+  getPatientAppointments,
+  canceledAppointmentPatient,
   postDoctorAvailability,
   getDoctorSchedule,
   changeDoctorSchedule,

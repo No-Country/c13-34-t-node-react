@@ -7,7 +7,7 @@ import { AuthProvider } from "@/context/auth";
 import { PublicLayout } from "@/components/pages/PublicLayout";
 import { Home } from "@/components/pages/landing/home/Home";
 import { AboutUs } from "@/components/pages/landing/about/AboutUs";
-import { ContactUs } from "@/components/pages/landing/contact/ContactUs";
+// import { ContactUs } from "@/components/pages/landing/contact/ContactUs";
 // NoAuthenticated
 import { NotAuthenticated } from "@/components/pages/NotAuthenticated";
 import { Register } from "@/components/pages/auth/register/Register";
@@ -49,7 +49,7 @@ export const App = () => {
             <Route path="" element={<PublicLayout />}>
               <Route path="" element={<Home />} />
               <Route path="sobre-nosotros" element={<AboutUs />} />
-              <Route path="contacto" element={<ContactUs />} />
+              {/* <Route path="contacto" element={<ContactUs />} /> */}
 
               <Route element={<NotAuthenticated />}>
                 <Route path="registro" element={<Register />} />

@@ -49,20 +49,20 @@ export const AdminUsersPage = () => {
 
   return usersData ? (
     <div className="bg-gray-50">
-      <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
-        <h2 className="text-lg font-bold uppercase">Usuarios</h2>
-        <div>Notificación</div>
+      <div className="bg-dark-green text-white px-8 py-10 flex justify-between text-lg font-bold uppercase">
+        <h2>Usuarios</h2>
+        <h2>Notificación</h2>
       </div>
 
-      <div className="bg-white m-8 rounded-tl-2xl rounded-tr-2xl">
-        <div className="p-4 flex justify-end gap-4 pr-24">
-          <p className="py-1.5 font-semibold">Mostrar</p>
+      <div className="bg-white mx-4 2xl:m-5 pb-16 rounded-2xl">
+        <div className="max-sm:grid max-sm:grid-cols-1 p-4 flex w-full 2xl:justify-end gap-4 2xl:pr-24">
+          <p className="py-1.5 font-semibold max-sm:text-xl">Mostrar</p>
           <button
             onClick={() => {
               setSelectedRole("todos");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "py-3 2xl:py-1 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedRole === "todos"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -75,7 +75,7 @@ export const AdminUsersPage = () => {
               setSelectedRole("admin");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "py-3 2xl:py-1 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedRole === "admin"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -88,7 +88,7 @@ export const AdminUsersPage = () => {
               setSelectedRole("doctor");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "py-3 2xl:py-1 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedRole === "doctor"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -97,17 +97,18 @@ export const AdminUsersPage = () => {
             Doctores
           </button>
         </div>
-        <div className="bg-gray-50 mx-4 my-0 p-4 flex items-center gap-8">
+
+        <div className="bg-gray-50 2xl:mx-4 my-0 p-4 max-sm:grid max-sm:grid-cols-1 flex items-center gap-4 2xl:gap-8">
           <div className="relative">
             <RiSearchLine className="absolute text-gray-400 opacity-60 top-3 left-4 text-lg" />
             <input
               type="text"
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Buscar por nombre, apellido o correo"
-              className="bg-white outline-none py-1.5 pl-12 pr-4 rounded-2xl text-lg text-dark-green border border-gray-200 w-96"
+              className="bg-white outline-none py-1.5 pl-12 pr-4 rounded-2xl text-lg text-dark-green border border-gray-200 w-full 2xl:w-96"
             />
           </div>
-          <button className="text-white items-center bg-primary-green hover:bg-dark-green text-lg py-1 px-6 rounded-xl border hover:border-dark-green transition">
+          <button className="text-white items-center bg-primary-green hover:bg-other-blue text-lg py-1.5 2xl:py-1 px-6 rounded-xl border hover:border-other-blue transition">
             Agregar nuevo usuario +
           </button>
         </div>
@@ -116,34 +117,34 @@ export const AdminUsersPage = () => {
           <table className="table-auto bg-white px-4 py-8 w-full">
             <thead className="bg-white border-b-2 border-gray-200">
               <tr>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   No.
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Nombres
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Apellidos
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  Teléfono móvil
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                  Teléfono
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Correo
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Fecha de Nacimiento
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Genero
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Role
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Estado
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Accion
                 </th>
               </tr>
@@ -184,7 +185,7 @@ export const AdminUsersPage = () => {
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <StatusChip user={user} />
                   </td>
-                  <td className="p-3 flex items-center gap-4">
+                  <td className="p-3 flex items-center justify-center gap-4">
                     <NavLink
                       to={`/plataforma/administrador/usuarios/${user.id}`}
                       className="text-blue-500 hover:text-blue-700 transition"
@@ -194,7 +195,7 @@ export const AdminUsersPage = () => {
 
                     <NavLink
                       to={`/plataforma/administrador/usuarios/editar/${user.id}`}
-                      className="text-other-yellow hover:text-[#6d5d17] transition"
+                      className="hidden text-other-yellow hover:text-[#6d5d17] transition"
                     >
                       <RiEditBoxLine className="text-3xl" />
                     </NavLink>
