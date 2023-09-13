@@ -21,6 +21,7 @@ export enum UserGenre {
 }
 
 export interface UserDto {
+  id?: number
   firstName: string
   lastName: string
   email: email
@@ -28,6 +29,8 @@ export interface UserDto {
   dateOfBirth: Date
   genre: UserGenre
   role: string
+  doctorId?: number
+  patientId?: number
 }
 
 export interface Login {

@@ -26,10 +26,11 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
-  ): Promise<MedicalAppointmentDates[]> {
+  ): Promise<any> {
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
+    let doctorId: number | undefined
 
     const doctorExists = await doctorService.findDoctor(
       { user: { id: sessionUser.id } },
@@ -47,6 +48,11 @@ export class MedicalAppointmentDatesService {
           ERROR_MSGS.CREATE_DOCTOR_SERVICE_FAIL,
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
+      doctorId = doctorCreated.id
+    }
+
+    if (doctorExists) {
+      doctorId = doctorExists.id
     }
 
     const createDates = unifiedDates.map(async (date) => {
@@ -83,7 +89,10 @@ export class MedicalAppointmentDatesService {
       return dateFromDB
     })
 
-    return await Promise.all(createDates)
+    return {
+      medicalAppointmentDates: await Promise.all(createDates),
+      doctorId
+    }
   }
 
   async findMedicalAppointmentDate(

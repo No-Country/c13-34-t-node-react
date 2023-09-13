@@ -67,5 +67,6 @@ export enum ERROR_MSGS {
   MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.',
   PATIENT_MEDICAL_HISTORY_NOT_FOUND = 'No se encontró el historial médico del paciente.',
   PATIENT_MEDICAL_HISTORY_NOT_CREATED = 'El historial médico del paciente no se ha creado.',
-  PATIENT_MEDICAL_HISTORY_NOT_UPDATED = 'El historial médico del paciente no fue actualizado.'
+  PATIENT_MEDICAL_HISTORY_NOT_UPDATED = 'El historial médico del paciente no fue actualizado.',
+  SIGNIN_FAIL = 'Ocurrio un error interno al iniciar sesión'
 }

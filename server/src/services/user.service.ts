@@ -17,6 +17,7 @@ import { comparePasswords, hashPassword } from '../utils/bcrypt'
 import { checkRoleForAssignment } from '../utils/check.role.for.assignment'
 import { generateJWT } from '../utils/jwt'
 import { EntityFactory } from './factory/entity.factory'
+import { doctorService, patientService } from '.'
 
 export class UserService {
   private readonly entityFactory: EntityFactory
@@ -165,14 +166,44 @@ export class UserService {
       false,
       true
     )) as User
-    const [, token] = await Promise.all([
-      comparePasswords(loginData.password, user.password),
-      generateJWT({ id: user.id })
-    ])
+    try {
+      const [, token, isDoctor, isPatient] = await Promise.all([
+        comparePasswords(loginData.password, user.password),
+        generateJWT({ id: user.id }),
+        doctorService.findDoctor(
+          { user: { id: user.id } },
+          false,
+          false,
+          false
+        ),
+        patientService.findPatient(
+          { user: { id: user.id } },
+          false,
+          false,
+          false
+        )
+      ])
+      const userToReturn = userDto(user)
 
-    return {
-      token,
-      user: userDto(user)
+      if (isDoctor) {
+        userToReturn.doctorId = isDoctor.id
+      }
+      if (isPatient) {
+        userToReturn.patientId = isPatient.id
+      }
+
+      return {
+        token,
+        user: userToReturn
+      }
+    } catch (err) {
+      if (err instanceof AppError) {
+        throw err
+      }
+      throw new AppError(
+        ERROR_MSGS.SIGNIN_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
     }
   }
 

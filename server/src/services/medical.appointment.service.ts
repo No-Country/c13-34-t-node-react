@@ -19,7 +19,7 @@ export class MedicalAppointmentService {
     sessionUser: User,
     medicalAppoinmentDateId: number,
     description: string
-  ): Promise<MedicalAppointment> {
+  ): Promise<any> {
     // buscar la fecha de la cita y cambiar/actualizar su estado a selected
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
@@ -75,16 +75,19 @@ export class MedicalAppointmentService {
     }
     // crear un objeto para la tabla de medicalAppointment, asignarle en la clave medicalAppointmentDate la fecha que buscamos y actualizamos su estado
     // en el objeto para la tabla medicalAppointment asignarle en la clave patient, el paciente que creamos
-    const medicalAppoinment = {
+    const medicalAppoinmentToCreate = {
       description,
       medicalAppointmentDate,
       patient
     } as MedicalAppointment
     // devolver la cita creada
-    return (await this.entityFactory.create(
-      medicalAppoinment,
-      false
-    )) as MedicalAppointment
+    return {
+      medicalAppointment: (await this.entityFactory.create(
+        medicalAppoinmentToCreate,
+        false
+      )) as MedicalAppointment,
+      patientId: patient.id
+    }
   }
 
   async findMedicalAppointments(
