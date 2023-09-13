@@ -29,31 +29,14 @@ export class MedicalRecordService {
   //   return medicalRecord
   // }
 
-  async createMedicalRecord(data: any, patientId: number) {
-    try {
-      const patientExists = await this.findMedicalRecord(
-        { patient: { id: patientId } },
-        false,
-        false,
-        false
-      )
-      if (patientExists)
-        throw new AppError(
-          ERROR_MSGS.MEDICAL_RECORD_EXISTS,
-          HTTPCODES.BAD_REQUEST
-        )
-    } catch (err) {
-      throw new AppError(
-        ERROR_MSGS.MEDICAL_RECORD_FAIL_FOUND,
-        HTTPCODES.INTERNAL_SERVER_ERROR
-      )
-    }
-
+  async createMedicalRecord(data: any, doctorId: number, patientId: number) {
     let patient: Patient | undefined
 
     try {
       patient = (await patientService.findPatient(
-        { id: patientId },
+        {
+          id: patientId
+        },
         false,
         false,
         false
@@ -61,8 +44,40 @@ export class MedicalRecordService {
       if (!patient)
         throw new AppError(ERROR_MSGS.PATIENT_NOT_FOUND, HTTPCODES.NOT_FOUND)
     } catch (err) {
+      if (err instanceof AppError) {
+        throw err
+      }
+
       throw new AppError(
         ERROR_MSGS.PATIENT_NOT_FOUND,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    try {
+      const verifyPatientAppointments = await patientService.findPatient(
+        {
+          medicalAppointments: {
+            medicalAppointmentDate: { doctor: { user: { id: doctorId } } }
+          }
+        },
+        false,
+        false,
+        false
+      )
+
+      if (verifyPatientAppointments)
+        throw new AppError(
+          ERROR_MSGS.MEDICAL_RECORD_EXISTS,
+          HTTPCODES.BAD_REQUEST
+        )
+    } catch (err) {
+      if (err instanceof AppError) {
+        throw err
+      }
+
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_RECORD_FAIL_FOUND,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
@@ -114,6 +129,10 @@ export class MedicalRecordService {
         )
       }
     } catch (err) {
+      if (err instanceof AppError) {
+        throw err
+      }
+
       throw new AppError(
         ERROR_MSGS.MEDICAL_RECORD_NOT_CREATED,
         HTTPCODES.INTERNAL_SERVER_ERROR

@@ -40,10 +40,12 @@ export const updateMedicalRecord = async (
 ) => {
   try {
     const { safeData } = req
+
     await medicalRecordService.updateMedicalRecord(
       safeData?.params.id,
       safeData?.body
     )
+
     return res.status(HTTPCODES.NO_CONTENT).json({
       status: MESSAGES.SUCCESS
     })
@@ -69,9 +71,10 @@ export const createMedicalRecord = async (
   next: NextFunction
 ) => {
   try {
-    const { safeData } = req
+    const { safeData, sessionUser } = req
     const medicalRecord = await medicalRecordService.createMedicalRecord(
       safeData?.body,
+      sessionUser?.id,
       safeData?.params.id
     )
 

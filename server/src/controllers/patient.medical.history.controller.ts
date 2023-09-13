@@ -18,7 +18,7 @@ export const createPatientMedicalHistory = async (
         safeData?.params.id
       )
 
-    res.status(HTTPCODES.CREATED).json({
+    return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       patientMedicalHistory
     })
