@@ -9,6 +9,9 @@ import {
   TMedicalAppointment,
   TMedicalAppointmentDate,
 } from "@/types/appointments";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+// import { AxiosError } from "axios";
 
 const getPatientAppointmentsKey = "getPatientAppointments";
 
@@ -18,8 +21,9 @@ export const PatientAppointmentsPage = () => {
     AppointmentsService.getPatientAppointments,
   );
 
-  if (error) return <div> Ha ocurrido un error</div>;
-  if (!appointments) return <div> Cargando...</div>;
+  if (error || !appointments)
+    return <Error message={"USTED AUN NO TIENE UNA CITA"} />;
+  if (!appointments) return <Loading />;
 
   return (
     <div className="bg-gray-50">
