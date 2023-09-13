@@ -1,13 +1,19 @@
 import { In } from 'typeorm'
+import type { MedicalAppointmentDates } from '../entities'
 import type { Patient } from '../entities/patient.entity'
 import type { PatientRepository } from '../types/patient.types'
-import { EntityFactory } from './factory/entity.factory'
-import { AppError } from '../utils/app.error'
+import {
+  medicalAppointmentDatesService,
+  medicalAppointmentService,
+  medicalRecordService,
+  patientMedicalHistoryService
+} from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
-import { medicalAppointmentDatesService } from '.'
-import { MedicalAppointmentDates } from '../entities'
+import { AppError } from '../utils/app.error'
+import { EntityFactory } from './factory/entity.factory'
+import { FindResults } from '../types/entity.types'
 
 export class PatientService {
   // private readonly patientRepository: PatientRepository
@@ -30,6 +36,18 @@ export class PatientService {
       relationAttributes,
       error
     )) as Patient | null
+  }
+
+  async findPatients(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityFactory.findAll(
+      filters,
+      attributes,
+      relationAttributes
+    )
   }
 
   async createPatient(patient: Patient): Promise<Patient> {
@@ -81,6 +99,53 @@ export class PatientService {
         ERROR_MSGS.MEDICAL_APPOINTMENT_FAIL_UPDATE,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
+    }
+  }
+
+  async getPatientInfo(patientId: number) {
+    let patientMedicalHistoryInfo
+    const medicalRecordInfo = await medicalRecordService.findMedicalRecord(
+      { patient: { id: patientId } },
+      false,
+      false,
+      false
+    )
+
+    if (medicalRecordInfo?.id) {
+      patientMedicalHistoryInfo =
+        await patientMedicalHistoryService.findAllPatientMedicalHistory(
+          { medicalRecord: { id: medicalRecordInfo?.id } },
+          false,
+          false
+        )
+    }
+
+    const patientInfo = await this.findPatient(
+      { id: patientId },
+      {
+        user: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          email: true,
+          dateOfBirth: true,
+          telephone: true,
+          genre: true
+        }
+      },
+      { user: true },
+      false
+    )
+
+    return {
+      patientInfo,
+      medicalRecordInfo,
+      patientMedicalHistories: {
+        patientMedicalHistoryInfo: patientMedicalHistoryInfo
+          ? patientMedicalHistoryInfo[0]
+          : null,
+        count: patientMedicalHistoryInfo ? patientMedicalHistoryInfo[1] : null
+      }
     }
   }
 }

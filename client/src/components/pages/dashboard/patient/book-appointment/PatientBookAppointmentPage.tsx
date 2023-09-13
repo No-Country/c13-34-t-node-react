@@ -1,13 +1,18 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AppointmentsService } from "@/services/appointments";
 import { UsersService } from "@/services/users";
 import { useFormik } from "formik";
 import useSWR from "swr";
 import { uniq } from "lodash-es";
-import { NavLink } from "react-router-dom";
-import { TStatus } from "@/types/doctor";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Modal } from "@/components/common/Modal";
+import { AxiosError } from "axios";
 
 export const PatientBookAppointmentPage = () => {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
+
   const doctorId = useMemo(() => {
     const { searchParams } = new URL(location.href);
     return searchParams.get("doctorId") ?? "";
@@ -27,12 +32,21 @@ export const PatientBookAppointmentPage = () => {
         )!.id;
         try {
           await AppointmentsService.createAppointment(dateId, { description });
-          alert("listo");
           resetForm();
           // redirigir al detalle de cita
+          setMessage("Su cita se ha reservado exitosamente");
+          setShowModal(true);
         } catch (error) {
           // mostrar error
-          console.log(error);
+          if (error instanceof AxiosError) {
+            if (error.response) {
+              alert("Formulario Invalido");
+            } else {
+              setMessage("No se pudo establecer conexión con el Servidor!");
+              setShowModal(true);
+            }
+          }
+          // console.log(error);
         }
       },
     });
@@ -47,7 +61,7 @@ export const PatientBookAppointmentPage = () => {
   const dates = useMemo(() => {
     if (!selectedDoctor) return [];
     const dates = selectedDoctor.medicalAppointmentDates
-      .filter((d) => d.status === TStatus.Pending)
+      .filter((d) => d.status === "pending")
       .map((d) => d.date.split(" ")[0]);
     return uniq(dates);
   }, [selectedDoctor]);
@@ -55,7 +69,7 @@ export const PatientBookAppointmentPage = () => {
   const hours = useMemo(() => {
     if (!selectedDoctor || !values.date) return [];
     const hours = selectedDoctor.medicalAppointmentDates
-      .filter((d) => d.status === TStatus.Pending)
+      .filter((d) => d.status === "pending")
       .filter((d) => d.date.startsWith(values.date))
       .map((d) => d.date.split(" ")[1]);
     return uniq(hours);
@@ -68,13 +82,21 @@ export const PatientBookAppointmentPage = () => {
 
   return (
     <div className="bg-gray-50">
+      <Modal
+        showModal={showModal}
+        onClose={() => {
+          setShowModal(false);
+          navigate("/plataforma/paciente/citas");
+        }}
+        message={message}
+      />
       <div className="bg-dark-green h-52">
         <div className="text-white px-8 py-10 flex justify-between text-lg font-bold uppercase">
           <h2>Reservar Cita</h2>
           <h2>Notificación</h2>
         </div>
 
-        <div className="bg-white mx-8 p-8 rounded-2xl shadow-xl">
+        <div className="bg-white mx-4 2xl:mx-8 px-4 pt-8 pb-20 2xl:p-8 rounded-2xl shadow-xl">
           <div className="text-2xl text-dark-green font-medium pb-8">
             Reserve su nueva cita
           </div>
@@ -134,7 +156,7 @@ export const PatientBookAppointmentPage = () => {
               </select>
             </label>
 
-            <label className="block pb-10">
+            <label className="block 2xl:pb-10">
               <span className="block text-lg text-gray-400 font-semibold pb-1">
                 Hora(s) de atención *
               </span>
@@ -154,7 +176,7 @@ export const PatientBookAppointmentPage = () => {
               </select>
             </label>
 
-            <div className="flex items-center gap-8">
+            <div className="flex items-center max-sm:w-full justify-between gap-2 2xl:w-96">
               <button className="2xl:w-48 bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium">
                 Guardar
               </button>

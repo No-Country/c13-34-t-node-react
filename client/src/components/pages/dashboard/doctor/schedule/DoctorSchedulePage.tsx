@@ -4,7 +4,7 @@ import { Modal } from "@/components/common/Modal";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { TAppointment, TAppointmentStatus } from "@/types/appointments";
+import { TAppointment, TAppointmentDateStatus } from "@/types/appointments";
 import { AppointmentsService } from "@/services/appointments";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
@@ -18,7 +18,7 @@ export const DoctorSchedulePage = () => {
 
   const [appointmentsData, setAppointmentsData] = useState<TAppointment[]>();
   const [selectedStatus, setSelectedStatus] = useState<
-    TAppointmentStatus | "todos"
+    TAppointmentDateStatus | "todos"
   >("todos");
 
   useEffect(() => {
@@ -165,21 +165,23 @@ const StatusChip = ({
   appoint: TAppointment;
   mutate: () => void;
 }) => {
-  const statuses: Record<TAppointmentStatus, { name: string; color: string }> =
-    {
-      selected: {
-        name: "Agendada",
-        color: "#4FB783",
-      },
-      cancelled: {
-        name: "Cancelada",
-        color: "#DC143C",
-      },
-      pending: {
-        name: "Pendiente",
-        color: "#d8be48",
-      },
-    };
+  const statuses: Record<
+    TAppointmentDateStatus,
+    { name: string; color: string }
+  > = {
+    selected: {
+      name: "Agendada",
+      color: "#4FB783",
+    },
+    cancelled: {
+      name: "Cancelada",
+      color: "#DC143C",
+    },
+    pending: {
+      name: "Pendiente",
+      color: "#d8be48",
+    },
+  };
 
   const current = statuses[appoint.status];
 

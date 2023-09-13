@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import imageDiversitySpecialties from "/images/home-doctor-4.png";
 
 export const MedicalSpecialties = () => {
@@ -11,22 +11,24 @@ export const MedicalSpecialties = () => {
       <div className="2xl:flex mt-5 mb-">
         <div className="w-[90%] mx-auto 2xl:py-0 2xl:w-1/2 mt-2 2xl:text-lg 2xl:grid 2xl:p-32">
           <div className="2xl:justify-center">
-            <p>
-              En nuestra clínica de medicina integral, te presentamos a un equipo
-              diverso de especialistas altamente capacitados en una amplia gama de
-              áreas médicas. Reconocemos que cada paciente tiene necesidades
-              únicas y es por eso que contamos con un equipo de expertos
-              comprometidos en ofrecer un enfoque completo para tu salud y
-              bienestar.
+            <p className="text-justify 2xl:tracking-[1px]">
+              En nuestra clínica de medicina integral, te presentamos a un
+              equipo diverso de especialistas altamente capacitados en una
+              amplia gama de áreas médicas. Reconocemos que cada paciente tiene
+              necesidades únicas y es por eso que contamos con un equipo de
+              expertos comprometidos en ofrecer un enfoque completo para tu
+              salud y bienestar.
               <br />
               En nuestra clínica, nos enorgullece proporcionarte una atención de
               calidad en un ambiente acogedor y compasivo.
               <br />
               Esperamos recibirte pronto y comenzar juntos un camino hacia una
-              vida más saludable y activa. Juntos, podemos marcar la diferencia en
-              tu salud y calidad de vida.
+              vida más saludable y activa. Juntos, podemos marcar la diferencia
+              en tu salud y calidad de vida.
               <br />
-              Te invitamos a formar parte de nuestra comunidad de cuidado de la salud y confiamos en que te sentirás respaldado en cada paso del camino. ¡Estamos aquí para ti!
+              Te invitamos a formar parte de nuestra comunidad de cuidado de la
+              salud y confiamos en que te sentirás respaldado en cada paso del
+              camino. ¡Estamos aquí para ti!
             </p>
 
             <NavLink to={"/sobre-nosotros"}>
@@ -49,7 +51,9 @@ export const MedicalSpecialties = () => {
           <p className="justify-self-center 2xl:text-lg font-bold">
             Dra. María Eugenia Becerra
           </p>
-          <p className="justify-self-center pb-6 2xl:text-lg rounded-b-lg">MP: 39658</p>
+          <p className="justify-self-center pb-6 2xl:text-lg rounded-b-lg">
+            MP: 39658
+          </p>
         </div>
       </div>
     </>
