@@ -195,10 +195,10 @@ export const PatientMedicalRecordsPage = () => {
                         {info.medication}
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                        {info.height}
+                        {info.height}cm
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                        {info.weight}
+                        {info.weight}kg
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {info.bloodPressure}

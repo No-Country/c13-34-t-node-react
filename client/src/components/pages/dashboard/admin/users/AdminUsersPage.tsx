@@ -144,7 +144,7 @@ export const AdminUsersPage = () => {
                 <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Estado
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                <th className="hidden p-3 text-sm font-semibold tracking-wide text-left uppercase">
                   Accion
                 </th>
               </tr>
@@ -185,7 +185,7 @@ export const AdminUsersPage = () => {
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <StatusChip user={user} />
                   </td>
-                  <td className="p-3 flex items-center justify-center gap-4">
+                  <td className="hidden p-3 items-center justify-center gap-4">
                     <NavLink
                       to={`/plataforma/administrador/usuarios/${user.id}`}
                       className="text-blue-500 hover:text-blue-700 transition"
@@ -262,10 +262,11 @@ const StatusChipAcceptRejectButton = ({ user }: { user: TUser }) => {
         showModal={show}
         onClose={() => setShow(false)}
         message={
-          <div className="text-center">
-            <p className="mb-4">
-              ¿Qué desea hacer con el usuario {user.firstName}?
-            </p>
+          <div className="text-center max-sm:mx-4">
+            <div className="max-sm:text-sm mb-4">
+              <p>¿Qué desea hacer con el usuario</p>
+              <span>{user.firstName}?</span>
+            </div>
             <div className="flex gap-2 justify-center">
               <button
                 className="disabled:bg-slate-300 bg-red-600 text-white rounded-xl py-1 px-2"

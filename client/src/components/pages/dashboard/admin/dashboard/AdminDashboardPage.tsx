@@ -8,7 +8,7 @@ import card7_DA from "/images/card7-dashboard-administrador.png";
 
 export const AdminDashboardPage = () => {
   return (
-    <>
+    <div>
       <div className="grid max-sm:grid-cols-1 p-4 2xl:py-4">
         <div className="2xl:flex 2xl:justify-evenly 2xl:py-6">
           <div className="grid pb-6 2xl:pb-0">
@@ -28,42 +28,27 @@ export const AdminDashboardPage = () => {
           </div>
         </div>
 
-        <div className="2xl:flex 2xl:justify-evenly pb-6">
+        <div className="2xl:flex 2xl:justify-evenly 2xl:py-6">
+          <div className="2xl:flex 2xl:justify-evenly pb-6">
+            <div className="grid pb-6 2xl:pb-0">
+              <img
+                className="justify-self-center w-full 2xl:w-[600px]"
+                src={card3_DA}
+                alt="card3-dashboard-administrador"
+              />
+            </div>
+          </div>
+
           <div className="grid pb-6 2xl:pb-0">
             <img
               className="justify-self-center w-full 2xl:w-[600px]"
-              src={card3_DA}
-              alt="card3-dashboard-administrador"
-            />
-          </div>
-        </div>
-
-        <div className="2xl:flex 2xl:justify-evenly pb-6">
-          <div className="grid pb-6 2xl:pb-0">
-            <img
-              className="justify-self-center w-80 2xl:w-[500px]"
-              src={card3_DA}
-              alt="card3-dashboard-administrador"
-            />
-          </div>
-
-          <div className="grid pb-6 2xl:pb-0">
-            <img
-              className="justify-self-center w-80 2xl:w-[500px]"
               src={card4_DA}
               alt="card4-dashboard-administrador"
             />
           </div>
         </div>
-
-        <div className="grid pb-6 2xl:pb-0">
-          <img
-            className="justify-self-center w-full 2xl:w-[600px]"
-            src={card4_DA}
-            alt="card4-dashboard-administrador"
-          />
-        </div>
       </div>
+
       <div className="2xl:flex 2xl:justify-center pb-6">
         <img
           className="w-full 2xl:w-[1300px]"
@@ -88,6 +73,6 @@ export const AdminDashboardPage = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
