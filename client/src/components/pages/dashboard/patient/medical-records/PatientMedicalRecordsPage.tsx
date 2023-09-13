@@ -1,15 +1,22 @@
 import { PatientService } from "@/services/patient";
 import useSWR from "swr";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+import { useAuth } from "@/context/auth";
 
 const getPatientInfoKey = "getPatientInfo";
 
 export const PatientMedicalRecordsPage = () => {
-  const { data, error } = useSWR(getPatientInfoKey, () =>
-    PatientService.getPatientInfo(4),
+  const { user } = useAuth();
+
+  const { data, error } = useSWR(
+    user!.patientId ? getPatientInfoKey : null,
+    () => PatientService.getPatientInfo(user!.patientId),
   );
 
-  if (error) return <div> Ha ocurrido un error</div>;
-  if (!data) return <div> Cargando...</div>;
+  if (error || !user!.patientId)
+    return <Error message="Usted aun no tiene registros médicos" />;
+  if (!data) return <Loading />;
 
   const { patientInfo, medicalRecordInfo } = data;
 

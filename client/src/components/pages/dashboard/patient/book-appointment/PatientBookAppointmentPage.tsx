@@ -131,6 +131,7 @@ export const PatientBookAppointmentPage = () => {
                 name="description"
                 type="text"
                 required
+                minLength={20}
                 placeholder="Describe brevemente la consulta"
                 className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
               />

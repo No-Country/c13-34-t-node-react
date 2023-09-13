@@ -6,14 +6,16 @@ import { TDoctor } from "@/types/doctor";
 import { Modal } from "@/components/common/Modal";
 import { UsersService } from "@/services/users";
 import useSWR from "swr";
+import { Loading } from "../../shared/Loading";
+import { Error } from "../../shared/Error";
 
 const getDoctorsKey = "getDoctors";
 
 export const PatientDoctorsPage = () => {
   const { data, error } = useSWR(getDoctorsKey, UsersService.getDoctors);
 
-  if (error) return <div> Ha ocurrido un error</div>;
-  if (!data) return <div> Cargando...</div>;
+  if (error) return <Error message="Error al cargar" />;
+  if (!data) return <Loading />;
 
   const { doctors } = data;
 
@@ -148,7 +150,7 @@ const DatesButton = ({ doctor }: { doctor: TDoctor }) => {
                   >
                     <td>{d.date}</td>
 
-                    <td>
+                    <td className="max-sm:text-lg">
                       {d.status === "pending" ? (
                         <span className="text-green-500">Disponible</span>
                       ) : (

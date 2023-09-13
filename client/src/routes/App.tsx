@@ -74,6 +74,12 @@ export const App = () => {
                   />
                   <Route path="citas" element={<AdminAppointmentsPage />} />
                   <Route path="pacientes" element={<AdminPatientsPage />} />
+                  <Route
+                    path="*"
+                    element={
+                      <NotFound linkTo="/plataforma/administrador/panel" />
+                    }
+                  />
                 </Route>
 
                 {/* /plataforma/doctor/panel */}
@@ -90,6 +96,10 @@ export const App = () => {
                   />
                   <Route path="citas" element={<DoctorAppointmentsPage />} />
                   <Route path="cronograma" element={<DoctorSchedulePage />} />
+                  <Route
+                    path="*"
+                    element={<NotFound linkTo="/plataforma/doctor/panel" />}
+                  />
                 </Route>
 
                 {/* /plataforma/paciente/panel */}
@@ -109,11 +119,15 @@ export const App = () => {
                     path="registros-medicos"
                     element={<PatientMedicalRecordsPage />}
                   />
+                  <Route
+                    path="*"
+                    element={<NotFound linkTo="/plataforma/paciente/panel" />}
+                  />
                 </Route>
               </Route>
             </Route>
 
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<NotFound linkTo="/" />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
