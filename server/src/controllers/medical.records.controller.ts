@@ -3,6 +3,8 @@ import { AppError } from '../utils/app.error'
 import { HTTPCODES } from '../constants/httpCodes'
 import { medicalRecordService } from '../services'
 import { MESSAGES } from '../constants/msgs'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+
 // controller de prueba para verificar relaciones correctamente
 // export const getMedicalRecord = async (
 //   req: Request,
@@ -31,15 +33,48 @@ import { MESSAGES } from '../constants/msgs'
 //   }
 // }
 
-export const createMedicalRecord = async (
+export const updateMedicalRecord = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const { safeData } = req
+
+    await medicalRecordService.updateMedicalRecord(
+      safeData?.params.id,
+      safeData?.body
+    )
+
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_RECORD_NOT_UPDATED,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
+
+// crear un controlador adecuado
+
+export const createMedicalRecord = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { safeData, sessionUser } = req
     const medicalRecord = await medicalRecordService.createMedicalRecord(
       safeData?.body,
+      sessionUser?.id,
       safeData?.params.id
     )
 

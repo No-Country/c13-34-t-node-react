@@ -54,7 +54,6 @@ export class EntityFactory {
     try {
       return await this.entityRepository.save(created, { listeners })
     } catch (e) {
-      console.log(e)
       throw new AppError(
         ERROR_MSGS.RESOURCE_CREATION_ERROR,
         HTTPCODES.INTERNAL_SERVER_ERROR

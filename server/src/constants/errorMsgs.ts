@@ -56,8 +56,13 @@ export enum ERROR_MSGS {
   GET_ALL_DATES_BY_SINGLE_DOCTOR_FAIL = 'Error al buscar todas las fechas creadas de un doctor',
   GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL = 'Error al buscar las horas previamente elegidas por un doctor a partir de una fecha específica.',
   MEDICAL_RECORD_FAIL_SAVE = 'No se pudo guardar el registro médico debido a un error de servidor.',
+  MEDICAL_RECORD_NOT_CREATED = 'El registro médico aún no se ha creado.',
+  MEDICAL_RECORD_NOT_FOUND = 'El registro médico no ha sido encontrado.',
+  MEDICAL_RECORD_NOT_UPDATED = 'El registro médico no fue actualizado',
   TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL = 'Error al cambiar el estado de la fecha de la cita médica.',
-  MEDICAL_RECORD_NOT_FOUND = 'No se encontró el registro médico.',
   PATIENT_MEDICAL_HISTORY_SAVE_FAIL = 'No se pudo guardar el historial médico del paciente.',
-  PATIENT_INFO_FAIL = 'La información del paciente no se pudo recuperar.'
+  PATIENT_INFO_FAIL = 'La información del paciente no se pudo recuperar.',
+  MEDICAL_APPOINTMENTS_INFO_FAIL = 'No se pudo recuperar la información de las citas médicas debido a un error interno.',
+  MEDICAL_RECORD_EXISTS = 'El registro médico de este paciente ya existe.',
+  MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.'
 }
