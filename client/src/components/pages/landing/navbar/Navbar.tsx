@@ -15,7 +15,7 @@ export const Navbar = () => {
       <nav
         className={` ${
           showSideMenu ? "flex" : "hidden"
-        } fixed top-0 z-50 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto`}
+        } fixed top-0 z-50 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto 2xl:hidden`}
       >
         <div className="flex items-center justify-end mb-8">
           <button
@@ -23,7 +23,7 @@ export const Navbar = () => {
             className="navbar-close"
           >
             <svg
-              className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
+              className="h-10 w-10 text-gray-400 cursor-pointer hover:text-gray-500"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -56,7 +56,7 @@ export const Navbar = () => {
         </div>
       </nav>
       <BiMenu
-        className="xl:hidden"
+        className="xl:hidden cursor-pointer"
         size={40}
         onClick={() => setShowSideMenu(!showSideMenu)}
       />
