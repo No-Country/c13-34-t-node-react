@@ -1,19 +1,18 @@
 import { In } from 'typeorm'
-import type { MedicalAppointmentDates } from '../entities'
-import type { Patient } from '../entities/patient.entity'
-import type { PatientRepository } from '../types/patient.types'
 import {
   medicalAppointmentDatesService,
-  medicalAppointmentService,
   medicalRecordService,
   patientMedicalHistoryService
 } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import type { MedicalAppointmentDates } from '../entities'
+import type { Patient } from '../entities/patient.entity'
+import type { FindResults } from '../types/entity.types'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
+import type { PatientRepository } from '../types/patient.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
-import { FindResults } from '../types/entity.types'
 
 export class PatientService {
   // private readonly patientRepository: PatientRepository

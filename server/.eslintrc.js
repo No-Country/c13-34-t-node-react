@@ -7,7 +7,6 @@ module.exports = {
   extends: ['standard-with-typescript', 'prettier'],
   overrides: [],
   parserOptions: {
-<<<<<<< HEAD
     project: './tsconfig.json',
 =======
     // project: './tsconfig.json',
@@ -19,7 +18,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-misused-promises': 'off',
-    '@typescript-eslint/consistent-type-assertions': 'off'
+    '@typescript-eslint/no-misused-promises': 'off'
   }
 }
