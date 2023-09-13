@@ -5,6 +5,8 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
+import { Not } from 'typeorm'
+import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 
 export class MedicalRecordService {
   private readonly entityFactory: EntityFactory
@@ -58,7 +60,10 @@ export class MedicalRecordService {
       const verifyPatientAppointments = await patientService.findPatient(
         {
           medicalAppointments: {
-            medicalAppointmentDate: { doctor: { user: { id: doctorId } } }
+            medicalAppointmentDate: {
+              status: Not(MedicalAppointmentDatesStatus.selected),
+              doctor: { user: { id: doctorId } }
+            }
           }
         },
         false,
