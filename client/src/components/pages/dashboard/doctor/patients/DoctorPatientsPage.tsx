@@ -2,23 +2,30 @@ import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { RiEyeFill } from "react-icons/ri";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
+import { DoctorPatientsService } from "@/services/doctorPatients";
+import { TPatient } from "@/types/patients";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
-const users = [
-  {
-    id: "1",
-    firstName: "David",
-    lastName: "Jones",
-    telephone: "0123456789",
-    email: "david@gmail.com",
-    dateOfBirth: "22/12/1991",
-    genre: "male",
-    appointment: "10:00 - 11:00, 25/09/2023",
-  },
-];
+const getDoctorPatients = "getDoctorPatients";
 
 export const DoctorPatientsPage = () => {
-  return (
-    <div className="bg-gray-50">
+  const { data, isLoading } = useSWR(
+    getDoctorPatients,
+    DoctorPatientsService.getDoctorPatients,
+  );
+
+  const [nextAppointments, setNextAppointments] = useState<TPatient[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setNextAppointments(data.patients);
+    }
+  }, [data]);
+
+  return data ? (
+    <div className="bg-gray-200 h-screen">
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
         <h2 className="text-lg font-bold uppercase">Usuarios</h2>
         <div>Notificación</div>
@@ -65,9 +72,6 @@ export const DoctorPatientsPage = () => {
             <thead className="bg-white border-b-2 border-gray-200">
               <tr>
                 <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  No.
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
                   Nombres
                 </th>
                 <th className="p-3 text-sm font-semibold tracking-wide text-left">
@@ -95,40 +99,34 @@ export const DoctorPatientsPage = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100">
-              {users?.map((user) => (
-                <tr key={user.id} className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <NavLink
-                      to="/"
-                      className="font-bold text-blue-500 hover:underline"
-                    >
-                      {user.id}
-                    </NavLink>
+              {nextAppointments?.map((nextAppointment) => (
+                <tr key={nextAppointment.id} className="bg-white">
+                  <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {nextAppointment.user.firstName}
+                  </td>
+                  <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
+                    {nextAppointment.user.lastName}
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.firstName}
+                    {nextAppointment.user.telephone}
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.lastName}
+                    {nextAppointment.user.email}
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.telephone}
+                    {nextAppointment.user.dateOfBirth}
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.email}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.dateOfBirth}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {user.genre}
+                    {nextAppointment.user.genre === "male"
+                      ? "Masculino"
+                      : "Femenino"}
                   </td>
                   <td className="p-3 text-sm text-gray-700 font-bold whitespace-nowrap">
-                    {user.appointment}
+                    {nextAppointment.user.appointment}
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap flex justify-center">
                     <NavLink
-                      to={`/plataforma/doctor/pacientes/${user.id}`}
+                      to={`/plataforma/doctor/pacientes/${nextAppointment.id}`}
                       className="text-blue-500 hover:text-blue-700 transition"
                     >
                       <RiEyeFill className="text-3xl" />
@@ -140,6 +138,14 @@ export const DoctorPatientsPage = () => {
           </table>
         </div>
       </div>
+    </div>
+  ) : isLoading ? (
+    <div className="h-full w-full flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
+  ) : (
+    <div className="h-full w-full flex items-center justify-center">
+      <p>Ha ocurrido un error!</p>
     </div>
   );
 };

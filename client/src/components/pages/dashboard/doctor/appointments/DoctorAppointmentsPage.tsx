@@ -17,9 +17,12 @@ const hoursAvailable = [
 
 export const DoctorAppointmentsPage = () => {
   const [hoursSelected, setHoursSelected] = useState<string[]>([]);
+  const [unavailableHours, setUnavailableHours] = useState<string[]>([]);
   const [showError, setShowError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [enableHours, setEnableHours] = useState(false);
   const [message, setMessage] = useState("");
+  const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleHourClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -34,7 +37,7 @@ export const DoctorAppointmentsPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!hoursSelected.length) return setShowError(true);
+    if (!hoursSelected.length && enableHours) return setShowError(true);
 
     if (loading) {
       return;
@@ -61,6 +64,25 @@ export const DoctorAppointmentsPage = () => {
     setLoading(false);
     setMessage("Horarios agendados con éxito!");
     setShowModal(true);
+    setHoursSelected([]);
+    setUnavailableHours([]);
+    setEnableHours(false);
+    setDate("");
+  };
+
+  const handleDateSelect = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    const res = await AppointmentsService.getDoctorHoursFromDate(date);
+    if (res.status === "success") {
+      const fetchedDates = res.hours.map((x) => x.hour);
+      setUnavailableHours(fetchedDates);
+      setEnableHours(true);
+    } else {
+      setMessage("Ha ocurrido un error!");
+      setShowModal(true);
+    }
   };
 
   return (
@@ -90,14 +112,20 @@ export const DoctorAppointmentsPage = () => {
               name="date"
               id="date"
               type="date"
+              value={date}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setEnableHours(false);
+                setUnavailableHours([]);
+              }}
               min={new Date().toISOString().split("T")[0]}
               required
               placeholder="Ingrese la fecha"
               className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
             />
             <button
-              //onClick={() => setShow(true)}
-              className="hidden 2xl:w-48 text-sm bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium"
+              onClick={handleDateSelect}
+              className="2xl:w-48 text-sm bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium"
             >
               Seleccionar fecha
             </button>
@@ -115,9 +143,12 @@ export const DoctorAppointmentsPage = () => {
                   name="hoursAvailable"
                   value={hour.value}
                   onClick={handleHourClick}
+                  disabled={
+                    !enableHours || unavailableHours.includes(hour.value)
+                  }
                   id="hoursAvailable"
                   className={clsx(
-                    "hover:bg-dark-green hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 px-4 rounded-full",
+                    "enabled:hover:bg-dark-green disabled:opacity-75 disabled:bg-[#cccccc] enabled:hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 px-4 rounded-full",
                     hoursSelected.includes(hour.value) &&
                       "bg-dark-green text-white",
                   )}
@@ -129,8 +160,8 @@ export const DoctorAppointmentsPage = () => {
 
             <button
               type="submit"
-              disabled={loading}
-              className={`2xl:w-48 bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium`}
+              disabled={loading || !enableHours}
+              className={`2xl:w-48 disabled:bg-[#cccccc] bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white enabled:hover:text-dark-green enabled:hover:bg-white border enabled:hover:border-dark-green uppercase transition font-medium`}
             >
               {loading ? <LoadingSpinner /> : "Agendar"}
             </button>

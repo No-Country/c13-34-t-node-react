@@ -6,11 +6,12 @@ import clsx from "clsx";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { TAppointment, TAppointmentStatus } from "@/types/appointments";
 import { AppointmentsService } from "@/services/appointments";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 const getDoctorSchedule = "getDoctorSchedule";
 
 export const DoctorSchedulePage = () => {
-  const { data, error } = useSWR(
+  const { data, mutate, error } = useSWR(
     getDoctorSchedule,
     AppointmentsService.getDoctorSchedule,
   );
@@ -21,7 +22,6 @@ export const DoctorSchedulePage = () => {
   >("todos");
 
   useEffect(() => {
-    AppointmentsService.getDoctorSchedule();
     if (data) {
       setAppointmentsData(data.dates);
     }
@@ -43,7 +43,7 @@ export const DoctorSchedulePage = () => {
         <div>Notificación</div>
       </div>
 
-      <div className="bg-white m-8 rounded-2xl">
+      <div className="bg-white h-[70%] m-8 rounded-2xl">
         <div className="p-4 flex justify-end gap-4 pr-24">
           <p className="py-1.5 font-semibold">Mostrar</p>
           <button
@@ -100,8 +100,8 @@ export const DoctorSchedulePage = () => {
           </button>
         </div>
 
-        <div className="overflow-auto">
-          <table className="table-auto bg-white px-4 py-8 w-full">
+        <div className="overflow-auto h-full flex flex-col items-center">
+          <table className="overflow-scroll bg-white px-4 w-full">
             <thead className="bg-white border-b-2 border-gray-200">
               <tr>
                 <th className="p-3 text-sm font-semibold tracking-wide text-left">
@@ -140,7 +140,7 @@ export const DoctorSchedulePage = () => {
                       {appoint.date.split(" ")[1]}
                     </td>
                     <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      <StatusChip appoint={appoint} />
+                      <StatusChip appoint={appoint} mutate={mutate} />
                     </td>
                   </tr>
                 ))}
@@ -152,11 +152,19 @@ export const DoctorSchedulePage = () => {
   ) : error ? (
     <div> Ha ocurrido un error</div>
   ) : (
-    <div> Cargando...</div>
+    <div className="h-full w-full flex items-center justify-center">
+      <LoadingSpinner />
+    </div>
   );
 };
 
-const StatusChip = ({ appoint }: { appoint: TAppointment }) => {
+const StatusChip = ({
+  appoint,
+  mutate,
+}: {
+  appoint: TAppointment;
+  mutate: () => void;
+}) => {
   const statuses: Record<TAppointmentStatus, { name: string; color: string }> =
     {
       selected: {
@@ -181,7 +189,7 @@ const StatusChip = ({ appoint }: { appoint: TAppointment }) => {
       style={{ backgroundColor: current.color }}
     >
       <span>{current.name}</span>
-      <StatusChipAcceptRejectButton appoint={appoint} />
+      <StatusChipAcceptRejectButton appoint={appoint} mutate={mutate} />
       {/* {user.status === "pending" && (
       )} */}
     </div>
@@ -190,10 +198,27 @@ const StatusChip = ({ appoint }: { appoint: TAppointment }) => {
 
 const StatusChipAcceptRejectButton = ({
   appoint,
+  mutate,
 }: {
   appoint: TAppointment;
+  mutate: () => void;
 }) => {
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleChangeClick = async () => {
+    setIsLoading(true);
+    const response = await AppointmentsService.changeDoctorSchedule(appoint.id);
+    if (response.status === 204) {
+      await mutate();
+      setShow(false);
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      setError(true);
+    }
+  };
 
   return (
     <>
@@ -208,32 +233,42 @@ const StatusChipAcceptRejectButton = ({
         showModal={show}
         onClose={() => setShow(false)}
         message={
-          <div className="text-center">
-            <p className="mb-4">¿Qué desea hacer con la cita {appoint.date}?</p>
-            <div className="flex gap-2 justify-center">
-              <button
-                className="disabled:bg-slate-300 bg-red-600 text-white rounded-xl py-1 px-2"
-                disabled={appoint.status === "cancelled"}
-                onClick={async () => {
-                  await AppointmentsService.changeDoctorSchedule(appoint.id);
-                  setShow(false);
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                className="disabled:bg-slate-300 bg-green-600 text-white rounded-xl py-1 px-2"
-                disabled={appoint.status === "selected"}
-                /*onClick={async () => {
-                  await UsersService.acceptHighLevelRoleUser(user.id);
-                  await mutate(getHighLevelRolesUsersKey);
-                  setShow(false);
-                }}*/
-              >
-                Aceptar
-              </button>
+          isLoading ? (
+            <LoadingSpinner />
+          ) : error ? (
+            <div className="text-center">
+              <p className="mb-4">Ha ocurrido un error!</p>
             </div>
-          </div>
+          ) : (
+            <div className="text-center">
+              <p className="mb-4 text-sm">
+                {appoint.status === "cancelled"
+                  ? `La cita ${appoint.date} ha sido cancelada. ¿Desea volver a agendarla como disponible?`
+                  : appoint.status === "pending"
+                  ? `La cita ${appoint.date} está disponible para los pacientes. ¿Desea eliminarla?`
+                  : `La cita ${appoint.date} ha sido reservada por un paciente. ¿Desea eliminarla?`}
+              </p>
+              <div className="flex gap-2 justify-center">
+                <button
+                  className="disabled:bg-slate-300 bg-red-600 text-white rounded-xl py-1 px-2"
+                  disabled={appoint.status === "cancelled"}
+                  onClick={handleChangeClick}
+                >
+                  Eliminar
+                </button>
+                <button
+                  className="disabled:bg-slate-300 bg-green-600 text-white rounded-xl py-1 px-2"
+                  disabled={
+                    appoint.status === "selected" ||
+                    appoint.status === "pending"
+                  }
+                  onClick={handleChangeClick}
+                >
+                  Aceptar
+                </button>
+              </div>
+            </div>
+          )
         }
       />
     </>

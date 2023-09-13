@@ -34,6 +34,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const login = async (email: string, password: string) => {
     const response = await AuthService.signin(email, password);
     const data = response.data;
+    console.log(data);
 
     // setear header por defecto a la instancia de axios
     // Authorization: Bearer token

@@ -5,6 +5,11 @@ type TNewAppointment = {
   description: string;
 };
 
+type Hour = {
+  status: string;
+  hour: string;
+};
+
 async function createAppointment(
   dateId: number,
   newAppointment: TNewAppointment,
@@ -38,11 +43,27 @@ async function getDoctorSchedule() {
   return res.data;
 }
 
+async function getDoctorHoursFromDate(date: string) {
+  type TGetDoctorHoursFromDate = {
+    status: string;
+    hours: Hour[];
+  };
+
+  const res = await client.post<TGetDoctorHoursFromDate>(
+    "/api/v1/doctor/get-all-hours-from-date-doctor",
+    {
+      date,
+    },
+  );
+
+  return res.data;
+}
+
 async function changeDoctorSchedule(id: number) {
-  const res = await client.put(
+  const res = await client.patch(
     `/api/v1/doctor/toggle-medical-appointment-date-status/${id}`,
   );
-  console.log(res);
+
   return res;
 }
 
@@ -51,4 +72,5 @@ export const AppointmentsService = {
   postDoctorAvailability,
   getDoctorSchedule,
   changeDoctorSchedule,
+  getDoctorHoursFromDate,
 };
