@@ -64,5 +64,8 @@ export enum ERROR_MSGS {
   PATIENT_INFO_FAIL = 'La información del paciente no se pudo recuperar.',
   MEDICAL_APPOINTMENTS_INFO_FAIL = 'No se pudo recuperar la información de las citas médicas debido a un error interno.',
   MEDICAL_RECORD_EXISTS = 'El registro médico de este paciente ya existe.',
-  MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.'
+  MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.',
+  PATIENT_MEDICAL_HISTORY_NOT_FOUND = 'No se encontró el historial médico del paciente.',
+  PATIENT_MEDICAL_HISTORY_NOT_CREATED = 'El historial médico del paciente no se ha creado.',
+  PATIENT_MEDICAL_HISTORY_NOT_UPDATED = 'El historial médico del paciente no fue actualizado.'
 }
