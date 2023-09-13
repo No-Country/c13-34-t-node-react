@@ -3,8 +3,8 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { type FindResults } from '../types/entity.types'
 import type {
-  PatientMedicalHistoryRepository,
-  patienMedicalHistoryBody
+  PatienMedicalHistoryBody,
+  PatientMedicalHistoryRepository
 } from '../types/patient.medical.history.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
@@ -19,7 +19,7 @@ export class PatientMedicalHistoryService {
   }
 
   async createPatientMedicalHistory(
-    data: patienMedicalHistoryBody,
+    data: PatienMedicalHistoryBody,
     medicalRecordId: number
   ) {
     // Buscamos el medical record del paciente para verificar que exista
@@ -66,5 +66,48 @@ export class PatientMedicalHistoryService {
       attributes,
       relationAttributes
     )
+  }
+
+  async updatePatientMedicalHistory(
+    patientMedicalHistoryId: number,
+    data: PatienMedicalHistoryBody
+  ) {
+    try {
+      // Buscamos el patientMedicalHistory por findOne mediante el id del patientMedicalHistorySchema
+      const patientMedicalHistory = await this.entityFactory.findOne(
+        { id: patientMedicalHistoryId },
+        false,
+        false,
+        false
+      )
+
+      // Si el patientMedicalHistory no existe, lanzamos un error
+      if (!patientMedicalHistory) {
+        throw new AppError(
+          ERROR_MSGS.PATIENT_MEDICAL_HISTORY_NOT_FOUND,
+          HTTPCODES.NOT_FOUND
+        )
+      }
+    } catch (err) {
+      if (err instanceof AppError) {
+        throw err
+      }
+
+      throw new AppError(
+        ERROR_MSGS.PATIENT_MEDICAL_HISTORY_NOT_CREATED,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    data.id = patientMedicalHistoryId
+
+    try {
+      await this.entityFactory.updateOne(data)
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.PATIENT_MEDICAL_HISTORY_NOT_UPDATED,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
   }
 }

@@ -14,7 +14,6 @@ export const schemaValidator = (schema: AnyZodObject) => {
       body: req.body,
       params: req.params
     })
-
     if (!results.success) {
       const errors = results.error.issues.map((issue) => {
         if (issue.message === MESSAGES.DATE_OF_BIRTH_DEFAULT_ERROR) {

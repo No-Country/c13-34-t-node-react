@@ -6,23 +6,26 @@ import {
   toggleStatusMedicalAppointmentDate
 } from '../controllers/medical.appointment.dates.controller'
 import {
+  createMedicalRecord,
+  updateMedicalRecord
+} from '../controllers/medical.records.controller'
+import {
   getMedicalAppointmentsInfo,
   getPatients,
   patientInfo
 } from '../controllers/patient.controller'
-import { createPatientMedicalHistory } from '../controllers/patient.medical.history.controller'
+import {
+  createPatientMedicalHistory,
+  updatePatientMedicalHistory
+} from '../controllers/patient.medical.history.controller'
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
+import { medicalAppointmentsIdsSchema } from '../schema/medical.appointment.schema'
 import { medicalAppointmentsDatesSchema } from '../schema/medical.appointments.dates.schema'
-import {
-  createMedicalRecord,
-  updateMedicalRecord
-} from '../controllers/medical.records.controller'
 import { medicalRecordSchema } from '../schema/medical.record.schema'
 import { patientMedicalHistorySchema } from '../schema/patient.medical.history.schema'
 import { UserRole } from '../types/user.types'
-import { medicalAppointmentsIdsSchema } from '../schema/medical.appointment.schema'
 
 export const doctorRouter = Router()
 
@@ -70,6 +73,13 @@ doctorRouter.patch(
 doctorRouter.patch(
   '/update-medical-record/:id',
   schemaValidator(idSchema),
-  schemaValidator(medicalRecordSchema.partial()),
+  schemaValidator(medicalRecordSchema.deepPartial()),
   updateMedicalRecord
+)
+
+doctorRouter.patch(
+  '/update-patient-medical-history/:id', // este id es del patient medical history
+  schemaValidator(idSchema),
+  schemaValidator(patientMedicalHistorySchema.deepPartial()),
+  updatePatientMedicalHistory
 )
