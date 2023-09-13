@@ -35,3 +35,33 @@ export const createPatientMedicalHistory = async (
     next(err)
   }
 }
+
+export const updatePatientMedicalHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { safeData } = req
+
+    await patientMedicalHistoryService.updatePatientMedicalHistory(
+      safeData?.params.id,
+      safeData?.body
+    )
+
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.PATIENT_MEDICAL_HISTORY_NOT_UPDATED,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
