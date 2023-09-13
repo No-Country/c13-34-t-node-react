@@ -64,5 +64,6 @@ export enum ERROR_MSGS {
   PATIENT_INFO_FAIL = 'La información del paciente no se pudo recuperar.',
   MEDICAL_APPOINTMENTS_INFO_FAIL = 'No se pudo recuperar la información de las citas médicas debido a un error interno.',
   MEDICAL_RECORD_EXISTS = 'El registro médico de este paciente ya existe.',
-  MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.'
+  MEDICAL_RECORD_FAIL_FOUND = 'No se pudo comprobar la existencia del registro médico debido a un error interno.',
+  SIGNIN_FAIL = 'Ocurrio un error interno al iniciar sesión'
 }

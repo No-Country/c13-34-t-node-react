@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
+import type { User } from '../entities'
+import type { HoursType } from '../types/medical.appointment.dates.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
-import type { HoursType } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 
 export const createDates = async (
@@ -15,7 +15,7 @@ export const createDates = async (
   try {
     const { sessionUser } = req
     const { date, hours } = req.safeData?.body
-    const medicalAppointmentDates =
+    const { medicalAppointmentDates, doctorId } =
       await medicalAppointmentDatesService.createMedicalAppointmentDates(
         sessionUser as User,
         date,
@@ -25,7 +25,8 @@ export const createDates = async (
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CREATED,
-      medicalAppointmentDates
+      medicalAppointmentDates,
+      doctorId
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
@@ -52,7 +53,7 @@ export const toggleStatusMedicalAppointmentDate = async (
       id,
       req?.sessionUser as User
     )
-    res.status(HTTPCODES.NO_CONTENT).json({
+    return res.status(HTTPCODES.NO_CONTENT).json({
       status: MESSAGES.SUCCESS
     })
   } catch (err) {
@@ -78,7 +79,7 @@ export const getAllDatesByDoctor = async (
     const { id } = req.sessionUser as User
     const [dates, count] =
       await medicalAppointmentDatesService.getAllMedicalAppoitmentDates(id)
-    res.status(HTTPCODES.OK).json({
+    return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
       dates,
       count
@@ -128,7 +129,7 @@ export const getAllHoursByDoctorDate = async (
         return obj
       })
 
-      res.status(HTTPCODES.OK).json({
+      return res.status(HTTPCODES.OK).json({
         status: MESSAGES.SUCCESS,
         hours
       })

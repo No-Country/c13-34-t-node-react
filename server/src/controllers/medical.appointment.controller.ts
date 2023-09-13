@@ -13,7 +13,7 @@ export const createMedicalAppointment = async (
 ) => {
   try {
     const { sessionUser, safeData } = req
-    const medicalAppointment =
+    const { medicalAppointment, patientId } =
       await medicalAppointmentService.createMedicalAppointment(
         sessionUser as User,
         safeData?.params.id,
@@ -22,7 +22,8 @@ export const createMedicalAppointment = async (
 
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
-      medicalAppointment
+      medicalAppointment,
+      patientId
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
