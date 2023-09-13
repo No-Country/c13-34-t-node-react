@@ -1,6 +1,7 @@
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import type { MedicalAppointment, Patient, User } from '../entities'
+import { MedicalAppointment, Patient, User } from '../entities'
+import { FindResults } from '../types/entity.types'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 import type { MedicalAppointmentRepository } from '../types/medical.appointment.types'
 import { AppError } from '../utils/app.error'
@@ -84,5 +85,17 @@ export class MedicalAppointmentService {
       medicalAppoinment,
       false
     )) as MedicalAppointment
+  }
+
+  async findMedicalAppointments(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false
+  ): Promise<FindResults> {
+    return await this.entityFactory.findAll(
+      filters,
+      attributes,
+      relationAttributes
+    )
   }
 }

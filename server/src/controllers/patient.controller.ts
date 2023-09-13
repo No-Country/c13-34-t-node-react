@@ -2,8 +2,9 @@ import type { NextFunction, Request, Response } from 'express'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
-import { patientService } from '../services'
+import { medicalAppointmentService, patientService } from '../services'
 import { AppError } from '../utils/app.error'
+import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 
 export const getPatients = async (
   req: Request,
@@ -98,6 +99,50 @@ export const getPatient = async (
   }
 }
 
+export const getMedicalAppointmentsInfo = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { doctorId, patientId } = req.safeData?.params
+    const [, completedMedicalAppointments] =
+      await medicalAppointmentService.findMedicalAppointments(
+        {
+          patient: {
+            user: {
+              id: patientId
+            }
+          },
+          medicalAppointmentDate: {
+            status: MedicalAppointmentDatesStatus.completed,
+            doctor: {
+              id: doctorId
+            }
+          }
+        },
+        false,
+        false
+      )
+
+    return res.status(HTTPCODES.OK).json({
+      status: MESSAGES.SUCCESS,
+      completedMedicalAppointments
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENTS_INFO_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
+
 // Cancelar cita de parte del paciente
 
 export const cancelPatientAppointment = async (
@@ -121,7 +166,9 @@ export const cancelPatientAppointment = async (
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
       )
+      return
     }
+    next(err)
   }
 }
 

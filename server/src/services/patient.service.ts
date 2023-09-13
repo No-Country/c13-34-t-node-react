@@ -4,6 +4,7 @@ import type { Patient } from '../entities/patient.entity'
 import type { PatientRepository } from '../types/patient.types'
 import {
   medicalAppointmentDatesService,
+  medicalAppointmentService,
   medicalRecordService,
   patientMedicalHistoryService
 } from '.'

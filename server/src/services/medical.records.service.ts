@@ -1,11 +1,10 @@
+import type { MedicalRecord, Patient } from '../entities'
+import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import { type MedicalRecord } from '../entities'
-import type type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
-import { medicalRecordSchema } from '../schema/medical.record.schema'
 
 export class MedicalRecordService {
   private readonly entityFactory: EntityFactory
@@ -31,12 +30,43 @@ export class MedicalRecordService {
   // }
 
   async createMedicalRecord(data: any, patientId: number) {
-    const patient = await patientService.findPatient(
-      { id: patientId },
-      false,
-      false,
-      false
-    )
+    try {
+      const patientExists = await this.findMedicalRecord(
+        { patient: { id: patientId } },
+        false,
+        false,
+        false
+      )
+      if (patientExists)
+        throw new AppError(
+          ERROR_MSGS.MEDICAL_RECORD_EXISTS,
+          HTTPCODES.BAD_REQUEST
+        )
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_RECORD_FAIL_FOUND,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    let patient: Patient | undefined
+
+    try {
+      patient = (await patientService.findPatient(
+        { id: patientId },
+        false,
+        false,
+        false
+      )) as Patient
+      if (!patient)
+        throw new AppError(ERROR_MSGS.PATIENT_NOT_FOUND, HTTPCODES.NOT_FOUND)
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.PATIENT_NOT_FOUND,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
     const medicalRecordToCreate = {
       ...data,
       date: new Date().toLocaleDateString(),
