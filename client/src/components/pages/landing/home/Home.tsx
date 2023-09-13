@@ -13,7 +13,7 @@ export const Home = () => {
       <section className="pt-4 2xl:pt-12 2xl:px-36">
         <Attention />
       </section>
-      <section className="pt-12 2xl:pb-24">
+      <section className="pt-12 2xl:pb-20">
         <Services />
       </section>
       <section className="overflow-auto mb-12">
