@@ -1,7 +1,15 @@
-import { FC, ReactNode, createContext, useContext, useState } from "react";
+import {
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 import { TNewUser, TUser } from "../types/user";
 import { AuthService } from "../services/auth";
 import { client } from "../config/client";
+import { AxiosError } from "axios";
 
 type TAuthState = {
   loggedIn: boolean;
@@ -65,6 +73,19 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Authorization: Bearer token
     client.defaults.headers.common.Authorization = undefined;
   };
+
+  useEffect(() => {
+    client.interceptors.response.use(null, (error: any) => {
+      if (
+        error instanceof AxiosError &&
+        error.response?.status === 401 &&
+        user
+      ) {
+        logout();
+        // toast.error("La sesión ha expirado")
+      }
+    });
+  }, []);
 
   return (
     <AuthContext.Provider value={{ loggedIn, user, login, logout, signup }}>
