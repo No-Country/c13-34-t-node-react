@@ -5,10 +5,10 @@ export const SectionAbout1 = () => {
   return (
     <div className="flex flex-col px-6 2xl:grid 2xl:grid-cols-2 w-full gap-4 mb-[-20px]">
       <div className="flex flex-col w-full 2xl:order-1">
-        <h1 className="text-2xl 2xl:text-3xl font-bold font-caudex max-sm:pt-4 pb-1 2xl:tracking-[1px]">
+        <h1 className="text-2xl 2xl:text-3xl font-bold font-caudex max-sm:pt-4 pb-1 2xl:tracking-[1px] text-center 2xl:text-left">
           ENFOCADOS EN TU BIENESTAR
         </h1>
-        <h2 className="text-2xl 2xl:text-3xl font-bold font-caudex text-primary-green pb-5 2xl:tracking-[1px]">
+        <h2 className="text-2xl 2xl:text-3xl font-bold font-caudex text-primary-green pb-5 2xl:tracking-[1px] text-center 2xl:text-left">
           Nuestra misión, tu salud
         </h2>
 
