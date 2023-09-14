@@ -44,14 +44,13 @@ doctorRouter.get(
   schemaValidator(medicalAppointmentsIdsSchema),
   getMedicalAppointmentsInfo
 )
-
 doctorRouter.post(
   '/assign-available-dates',
   schemaValidator(medicalAppointmentsDatesSchema),
   createDates
 )
 doctorRouter.post(
-  '/create-medical-record/:id', // comprobarlo
+  '/create-medical-record/:id', // este id es el id del paciente
   schemaValidator(idSchema),
   schemaValidator(medicalRecordSchema),
   createMedicalRecord
@@ -63,7 +62,6 @@ doctorRouter.post(
   createPatientMedicalHistory
 )
 doctorRouter.post('/get-all-hours-from-date-doctor', getAllHoursByDoctorDate)
-
 doctorRouter.patch(
   '/toggle-medical-appointment-date-status/:id',
   schemaValidator(idSchema),
@@ -82,7 +80,7 @@ doctorRouter.patch(
   updatePatientMedicalHistory
 )
 doctorRouter.patch(
-  '/completed-appointment/:id', // id de la fecha de la cita médica // probarlo, a ver a que sabe
+  '/completed-appointment/:id', // id de la fecha de la cita médica
   schemaValidator(idSchema),
   updateToCompletedDate
 )

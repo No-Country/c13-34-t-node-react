@@ -1,5 +1,4 @@
 import type { ObjectLiteral } from 'typeorm'
-import type { OptionalObjectType } from '../../types/global.types'
 import { ERROR_MSGS } from '../../constants/errorMsgs'
 import { HTTPCODES } from '../../constants/httpCodes'
 import {
@@ -7,6 +6,7 @@ import {
   type FindResults,
   type RepositoryType
 } from '../../types/entity.types'
+import type { OptionalObjectType } from '../../types/global.types'
 import { AppError } from '../../utils/app.error'
 
 export class EntityFactory {
