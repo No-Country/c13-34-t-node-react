@@ -38,7 +38,7 @@ export const getPatients = async (
         },
         medicalAppointments: {
           id: true,
-          MedicalAppointmentDate: { id: true, status: true, date: true }
+          medicalAppointmentDate: { id: true, status: true, date: true }
         }
       },
       {
