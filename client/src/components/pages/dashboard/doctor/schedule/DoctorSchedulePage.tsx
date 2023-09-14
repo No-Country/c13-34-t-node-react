@@ -33,119 +33,122 @@ export const DoctorSchedulePage = () => {
       : appointmentsData;
 
   return data ? (
-    <div className="bg-gray-200 h-screen">
-      <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
-        <div className="flex items-center justify-center gap-4">
-          <h2 className="text-lg font-bold uppercase">Doctor</h2>
-          <MdOutlineArrowForwardIos color="gray" size={25} />
-          <p className="text-slate-500 font-bold text-lg">Cronograma</p>
-        </div>
-        <div>Notificación</div>
-      </div>
+    <div className="bg-gray-200">
+      <div className="bg-dark-green h-52">
+        <div className="text-white px-8 pt-10 flex justify-between text-lg font-bold uppercase">
+          <div className="flex items-center justify-center max-sm:gap-8 gap-4">
+            <h2 className="text-lg font-bold uppercase">Doctor</h2>
+            <MdOutlineArrowForwardIos color="gray" className="text-xl" />
+            <p className="font-bold text-lg">Cronograma</p>
+          </div>
 
-      <div className="bg-white h-[70%] m-8 rounded-2xl">
-        <div className="p-4 flex justify-end gap-4 pr-24">
-          <p className="py-1.5 font-semibold">Mostrar</p>
-          <button
-            onClick={() => {
-              setSelectedStatus("todos");
-            }}
-            className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
-              selectedStatus === "todos"
-                ? "bg-other-blue text-white"
-                : "text-other-blue bg-white",
-            )}
-          >
-            Todos
-          </button>
-          <button
-            onClick={() => {
-              setSelectedStatus("selected");
-            }}
-            className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
-              selectedStatus === "selected"
-                ? "bg-other-blue text-white"
-                : "text-other-blue bg-white",
-            )}
-          >
-            Agendadas
-          </button>
-          <button
-            onClick={() => {
-              setSelectedStatus("cancelled");
-            }}
-            className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
-              selectedStatus === "cancelled"
-                ? "bg-other-blue text-white"
-                : "text-other-blue bg-white",
-            )}
-          >
-            Canceladas
-          </button>
-          <button
-            onClick={() => {
-              setSelectedStatus("pending");
-            }}
-            className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
-              selectedStatus === "pending"
-                ? "bg-other-blue text-white"
-                : "text-other-blue bg-white",
-            )}
-          >
-            Pendientes
-          </button>
+          <div className="max-sm:hidden">Notificación</div>
         </div>
 
-        <div className="overflow-auto h-full flex flex-col items-center">
-          <table className="overflow-scroll bg-white px-4 w-full">
-            <thead className="bg-white border-b-2 border-gray-200">
-              <tr>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  Fecha
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  Hora
-                </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
-                  Estado
-                </th>
-              </tr>
-            </thead>
+        <div className="bg-white m-4 2xl:m-8 rounded-2xl">
+          <div className="p-5 flex flex-col 2xl:flex-row 2xl:justify-end gap-4">
+            <p className="py-1.5 max-sm:text-lg font-semibold">Mostrar</p>
+            <button
+              onClick={() => {
+                setSelectedStatus("todos");
+              }}
+              className={clsx(
+                "py-2 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+                selectedStatus === "todos"
+                  ? "bg-other-blue text-white"
+                  : "text-other-blue bg-white",
+              )}
+            >
+              Todos
+            </button>
+            <button
+              onClick={() => {
+                setSelectedStatus("selected");
+              }}
+              className={clsx(
+                "py-2 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+                selectedStatus === "selected"
+                  ? "bg-other-blue text-white"
+                  : "text-other-blue bg-white",
+              )}
+            >
+              Agendadas
+            </button>
+            <button
+              onClick={() => {
+                setSelectedStatus("cancelled");
+              }}
+              className={clsx(
+                "py-2 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+                selectedStatus === "cancelled"
+                  ? "bg-other-blue text-white"
+                  : "text-other-blue bg-white",
+              )}
+            >
+              Canceladas
+            </button>
+            <button
+              onClick={() => {
+                setSelectedStatus("pending");
+              }}
+              className={clsx(
+                "py-2 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+                selectedStatus === "pending"
+                  ? "bg-other-blue text-white"
+                  : "text-other-blue bg-white",
+              )}
+            >
+              Pendientes
+            </button>
+          </div>
 
-            <tbody className="divide-y divide-gray-300">
-              {filteredAppointments
-                ?.sort(
-                  (a, b) =>
-                    parseInt(a.date.split(" ")[1]) -
-                    parseInt(b.date.split(" ")[1]),
-                )
-                .sort(
-                  (a, b) =>
-                    Number(new Date(a.date.split(" ")[0])) -
-                    Number(new Date(b.date.split(" ")[0])),
-                )
-                .map((appoint) => (
-                  <tr
-                    key={appoint.id}
-                    className="even:bg-gray-300 odd:bg-white"
-                  >
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {appoint.date.split(" ")[0]}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {appoint.date.split(" ")[1]}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      <StatusChip appoint={appoint} mutate={mutate} />
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div className="bg-white px-5 2xl:pt-8 pb-20 2xl:px-5 rounded-2xl shadow-xl">
+            <table className="overflow-scroll bg-white px-4 w-full">
+              <thead className="bg-white border-b-2 border-gray-200">
+                <tr>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Fecha
+                  </th>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Hora
+                  </th>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Estado
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-gray-300">
+                {filteredAppointments
+                  ?.sort(
+                    (a, b) =>
+                      parseInt(a.date.split(" ")[1]) -
+                      parseInt(b.date.split(" ")[1]),
+                  )
+                  .sort(
+                    (a, b) =>
+                      Number(new Date(a.date.split(" ")[0])) -
+                      Number(new Date(b.date.split(" ")[0])),
+                  )
+                  .map((appoint) => (
+                    <tr
+                      key={appoint.id}
+                      className="even:bg-gray-300 odd:bg-white"
+                    >
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {appoint.date.split(" ")[0]}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {appoint.date.split(" ")[1]}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        <StatusChip appoint={appoint} mutate={mutate} />
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -180,6 +183,10 @@ const StatusChip = ({
     pending: {
       name: "Pendiente",
       color: "#d8be48",
+    },
+    completed: {
+      name: "Completado",
+      color: "#3E68FF",
     },
   };
 

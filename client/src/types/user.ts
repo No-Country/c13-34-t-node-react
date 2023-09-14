@@ -17,7 +17,10 @@ export type TUser = {
   doctorId: number;
 };
 
-export type TNewUser = Omit<TUser, "id" | "status" | "appointment"> & {
+export type TNewUser = Omit<
+  TUser,
+  "id" | "status" | "appointment" | "patientId" | "doctorId"
+> & {
   password: string;
   confirmPassword: string;
 };
