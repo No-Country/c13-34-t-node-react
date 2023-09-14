@@ -5,7 +5,7 @@ export const SectionAbout2 = () => {
         <img
           src="/images/waves.png"
           alt="background waves design"
-          className="w-screen h-[500px] md:h-[680px]"
+          className="w-screen h-[450px] md:h-[680px]"
         />
       </div>
       <div className="md:w-[600px] md:mt-0 mt-24 flex flex-col gap-2 2xl:gap-12">
