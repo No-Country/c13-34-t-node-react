@@ -17,6 +17,7 @@ export const getPatients = async (
       {
         medicalAppointments: {
           medicalAppointmentDate: {
+            status: MedicalAppointmentDatesStatus.selected,
             doctor: {
               user: {
                 id: sessionUser?.id
@@ -34,10 +35,15 @@ export const getPatients = async (
           dateOfBirth: true,
           telephone: true,
           genre: true
+        },
+        medicalAppointments: {
+          id: true,
+          MedicalAppointmentDate: { id: true, status: true, date: true }
         }
       },
       {
-        user: true
+        user: true,
+        medicalAppointments: { medicalAppointmentDate: true }
       }
     )
 
