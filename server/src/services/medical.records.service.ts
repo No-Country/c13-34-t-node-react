@@ -1,16 +1,12 @@
 import { Not } from 'typeorm'
-import type {
-  MedicalAppointmentDates,
-  MedicalRecord,
-  Patient
-} from '../entities'
-import type { MedicalRecordRepository } from '../types/medical.record.types'
-import { medicalAppointmentDatesService, patientService } from '.'
+import { patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
+import type { MedicalRecord, Patient } from '../entities'
+import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
+import type { MedicalRecordRepository } from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
-import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 
 export class MedicalRecordService {
   private readonly entityFactory: EntityFactory
@@ -19,12 +15,7 @@ export class MedicalRecordService {
     this.entityFactory = new EntityFactory(medicalRecordRepository)
   }
 
-  async createMedicalRecord(
-    data: any,
-    doctorId: number,
-    patientId: number,
-    medicalAppointmentDateId: number
-  ) {
+  async createMedicalRecord(data: any, doctorId: number, patientId: number) {
     let patient: Patient | undefined
 
     try {
@@ -86,7 +77,6 @@ export class MedicalRecordService {
       date: new Date().toLocaleDateString(),
       patient
     }
-
     let medicalRecordCreated: MedicalRecord | undefined
 
     try {
@@ -97,22 +87,6 @@ export class MedicalRecordService {
     } catch (err) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_RECORD_FAIL_SAVE,
-        HTTPCODES.INTERNAL_SERVER_ERROR
-      )
-    }
-
-    const medicalAppointmentDateToUpdate = {
-      id: medicalAppointmentDateId,
-      status: MedicalAppointmentDatesStatus.completed
-    } as MedicalAppointmentDates
-
-    try {
-      await medicalAppointmentDatesService.updateMedicalAppointmentDate(
-        medicalAppointmentDateToUpdate
-      )
-    } catch (err) {
-      throw new AppError(
-        ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }

@@ -8,10 +8,6 @@ module.exports = {
   overrides: [],
   parserOptions: {
     project: './tsconfig.json',
-=======
-    // project: './tsconfig.json',
-    project: './c13-34-t-node-react/server/tsconfig.json',
->>>>>>> partialupdateMR
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
