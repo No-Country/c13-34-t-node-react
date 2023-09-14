@@ -44,7 +44,7 @@ export const DoctorSchedulePage = () => {
       </div>
 
       <div className="bg-white h-[70%] 2xl:m-8 2xl:rounded-2xl">
-        <div className="p-4 grid justify-center 2xl:flex 2xl:justify-end gap-4 2xl:pr-24">
+        <div className="p-4 grid justify-center 2xl:flex 2xl:justify-end gap-4 2xl:pr-24 pb-6">
           <p className="py-1.5 font-semibold">Mostrar</p>
           
           <button
@@ -105,13 +105,13 @@ export const DoctorSchedulePage = () => {
           <table className="overflow-scroll bg-white px-4 w-96 text-center 2xl:text-justify 2xl:w-full">
             <thead className="bg-white border-b-2 border-gray-200">
               <tr>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="pl-6 pb-2 2xl:p-3 text-sm font-semibold tracking-wide text-left">
                   Fecha
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="pl-5 pb-2 2xl:p-3 text-sm font-semibold tracking-wide text-left">
                   Hora
                 </th>
-                <th className="p-3 text-sm font-semibold tracking-wide text-left">
+                <th className="pl-8 pb-2 2xl:p-3 text-sm font-semibold tracking-wide text-left">
                   Estado
                 </th>
               </tr>
