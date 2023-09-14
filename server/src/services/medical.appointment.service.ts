@@ -90,6 +90,20 @@ export class MedicalAppointmentService {
     }
   }
 
+  async findMedicalAppointment(
+    filters: object,
+    attributes: object | false,
+    relationAttributes: object | false,
+    error: boolean
+  ): Promise<MedicalAppointment> {
+    return (await this.entityFactory.findOne(
+      filters,
+      attributes,
+      relationAttributes,
+      error
+    )) as MedicalAppointment
+  }
+
   async findMedicalAppointments(
     filters: object,
     attributes: object | false,

@@ -68,5 +68,6 @@ export enum ERROR_MSGS {
   PATIENT_MEDICAL_HISTORY_NOT_FOUND = 'No se encontró el historial médico del paciente.',
   PATIENT_MEDICAL_HISTORY_NOT_CREATED = 'El historial médico del paciente no se ha creado.',
   PATIENT_MEDICAL_HISTORY_NOT_UPDATED = 'El historial médico del paciente no fue actualizado.',
-  SIGNIN_FAIL = 'Ocurrio un error interno al iniciar sesión'
+  SIGNIN_FAIL = 'Ocurrio un error interno al iniciar sesión',
+  MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL = 'No se pudo actualizar el estado de la cita médica debido a un error interno.'
 }

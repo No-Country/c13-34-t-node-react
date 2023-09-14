@@ -1,11 +1,15 @@
-import type { MedicalRecord, Patient } from '../entities'
+import { Not } from 'typeorm'
+import type {
+  MedicalAppointmentDates,
+  MedicalRecord,
+  Patient
+} from '../entities'
 import type { MedicalRecordRepository } from '../types/medical.record.types'
-import { patientService } from '.'
+import { medicalAppointmentDatesService, patientService } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
-import { Not } from 'typeorm'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
 
 export class MedicalRecordService {
@@ -14,24 +18,13 @@ export class MedicalRecordService {
   constructor(medicalRecordRepository: MedicalRecordRepository) {
     this.entityFactory = new EntityFactory(medicalRecordRepository)
   }
-  // servicio de prueba para verificar relaciones correctamente
-  // async getMedicalRecord(medicalRecordId: number): Promise<any> {
-  //   debugger
-  //   const relationAttrs = {
-  //     patient: {
-  //       medicalAppointments: { medicalAppointmentDate: { doctor: true } }
-  //     }
-  //   }
-  //   const medicalRecord = await this.entityFactory.findOne(
-  //     { id: medicalRecordId },
-  //     false,
-  //     relationAttrs,
-  //     false
-  //   )
-  //   return medicalRecord
-  // }
 
-  async createMedicalRecord(data: any, doctorId: number, patientId: number) {
+  async createMedicalRecord(
+    data: any,
+    doctorId: number,
+    patientId: number,
+    medicalAppointmentDateId: number
+  ) {
     let patient: Patient | undefined
 
     try {
@@ -59,6 +52,7 @@ export class MedicalRecordService {
     try {
       const verifyPatientAppointments = await patientService.findPatient(
         {
+          id: patient.id,
           medicalAppointments: {
             medicalAppointmentDate: {
               status: Not(MedicalAppointmentDatesStatus.selected),
@@ -93,14 +87,37 @@ export class MedicalRecordService {
       patient
     }
 
+    let medicalRecordCreated: MedicalRecord | undefined
+
     try {
-      return await this.entityFactory.create(medicalRecordToCreate, false)
+      medicalRecordCreated = (await this.entityFactory.create(
+        medicalRecordToCreate,
+        false
+      )) as MedicalRecord
     } catch (err) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_RECORD_FAIL_SAVE,
         HTTPCODES.INTERNAL_SERVER_ERROR
       )
     }
+
+    const medicalAppointmentDateToUpdate = {
+      id: medicalAppointmentDateId,
+      status: MedicalAppointmentDatesStatus.completed
+    } as MedicalAppointmentDates
+
+    try {
+      await medicalAppointmentDatesService.updateMedicalAppointmentDate(
+        medicalAppointmentDateToUpdate
+      )
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
+    return medicalRecordCreated
   }
 
   async findMedicalRecord(

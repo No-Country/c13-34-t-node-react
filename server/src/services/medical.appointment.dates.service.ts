@@ -252,4 +252,22 @@ export class MedicalAppointmentDatesService {
       relationAttributes
     )
   }
+
+  async completedAppointmentDate(
+    medicalAppoinmentDateId: number
+  ): Promise<void> {
+    const medicalAppoinmentDateToUpdate = {
+      id: medicalAppoinmentDateId,
+      status: MedicalAppointmentDatesStatus.completed
+    } as MedicalAppointmentDates
+
+    try {
+      await this.updateMedicalAppointmentDate(medicalAppoinmentDateToUpdate)
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+  }
 }

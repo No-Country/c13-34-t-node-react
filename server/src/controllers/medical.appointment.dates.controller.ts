@@ -147,3 +147,31 @@ export const getAllHoursByDoctorDate = async (
     next(err)
   }
 }
+
+export const updateToCompletedDate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.safeData?.params
+
+    await medicalAppointmentDatesService.completedAppointmentDate(id)
+
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+    return
+  }
+}
