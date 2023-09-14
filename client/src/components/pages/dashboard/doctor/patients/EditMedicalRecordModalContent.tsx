@@ -62,7 +62,7 @@ export const EditMedicalRecordModalContent = ({
         {showError && <p className="text-red-500">Ha ocurrido un error!</p>}
         <button
           type="submit"
-          className="disabled:bg-slate-300 w-max hover:opacity-90 self-center w-1/2 bg-dark-green text-white rounded-xl py-1 px-2"
+          className="disabled:bg-slate-300 w-max hover:opacity-90 self-center bg-dark-green text-white rounded-xl py-1 px-2"
         >
           {isLoading ? <LoadingSpinner /> : "Enviar"}
         </button>

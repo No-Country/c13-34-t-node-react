@@ -136,7 +136,7 @@ export const DoctorAppointmentsPage = () => {
             >
               Horario de atención *
             </label>
-            <div className="grid justify-center 2xl:justify-normal 2xl:flex gap-2">
+            <div className="flex flex-col 2xl:flex-row 2xl:w-44 gap-2">
               {hoursAvailable.map((hour, i) => (
                 <button
                   key={i}
@@ -148,7 +148,7 @@ export const DoctorAppointmentsPage = () => {
                   }
                   id="hoursAvailable"
                   className={clsx(
-                    "enabled:hover:bg-dark-green disabled:opacity-75 disabled:bg-[#cccccc] enabled:hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 w-[247px] 2xl:w-[131px] mb-4 2xl:mb-0 rounded-full",
+                    "enabled:hover:bg-dark-green disabled:opacity-75 disabled:bg-[#cccccc] enabled:hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 px-5 rounded-full",
                     hoursSelected.includes(hour.value) &&
                       "bg-dark-green text-white",
                   )}
