@@ -93,18 +93,18 @@ export const DoctorAppointmentsPage = () => {
         message={message}
       />
       <div className="bg-dark-green h-52">
-        <h2 className="text-white text-lg font-bold uppercase px-8 py-8 pt-10 p-4">
+        <h2 className="text-white text-center 2xl:text-lg font-bold uppercase px-8 pt-10 pb-10">
           Agendar Citas
         </h2>
 
-        <div className="bg-white mx-4 2xl:mx-8 p-6 pb-20 2xl:p-8 rounded-2xl shadow-xl">
-          <div className="text-2xl text-dark-green font-medium pb-10">
+        <div className="bg-white 2xl:mx-8 p-8 2xl:rounded-2xl shadow-xl">
+          <div className="text-2xl text-dark-green font-medium pb-10 text-center 2xl:text-justify">
             Agendar disponibilidad
           </div>
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
             <label
               htmlFor="date"
-              className="text-lg text-gray-400 font-semibold"
+              className="text-lg text-gray-400 font-semibold text-center 2xl:text-justify"
             >
               Fecha(s) de atención *
             </label>
@@ -132,7 +132,7 @@ export const DoctorAppointmentsPage = () => {
 
             <label
               htmlFor="hoursAvailable"
-              className="w-fit text-lg text-gray-400 font-semibold"
+              className="2xl:w-fit text-lg text-gray-400 font-semibold text-center"
             >
               Horario de atención *
             </label>

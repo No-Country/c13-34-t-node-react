@@ -3,7 +3,8 @@ import {
   createDates,
   getAllDatesByDoctor,
   getAllHoursByDoctorDate,
-  toggleStatusMedicalAppointmentDate
+  toggleStatusMedicalAppointmentDate,
+  updateToCompletedDate
 } from '../controllers/medical.appointment.dates.controller'
 import {
   createMedicalRecord,
@@ -30,8 +31,7 @@ import { UserRole } from '../types/user.types'
 export const doctorRouter = Router()
 
 doctorRouter.use(protect, restrictTo(UserRole.doctor))
-// ruta de prueba para verificar relaciones correctamente
-//  doctorRouter.get('/:id', schemaValidator(idSchema), getMedicalRecord)
+
 doctorRouter.get('/get-doctor-patients', getPatients)
 doctorRouter.get('/get-all-dates-by-doctor', getAllDatesByDoctor)
 doctorRouter.get(
@@ -44,14 +44,13 @@ doctorRouter.get(
   schemaValidator(medicalAppointmentsIdsSchema),
   getMedicalAppointmentsInfo
 )
-
 doctorRouter.post(
   '/assign-available-dates',
   schemaValidator(medicalAppointmentsDatesSchema),
   createDates
 )
 doctorRouter.post(
-  '/create-medical-record/:id',
+  '/create-medical-record/:id', // este id es el id del paciente
   schemaValidator(idSchema),
   schemaValidator(medicalRecordSchema),
   createMedicalRecord
@@ -63,23 +62,25 @@ doctorRouter.post(
   createPatientMedicalHistory
 )
 doctorRouter.post('/get-all-hours-from-date-doctor', getAllHoursByDoctorDate)
-
 doctorRouter.patch(
   '/toggle-medical-appointment-date-status/:id',
   schemaValidator(idSchema),
   toggleStatusMedicalAppointmentDate
 )
-
 doctorRouter.patch(
   '/update-medical-record/:id',
   schemaValidator(idSchema),
   schemaValidator(medicalRecordSchema.deepPartial()),
   updateMedicalRecord
 )
-
 doctorRouter.patch(
   '/update-patient-medical-history/:id', // este id es del patient medical history
   schemaValidator(idSchema),
   schemaValidator(patientMedicalHistorySchema.deepPartial()),
   updatePatientMedicalHistory
+)
+doctorRouter.patch(
+  '/completed-appointment/:id', // id de la fecha de la cita médica
+  schemaValidator(idSchema),
+  updateToCompletedDate
 )

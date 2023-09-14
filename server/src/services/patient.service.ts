@@ -1,4 +1,8 @@
 import { In } from 'typeorm'
+import type { MedicalAppointmentDates } from '../entities'
+import type { Patient } from '../entities/patient.entity'
+import type { FindResults } from '../types/entity.types'
+import type { PatientRepository } from '../types/patient.types'
 import {
   medicalAppointmentDatesService,
   medicalRecordService,
@@ -6,11 +10,7 @@ import {
 } from '.'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
-import type { MedicalAppointmentDates } from '../entities'
-import type { Patient } from '../entities/patient.entity'
-import type { FindResults } from '../types/entity.types'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
-import type { PatientRepository } from '../types/patient.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
 
@@ -101,8 +101,9 @@ export class PatientService {
     }
   }
 
-  async getPatientInfo(patientId: number) {
+  async getPatientInfo(patientId: number, doctorId: number): Promise<any> {
     let patientMedicalHistoryInfo
+
     const medicalRecordInfo = await medicalRecordService.findMedicalRecord(
       { patient: { id: patientId } },
       false,
@@ -120,7 +121,15 @@ export class PatientService {
     }
 
     const patientInfo = await this.findPatient(
-      { id: patientId },
+      {
+        id: patientId,
+        medicalAppointments: {
+          medicalAppointmentDate: {
+            status: MedicalAppointmentDatesStatus.selected,
+            doctor: { user: { id: doctorId } }
+          }
+        }
+      },
       {
         user: {
           id: true,
@@ -130,9 +139,13 @@ export class PatientService {
           dateOfBirth: true,
           telephone: true,
           genre: true
+        },
+        medicalAppointments: {
+          id: true,
+          medicalAppointmentDate: { id: true, status: true }
         }
       },
-      { user: true },
+      { user: true, medicalAppointments: { medicalAppointmentDate: true } },
       false
     )
 

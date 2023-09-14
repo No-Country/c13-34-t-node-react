@@ -180,7 +180,7 @@ export const patientInfo = async (
   try {
     const { id } = req.safeData?.params
     const { patientInfo, medicalRecordInfo, patientMedicalHistories } =
-      await patientService.getPatientInfo(id)
+      await patientService.getPatientInfo(id, req.sessionUser?.id)
 
     return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
