@@ -29,66 +29,68 @@ export const PatientMedicalRecordsPage = () => {
         </div>
 
         {/* patientInfo */}
-        <div className="bg-white mx-4 2xl:mx-8 px-4 py-8 2xl:p-8 rounded-2xl shadow-xl">
-          <h2 className="text-xl 2xl:text-2xl text-dark-green font-bold pb-4">
-            Información personal del paciente
-          </h2>
+        {patientInfo && (
+          <div className="bg-white mx-4 2xl:mx-8 px-4 py-8 2xl:p-8 rounded-2xl shadow-xl">
+            <h2 className="text-xl 2xl:text-2xl text-dark-green font-bold pb-4">
+              Información personal del paciente
+            </h2>
 
-          <div className="overflow-auto">
-            <table className="table-auto bg-white px-4 py-8 w-full">
-              <thead className="bg-white border-b-2 border-gray-200">
-                <tr>
-                  <th className="p-3 w-8 text-sm font-semibold tracking-wide text-left uppercase">
-                    No.
-                  </th>
-                  <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
-                    Nombres
-                  </th>
-                  <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
-                    Apellidos
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Correo
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Fecha de Nacimiento
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Teléfono
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Genero
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                <tr className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.id}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.firstName}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.lastName}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.email}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.dateOfBirth}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.telephone}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {patientInfo.user.genre}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="overflow-auto">
+              <table className="table-auto bg-white px-4 py-8 w-full">
+                <thead className="bg-white border-b-2 border-gray-200">
+                  <tr>
+                    <th className="p-3 w-8 text-sm font-semibold tracking-wide text-left uppercase">
+                      No.
+                    </th>
+                    <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
+                      Nombres
+                    </th>
+                    <th className="p-3 w-52 text-sm font-semibold tracking-wide text-left uppercase">
+                      Apellidos
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Correo
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Fecha de Nacimiento
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Teléfono
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Genero
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.id}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.firstName}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.lastName}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.email}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.dateOfBirth}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.telephone}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {patientInfo.user.genre}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* medicalRecordInfo */}
         <div className="bg-white mx-4 2xl:mx-8 px-4 py-8 2xl:p-8 rounded-2xl shadow-xl">

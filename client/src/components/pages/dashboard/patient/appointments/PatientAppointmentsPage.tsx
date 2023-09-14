@@ -11,7 +11,6 @@ import {
 } from "@/types/appointments";
 import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
-// import { AxiosError } from "axios";
 
 const getPatientAppointmentsKey = "getPatientAppointments";
 
@@ -21,9 +20,9 @@ export const PatientAppointmentsPage = () => {
     AppointmentsService.getPatientAppointments,
   );
 
+  if (!appointments) return <Loading />;
   if (error || !appointments)
     return <Error message={"USTED AUN NO TIENE UNA CITA"} />;
-  if (!appointments) return <Loading />;
 
   return (
     <div className="bg-gray-50">
@@ -60,7 +59,7 @@ export const PatientAppointmentsPage = () => {
                     Descripción
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Estado
+                    Cita
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                     Acciones
@@ -145,11 +144,11 @@ const StatusChip = ({
     },
     completed: {
       name: "Completedo",
-      color: "#4FB783",
+      color: "#034561",
     },
     selected: {
       name: "Reservado",
-      color: "#3E68FF",
+      color: "#4FB783",
     },
     cancelled: {
       name: "Cancelado",

@@ -178,7 +178,10 @@ export const PatientBookAppointmentPage = () => {
             </label>
 
             <div className="flex items-center max-sm:w-full justify-between gap-2 2xl:w-96">
-              <button className="2xl:w-48 bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium">
+              <button
+                type="submit"
+                className="2xl:w-48 bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium"
+              >
                 Guardar
               </button>
               <NavLink

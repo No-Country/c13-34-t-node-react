@@ -25,7 +25,7 @@ export const DashboardLayout = () => {
       {!sidebarOpen && (
         <button
           onClick={() => setSidebarOpen(true)}
-          className="2xl:hidden bg-dark-green text-white fixed bottom-4 right-4 p-3 text-2xl rounded-full z-50"
+          className="md:hidden bg-dark-green text-white fixed bottom-4 right-4 p-3 text-2xl rounded-full z-50"
         >
           <RiMenu3Fill />
         </button>

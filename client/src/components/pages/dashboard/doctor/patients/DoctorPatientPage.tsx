@@ -154,116 +154,131 @@ export const DoctorPatientPage = () => {
         <div className="flex items-center justify-center gap-4">
           <h2 className="text-lg font-bold uppercase">Registro médico</h2>
           <MdOutlineArrowForwardIos color="gray" className="text-xl" />
-          <p className="text-slate-500 capitalize font-bold text-lg">
-            {patient.patientInfo.user.firstName +
-              " " +
-              patient.patientInfo.user.lastName}
-          </p>
+          {patient.patientInfo && (
+            <p className="text-slate-500 capitalize font-bold text-lg">
+              {patient.patientInfo.user.firstName +
+                " " +
+                patient.patientInfo.user.lastName}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 2xl:grid-cols-2 px-4 2xl:p-8 gap-4 2xl:gap-8">
-        <div className="flex flex-row max-sm:grid max-sm:grid-cols-1 gap-3">
-          <div className="bg-white h-80 max-sm:w-full my-2 2xl:my-6 p-4 w-fit flex flex-col gap-4 justify-center items-center rounded-xl drop-shadow-xl border-2 border-dark-green">
-            <div className="w-[80px] h-[80px] flex justify-center items-center border-2 border-slate-300 p-2 rounded-full">
-              <AiOutlineUser size={80} />
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <p className="text-black capitalize font-bold text-xl">
-                {patient.patientInfo.user.firstName +
-                  " " +
-                  patient.patientInfo.user.lastName}
-              </p>
-              <p className="text-slate-400 font-bold text-lg">
-                {patient.patientInfo.user.email}
-              </p>
-            </div>
-            <div className="flex">
-              <div className="border-r-2 border-solid-black p-4 flex flex-col items-center justify-center">
-                <p className="text-xl font-bold"> 5 </p>
-                <p> realizadas </p>
+        <div>
+          {patient.patientInfo && (
+            <div className="flex flex-row max-sm:grid max-sm:grid-cols-1 gap-3">
+              <div className="bg-white h-80 max-sm:w-full my-2 2xl:my-6 p-4 w-fit flex flex-col gap-4 justify-center items-center rounded-xl drop-shadow-xl border-2 border-dark-green">
+                <div className="w-[80px] h-[80px] flex justify-center items-center border-2 border-slate-300 p-2 rounded-full">
+                  <AiOutlineUser size={80} />
+                </div>
+                <div className="flex flex-col items-center justify-center">
+                  <p className="text-black capitalize font-bold text-xl">
+                    {patient.patientInfo.user.firstName +
+                      " " +
+                      patient.patientInfo.user.lastName}
+                  </p>
+                  <p className="text-slate-400 font-bold text-lg">
+                    {patient.patientInfo.user.email}
+                  </p>
+                </div>
+                <div className="flex">
+                  <div className="border-r-2 border-solid-black p-4 flex flex-col items-center justify-center">
+                    <p className="text-xl font-bold"> 5 </p>
+                    <p> realizadas </p>
+                  </div>
+                  <div className="p-4 flex flex-col items-center justify-center">
+                    <p className="text-xl font-bold"> 2 </p>
+                    <p> pendientes </p>
+                  </div>
+                </div>
               </div>
-              <div className="p-4 flex flex-col items-center justify-center">
-                <p className="text-xl font-bold"> 2 </p>
-                <p> pendientes </p>
+              <div className="max-sm:flex-col max-sm:w-full w-max border-2 border-dark-green h-80 gap-3 flex-wrap items-center justify-center bg-white 2xl:my-6 p-2 flex rounded-xl drop-shadow-xl">
+                <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
+                  <p className="font-bold text-md text-slate-500">Género</p>
+                  <p className="text-md">
+                    {patient.patientInfo.user.genre === "male"
+                      ? "Masculino"
+                      : "Femenino"}
+                  </p>
+                </div>
+                <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
+                  <p className="font-bold text-md text-slate-500">Teléfono</p>
+                  <p className="text-md">
+                    {patient.patientInfo.user.telephone}
+                  </p>
+                </div>
+                <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
+                  <p className="font-bold text-md text-slate-500">
+                    Fecha nacimiento
+                  </p>
+                  <p className="text-md">
+                    {patient.patientInfo.user.dateOfBirth}
+                  </p>
+                </div>
+                <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
+                  <p className="font-bold text-md text-slate-500">
+                    Fecha inicio
+                  </p>
+                  <p className="text-md">04/08/2022</p>
+                </div>
+              </div>
+              <div className="max-sm:w-full 2xl:w-1/7 2xl:h-80 flex-wrap items-center justify-center gap-2 2xl:gap-4 2xl:my-6 flex flex-col">
+                <div className="flex w-full items-center justify-between 2xl:justify-center gap-2">
+                  <div className="max-sm:w-full w-fit h-20 bg-white p-5 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
+                    <p className="text-md font-bold text-slate-400">Edad</p>
+                    <p className="text-md font-bold ">
+                      {getAge(patient.patientInfo.user.dateOfBirth)}
+                    </p>
+                  </div>
+                  <div className="max-sm:w-full w-max h-20 bg-white p-5 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
+                    <p className="text-md font-bold text-slate-400">Peso</p>
+                    <p className="text-md font-bold ">
+                      {patient.patientMedicalHistories
+                        .patientMedicalHistoryInfo !== null
+                        ? patient.patientMedicalHistories
+                            .patientMedicalHistoryInfo[
+                            patient.patientMedicalHistories
+                              ?.patientMedicalHistoryInfo.length - 1
+                          ]?.weight
+                        : ""}{" "}
+                      kg
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full h-20 bg-white flex-wrap items-center justify-center gap-1 2xl:my-auto p-5 flex rounded-xl drop-shadow-xl border-2 border-dark-green">
+                  <GiBodyHeight size={40} color="grey" />
+                  <p className="text-md font-bold ">
+                    {patient.patientMedicalHistories
+                      .patientMedicalHistoryInfo !== null
+                      ? patient.patientMedicalHistories
+                          ?.patientMedicalHistoryInfo[
+                          patient.patientMedicalHistories
+                            ?.patientMedicalHistoryInfo.length - 1
+                        ]?.height
+                      : ""}{" "}
+                    cm
+                  </p>
+                </div>
+                <div className="w-full bg-white p-4 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
+                  <p className="text-md font-bold text-slate-400">
+                    Presión arterial
+                  </p>
+                  <p className="text-md font-bold ">
+                    {patient.patientMedicalHistories
+                      .patientMedicalHistoryInfo !== null
+                      ? patient.patientMedicalHistories
+                          ?.patientMedicalHistoryInfo[
+                          patient.patientMedicalHistories
+                            ?.patientMedicalHistoryInfo.length - 1
+                        ]?.bloodPressure
+                      : ""}{" "}
+                    mm/Hg
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="max-sm:flex-col max-sm:w-full w-max border-2 border-dark-green h-80 gap-3 flex-wrap items-center justify-center bg-white 2xl:my-6 p-2 flex rounded-xl drop-shadow-xl">
-            <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
-              <p className="font-bold text-md text-slate-500">Género</p>
-              <p className="text-md">
-                {patient.patientInfo.user.genre === "male"
-                  ? "Masculino"
-                  : "Femenino"}
-              </p>
-            </div>
-            <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
-              <p className="font-bold text-md text-slate-500">Teléfono</p>
-              <p className="text-md">{patient.patientInfo.user.telephone}</p>
-            </div>
-            <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
-              <p className="font-bold text-md text-slate-500">
-                Fecha nacimiento
-              </p>
-              <p className="text-md">{patient.patientInfo.user.dateOfBirth}</p>
-            </div>
-            <div className="w-52 flex flex-col items-center justify-center gap-1 border-b-2 border-slate-300 p-1">
-              <p className="font-bold text-md text-slate-500">Fecha inicio</p>
-              <p className="text-md">04/08/2022</p>
-            </div>
-          </div>
-          <div className="max-sm:w-full 2xl:w-1/7 2xl:h-80 flex-wrap items-center justify-center gap-2 2xl:gap-4 2xl:my-6 flex flex-col">
-            <div className="flex w-full items-center justify-between 2xl:justify-center gap-2">
-              <div className="max-sm:w-full w-fit h-20 bg-white p-5 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
-                <p className="text-md font-bold text-slate-400">Edad</p>
-                <p className="text-md font-bold ">
-                  {getAge(patient.patientInfo.user.dateOfBirth)}
-                </p>
-              </div>
-              <div className="max-sm:w-full w-max h-20 bg-white p-5 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
-                <p className="text-md font-bold text-slate-400">Peso</p>
-                <p className="text-md font-bold ">
-                  {patient.patientMedicalHistories.patientMedicalHistoryInfo !==
-                  null
-                    ? patient.patientMedicalHistories.patientMedicalHistoryInfo[
-                        patient.patientMedicalHistories
-                          ?.patientMedicalHistoryInfo.length - 1
-                      ]?.weight
-                    : ""}{" "}
-                  kg
-                </p>
-              </div>
-            </div>
-            <div className="w-full h-20 bg-white flex-wrap items-center justify-center gap-1 2xl:my-auto p-5 flex rounded-xl drop-shadow-xl border-2 border-dark-green">
-              <GiBodyHeight size={40} color="grey" />
-              <p className="text-md font-bold ">
-                {patient.patientMedicalHistories.patientMedicalHistoryInfo !==
-                null
-                  ? patient.patientMedicalHistories?.patientMedicalHistoryInfo[
-                      patient.patientMedicalHistories?.patientMedicalHistoryInfo
-                        .length - 1
-                    ]?.height
-                  : ""}{" "}
-                cm
-              </p>
-            </div>
-            <div className="w-full bg-white p-4 flex flex-col items-center justify-center rounded-xl drop-shadow-xl border-2 border-dark-green">
-              <p className="text-md font-bold text-slate-400">
-                Presión arterial
-              </p>
-              <p className="text-md font-bold ">
-                {patient.patientMedicalHistories.patientMedicalHistoryInfo !==
-                null
-                  ? patient.patientMedicalHistories?.patientMedicalHistoryInfo[
-                      patient.patientMedicalHistories?.patientMedicalHistoryInfo
-                        .length - 1
-                    ]?.bloodPressure
-                  : ""}{" "}
-                mm/Hg
-              </p>
-            </div>
-          </div>
+          )}
         </div>
 
         <div className="bg-white h-4/5 2xl:my-6 rounded-xl drop-shadow-xl">
@@ -358,7 +373,7 @@ export const DoctorPatientPage = () => {
               <tbody className="divide-y divide-gray-100">
                 {patient.patientMedicalHistories.patientMedicalHistoryInfo.map(
                   (row) => (
-                    <tr>
+                    <tr key={row.id}>
                       <td className="p-2 whitespace-nowrap text-sm">
                         {row?.date}
                       </td>

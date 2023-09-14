@@ -18,13 +18,13 @@ export const EditMedicalRecordModalContent = ({
 }: PropsTypes) => {
   return (
     <div className="text-center flex flex-col justify-start px-12 gap-4">
-      <p className=" border-b-2 border-slate-200 p-0">Editar registro médico</p>
+      <p className="border-b-2 border-slate-200 p-0">Editar registro médico</p>
       <form
         onSubmit={handleMedicalRecordSubmit}
         className="flex flex-col gap-4 justify-center text-center"
       >
         <label className="">
-          <p className="text-sm w-">Patologías preexistentes *</p>
+          <p className="text-sm">Patologías preexistentes *</p>
           <textarea
             id="previousMedicalConditions"
             name="previousMedicalConditions"
@@ -36,7 +36,7 @@ export const EditMedicalRecordModalContent = ({
           />
         </label>
         <label className="">
-          <p className="text-sm w-">Alergias *</p>
+          <p className="text-sm">Alergias *</p>
           <textarea
             id="allergies"
             name="allergies"

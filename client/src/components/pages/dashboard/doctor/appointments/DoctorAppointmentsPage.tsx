@@ -97,7 +97,7 @@ export const DoctorAppointmentsPage = () => {
           Agendar Citas
         </h2>
 
-        <div className="bg-white 2xl:mx-8 p-8 2xl:rounded-2xl shadow-xl">
+        <div className="bg-white 2xl:mx-8 px-8 pt-8 pb-20 2xl:rounded-2xl shadow-xl">
           <div className="text-2xl text-dark-green font-medium pb-10 text-center 2xl:text-justify">
             Agendar disponibilidad
           </div>

@@ -47,7 +47,7 @@ export const DoctorSchedulePage = () => {
 
         <div className="bg-white m-4 2xl:m-8 rounded-2xl">
           <div className="p-5 flex flex-col 2xl:flex-row 2xl:justify-end gap-4">
-            <p className="py-1.5 max-sm:text-lg font-semibold">Mostrar</p>
+            <p className="py-1.5 max-sm:text-lg font-semibold">Mostrar citas</p>
             <button
               onClick={() => {
                 setSelectedStatus("todos");
@@ -107,6 +107,9 @@ export const DoctorSchedulePage = () => {
               <thead className="bg-white border-b-2 border-gray-200">
                 <tr>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Cita No.
+                  </th>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                     Fecha
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
@@ -135,6 +138,9 @@ export const DoctorSchedulePage = () => {
                       key={appoint.id}
                       className="even:bg-gray-300 odd:bg-white"
                     >
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {appoint.id}
+                      </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {appoint.date.split(" ")[0]}
                       </td>
