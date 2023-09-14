@@ -37,6 +37,8 @@ export const DoctorAppointmentsPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log("Submit!");
+
     if (!hoursSelected.length && enableHours) return setShowError(true);
 
     if (loading) {
@@ -74,15 +76,16 @@ export const DoctorAppointmentsPage = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
-    const res = await AppointmentsService.getDoctorHoursFromDate(date);
-    if (res.status === "success") {
+    console.log("handleDateSelect!");
+
+    try {
+      const res = await AppointmentsService.getDoctorHoursFromDate(date);
       const fetchedDates = res.hours.map((x) => x.hour);
       setUnavailableHours(fetchedDates);
-      setEnableHours(true);
-    } else {
-      setMessage("Ha ocurrido un error!");
-      setShowModal(true);
+    } catch (error) {
+      setUnavailableHours([]);
     }
+    setEnableHours(true);
   };
 
   return (

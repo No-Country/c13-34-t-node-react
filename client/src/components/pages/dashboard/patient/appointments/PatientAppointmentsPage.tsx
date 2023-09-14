@@ -11,16 +11,23 @@ import {
 } from "@/types/appointments";
 import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
+import { useAuth } from "@/context/auth";
 
 const getPatientAppointmentsKey = "getPatientAppointments";
 
 export const PatientAppointmentsPage = () => {
-  const { data: appointments, error } = useSWR(
-    getPatientAppointmentsKey,
+  const { user } = useAuth();
+
+  const {
+    data: appointments,
+    error,
+    isLoading,
+  } = useSWR(
+    user!.patientId ? getPatientAppointmentsKey : null,
     AppointmentsService.getPatientAppointments,
   );
 
-  if (!appointments) return <Loading />;
+  if (isLoading) return <Loading />;
   if (error || !appointments)
     return <Error message={"USTED AUN NO TIENE UNA CITA"} />;
 

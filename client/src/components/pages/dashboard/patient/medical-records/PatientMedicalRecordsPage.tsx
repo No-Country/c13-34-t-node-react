@@ -9,14 +9,14 @@ const getPatientInfoKey = "getPatientInfo";
 export const PatientMedicalRecordsPage = () => {
   const { user } = useAuth();
 
-  const { data, error } = useSWR(
+  const { data, error, isLoading } = useSWR(
     user!.patientId ? getPatientInfoKey : null,
     () => PatientService.getPatientInfo(user!.patientId),
   );
 
-  if (error || !user!.patientId)
+  if (isLoading) return <Loading />;
+  if (error || !data)
     return <Error message="Usted aun no tiene registros médicos" />;
-  if (!data) return <Loading />;
 
   const { patientInfo, medicalRecordInfo } = data;
 
