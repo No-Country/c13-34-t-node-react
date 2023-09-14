@@ -34,24 +34,25 @@ export const DoctorSchedulePage = () => {
 
   return data ? (
     <div className="bg-gray-200 h-screen">
-      <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
+      <div className="bg-dark-green 2xl:bg-white px-8 pt-10 pb-4 2xl:flex 2xl:justify-between">
         <div className="flex items-center justify-center gap-4">
-          <h2 className="text-lg font-bold uppercase">Doctor</h2>
+          <h2 className="text-white 2xl:text-black text-lg font-bold uppercase">Doctor</h2>
           <MdOutlineArrowForwardIos color="gray" size={25} />
-          <p className="text-slate-500 font-bold text-lg">Cronograma</p>
+          <p className="text-white 2xl:text-slate-500 font-bold text-lg">Cronograma</p>
         </div>
-        <div>Notificación</div>
+        <div className="text-white 2xl:text-black text-center mt-4">Notificación</div>
       </div>
 
-      <div className="bg-white h-[70%] m-8 rounded-2xl">
-        <div className="p-4 flex justify-end gap-4 pr-24">
+      <div className="bg-white h-[70%] 2xl:m-8 2xl:rounded-2xl">
+        <div className="p-4 grid justify-center 2xl:flex 2xl:justify-end gap-4 2xl:pr-24">
           <p className="py-1.5 font-semibold">Mostrar</p>
+          
           <button
             onClick={() => {
               setSelectedStatus("todos");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "w-80 2xl:w-[130px] py-2 mb-2 2xl:mb-0 tracking-wider rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedStatus === "todos"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -64,7 +65,7 @@ export const DoctorSchedulePage = () => {
               setSelectedStatus("selected");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "w-80 2xl:w-[130px] py-2 mb-2 2xl:mb-0 tracking-wider rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedStatus === "selected"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -77,7 +78,7 @@ export const DoctorSchedulePage = () => {
               setSelectedStatus("cancelled");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "w-80 2xl:w-[130px] py-2 mb-2 2xl:mb-0 tracking-wider rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedStatus === "cancelled"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -90,7 +91,7 @@ export const DoctorSchedulePage = () => {
               setSelectedStatus("pending");
             }}
             className={clsx(
-              "py-15 tracking-wider px-6 rounded-xl border uppercase transition text-xs font-medium border-other-blue",
+              "w-80 2xl:w-[130px] py-2 tracking-wider rounded-xl border uppercase transition text-xs font-medium border-other-blue",
               selectedStatus === "pending"
                 ? "bg-other-blue text-white"
                 : "text-other-blue bg-white",
@@ -100,8 +101,8 @@ export const DoctorSchedulePage = () => {
           </button>
         </div>
 
-        <div className="overflow-auto h-full flex flex-col items-center">
-          <table className="overflow-scroll bg-white px-4 w-full">
+        <div className="overflow-auto h-full 2xl:flex 2xl:flex-col 2xl:items-center">
+          <table className="overflow-scroll bg-white px-4 w-96 text-center 2xl:text-justify 2xl:w-full">
             <thead className="bg-white border-b-2 border-gray-200">
               <tr>
                 <th className="p-3 text-sm font-semibold tracking-wide text-left">
