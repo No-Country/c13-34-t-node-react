@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineUser, AiFillEdit } from "react-icons/ai";
 import { GiBodyHeight } from "react-icons/Gi";
 import { GrAddCircle } from "react-icons/gr";
 import useSWR from "swr";
@@ -10,35 +10,32 @@ import { TPatientInfo } from "@/types/patients";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import clsx from "clsx";
 import { getAge } from "@/data/functions";
-import { useAuth } from "@/context/auth";
 import { Modal } from "@/components/common/Modal";
+import { EditMedicalRecordModalContent } from "./EditMedicalRecordModalContent";
+import { AddMedicalRecordModalContent } from "./AddMedicalRecordModalContent copy";
+import { AddHistory } from "./AddHistory";
 
 const getPatientInfo = "getPatientInfo";
-const getPatientAppointmentsQty = "getPatientAppointmentsQty";
 
 export const DoctorPatientPage = () => {
   const { userId } = useParams();
   const [show, setShow] = useState(false);
-  /*const auth = useAuth();
-  const user = auth.user;
-  console.log(user);*/
+  const [variant, setVariant] = useState("");
+  const [isLoading, setisLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, error } = useSWR([getPatientInfo, userId], ([_url, userId]) =>
-    DoctorPatientsService.getPatientInfo(Number(userId)),
+  const { data, mutate, error } = useSWR(
+    [getPatientInfo, userId],
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    ([_url, userId]) => DoctorPatientsService.getPatientInfo(Number(userId)),
   );
   const [patient, setPatient] = useState<TPatientInfo | null>(null);
-  /*const { appData } = useSWR(
-    [getPatientAppointmentsQty, userId, patient],
-    ([_url, userId, patient]) =>
-      DoctorPatientsService.getPatientAppointmentsQty(
-        userId,
-        patient?.patientInfo.user.id,
-      ),
-  );*/
 
-  const handleMedicalRecordSubmit = (e) => {
+  const handleMedicalRecordSubmit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault();
+    setisLoading(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
     const previousMedicalConditions = formData.get(
@@ -46,14 +43,72 @@ export const DoctorPatientPage = () => {
     ) as string;
     const familyMedicalHistory = formData.get("familyMedicalHistory") as string;
     const allergies = formData.get("allergies") as string;
+    const notes = formData.get("notes") as string;
+    const symptoms = formData.get("symptoms") as string;
+    const treatments = formData.get("treatments") as string;
+    const medication = formData.get("medication") as string;
+    const height = formData.get("height") as string;
+    const bloodPressureSis = formData.get("bloodPressureSis") as string;
+    const bloodPressureDias = formData.get("bloodPressureDias") as string;
+    const weight = formData.get("weight");
 
-    patient &&
-      DoctorPatientsService.postMedicalRecord(
+    if (patient && variant === "addMedicalRecord") {
+      const res = await DoctorPatientsService.postMedicalRecord(
         patient?.patientInfo.id,
         familyMedicalHistory,
         previousMedicalConditions,
         allergies,
       );
+      if (res.status === 201) {
+        setShowError(false);
+        await mutate();
+        setisLoading(false);
+        setShow(false);
+      } else {
+        setisLoading(false);
+        setShowError(true);
+      }
+    }
+
+    if (patient && variant === "editMedicalRecord") {
+      const res = await DoctorPatientsService.editMedicalRecord(
+        patient.medicalRecordInfo.id,
+        familyMedicalHistory,
+        previousMedicalConditions,
+        allergies,
+      );
+      if (res.status === 204) {
+        setShowError(false);
+        await mutate();
+        setisLoading(false);
+        setShow(false);
+      } else {
+        setisLoading(false);
+        setShowError(true);
+      }
+    }
+
+    if (patient && variant === "addMedicalHistory") {
+      const res = await DoctorPatientsService.postMedicalHistory(
+        patient.medicalRecordInfo.id,
+        notes,
+        symptoms,
+        treatments,
+        medication,
+        Number(height),
+        bloodPressureSis + "/" + bloodPressureDias,
+        Number(weight),
+      );
+      if (res.status === 201) {
+        setShowError(false);
+        await mutate();
+        setisLoading(false);
+        setShow(false);
+      } else {
+        setisLoading(false);
+        setShowError(true);
+      }
+    }
   };
 
   useEffect(() => {
@@ -64,57 +119,35 @@ export const DoctorPatientPage = () => {
   }, [data]);
 
   return patient ? (
-    <div className="bg-gray-200 h-full flex flex-col">
+    <div className="bg-gray-200 h-max min-h-screen flex flex-col">
       <Modal
         showModal={show}
-        onClose={() => setShow(false)}
+        onClose={() => {
+          setShow(false);
+          setShowError(false);
+        }}
         message={
-          <div className="text-center flex flex-col justify-start px-12 gap-4">
-            <p className=" border-b-2 border-slate-200 p-0">
-              Agregar registro médico
-            </p>
-            <form
-              onSubmit={handleMedicalRecordSubmit}
-              className="flex flex-col gap-4 justify-center text-center"
-            >
-              <label className="">
-                <p className="text-sm w-">Patologías preexistentes *</p>
-                <textarea
-                  id="previousMedicalConditions"
-                  name="previousMedicalConditions"
-                  rows={4}
-                  required
-                  className={`ring-1 ring-gray-300 text-xs w-full p-2 rounded-xl px-4 outline-none focus:ring-2 focus:ring-primary-gray`}
-                />
-              </label>
-              <label className="">
-                <p className="text-sm w-">Alergias *</p>
-                <textarea
-                  id="allergies"
-                  name="allergies"
-                  rows={4}
-                  required
-                  className={`ring-1 ring-gray-300 text-xs w-full p-2 rounded-xl px-4 outline-none focus:ring-2 focus:ring-primary-gray`}
-                />
-              </label>
-              <label className="">
-                <p className="text-sm w-">Antecedentes familiares *</p>
-                <textarea
-                  id="familyMedicalHistory"
-                  name="familyMedicalHistory"
-                  rows={4}
-                  required
-                  className={`ring-1 ring-gray-300 text-xs w-full p-2 rounded-xl px-4 outline-none focus:ring-2 focus:ring-primary-gray`}
-                />
-              </label>
-              <button
-                type="submit"
-                className="disabled:bg-slate-300 hover:opacity-90 self-center w-1/2 bg-dark-green text-white rounded-xl py-1 px-2"
-              >
-                Enviar
-              </button>
-            </form>
-          </div>
+          variant === "editMedicalRecord" ? (
+            <EditMedicalRecordModalContent
+              handleMedicalRecordSubmit={handleMedicalRecordSubmit}
+              patient={patient}
+              showError={showError}
+              isLoading={isLoading}
+            />
+          ) : variant === "addMedicalRecord" ? (
+            <AddMedicalRecordModalContent
+              handleMedicalRecordSubmit={handleMedicalRecordSubmit}
+              patient={patient}
+              showError={showError}
+              isLoading={isLoading}
+            />
+          ) : (
+            <AddHistory
+              handleMedicalRecordSubmit={handleMedicalRecordSubmit}
+              showError={showError}
+              isLoading={isLoading}
+            />
+          )
         }
       />
       <div className="bg-white px-8 pt-10 pb-4 flex justify-between">
@@ -197,7 +230,10 @@ export const DoctorPatientPage = () => {
                     {patient.patientMedicalHistories
                       .patientMedicalHistoryInfo !== null
                       ? patient.patientMedicalHistories
-                          .patientMedicalHistoryInfo[0].weight
+                          .patientMedicalHistoryInfo[
+                          patient.patientMedicalHistories
+                            ?.patientMedicalHistoryInfo.length - 1
+                        ]?.weight
                       : ""}{" "}
                     kg
                   </p>
@@ -209,7 +245,10 @@ export const DoctorPatientPage = () => {
                   {patient.patientMedicalHistories.patientMedicalHistoryInfo !==
                   null
                     ? patient.patientMedicalHistories
-                        ?.patientMedicalHistoryInfo[0].height
+                        ?.patientMedicalHistoryInfo[
+                        patient.patientMedicalHistories
+                          ?.patientMedicalHistoryInfo.length - 1
+                      ]?.height
                     : ""}{" "}
                   cm
                 </p>
@@ -222,7 +261,10 @@ export const DoctorPatientPage = () => {
                   {patient.patientMedicalHistories.patientMedicalHistoryInfo !==
                   null
                     ? patient.patientMedicalHistories
-                        ?.patientMedicalHistoryInfo[0].bloodPressure
+                        ?.patientMedicalHistoryInfo[
+                        patient.patientMedicalHistories
+                          ?.patientMedicalHistoryInfo.length - 1
+                      ]?.bloodPressure
                     : ""}{" "}
                   mm/Hg
                 </p>
@@ -263,11 +305,26 @@ export const DoctorPatientPage = () => {
                   {patient.medicalRecordInfo.familyMedicalHistory}
                 </p>
               </div>
+              <div className="flex p-1 bg-white gap-2 items-center border-2 border-slate-300">
+                <button
+                  onClick={() => {
+                    setShow(true);
+                    setVariant("editMedicalRecord");
+                  }}
+                  className="m-auto  hover:bg-gray-200 text-gray-800 font-bold px-4 rounded inline-flex gap-2 items-center border-2 border-dark-green"
+                >
+                  <AiFillEdit size={20} />
+                  <span className="text-dark-green">Editar</span>
+                </button>
+              </div>
             </div>
           ) : (
-            <div className="w-full h-4/5 flex items-center justify-center">
+            <div className="w-full h-4/5 flex items-center p-2 justify-center">
               <button
-                onClick={() => setShow(true)}
+                onClick={() => {
+                  setShow(true);
+                  setVariant("addMedicalRecord");
+                }}
                 className="m-auto hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded inline-flex gap-2 items-center border-2 border-dark-green"
               >
                 <GrAddCircle size={30} />
@@ -301,38 +358,17 @@ export const DoctorPatientPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              <tr>
-                <td className="whitespace-nowrap text-sm">
-                  {
-                    patient.patientMedicalHistories.patientMedicalHistoryInfo[0]
-                      .date
-                  }
-                </td>
-                <td className="p-2 text-sm">
-                  {
-                    patient.patientMedicalHistories.patientMedicalHistoryInfo[0]
-                      .notes
-                  }
-                </td>
-                <td className="text-sm">
-                  {
-                    patient.patientMedicalHistories.patientMedicalHistoryInfo[0]
-                      .symptoms
-                  }
-                </td>
-                <td className="text-sm">
-                  {
-                    patient.patientMedicalHistories.patientMedicalHistoryInfo[0]
-                      .treatments
-                  }
-                </td>
-                <td className="text-sm">
-                  {
-                    patient.patientMedicalHistories.patientMedicalHistoryInfo[0]
-                      .medication
-                  }
-                </td>
-              </tr>
+              {patient.patientMedicalHistories.patientMedicalHistoryInfo.map(
+                (row) => (
+                  <tr>
+                    <td className="whitespace-nowrap text-sm">{row?.date}</td>
+                    <td className="p-2 text-sm">{row?.notes}</td>
+                    <td className="text-sm">{row?.symptoms}</td>
+                    <td className="text-sm">{row?.treatments}</td>
+                    <td className="text-sm">{row?.medication}</td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         ) : (
@@ -340,18 +376,22 @@ export const DoctorPatientPage = () => {
             <p>Debes completar primero el registro médico</p>
           </div>
         )}
-        <div className="flex p-2 items-center justify-center bg-white gap-4 border-2 border-b-slate-500">
+        <div className="flex p-1 items-center justify-center bg-white gap-4 border-2 border-b-slate-500">
           <button
             disabled={
               patient.patientMedicalHistories.patientMedicalHistoryInfo === null
             }
+            onClick={() => {
+              setShow(true);
+              setVariant("addMedicalHistory");
+            }}
             className={clsx(
-              "m-auto hover:bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded inline-flex gap-2 items-center border-2 border-dark-green",
+              "m-auto hover:bg-gray-200 text-gray-800 font-bold py-1 px-4 rounded inline-flex gap-2 items-center border-2 border-dark-green",
               patient.patientMedicalHistories.patientMedicalHistoryInfo ===
                 null && "hover:bg-transparent",
             )}
           >
-            <GrAddCircle size={30} />
+            <GrAddCircle size={25} />
             <span className="text-dark-green">Agregar</span>
           </button>
         </div>

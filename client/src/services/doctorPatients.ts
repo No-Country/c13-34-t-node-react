@@ -46,9 +46,52 @@ async function postMedicalRecord(
   return res;
 }
 
+async function postMedicalHistory(
+  id: number,
+  notes: string,
+  symptoms: string,
+  treatments: string,
+  medication: string,
+  height: number,
+  bloodPressure: string,
+  weight: number,
+) {
+  const res = await client.post(
+    `/api/v1/doctor/create-patient-medical-history/${id}`,
+    {
+      notes,
+      symptoms,
+      treatments,
+      medication,
+      height,
+      bloodPressure,
+      weight,
+    },
+  );
+  console.log(res);
+  return res;
+}
+
+async function editMedicalRecord(
+  id: number,
+  familyMedicalHistory: string,
+  previousMedicalConditions: string,
+  allergies: string,
+) {
+  const res = await client.patch(`/api/v1/doctor/update-medical-record/${id}`, {
+    familyMedicalHistory,
+    previousMedicalConditions,
+    allergies,
+  });
+
+  return res;
+}
+
 export const DoctorPatientsService = {
   getDoctorPatients,
   getPatientInfo,
   getPatientAppointmentsQty,
   postMedicalRecord,
+  editMedicalRecord,
+  postMedicalHistory,
 };
