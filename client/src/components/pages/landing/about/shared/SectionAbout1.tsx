@@ -22,7 +22,7 @@ export const SectionAbout1 = () => {
         </p>
         <div className="hidden 2xl:w-[325px] 2xl:flex 2xl:flex-col">
           <div className="grid">
-            <p className="2xl:justify-self-center 2xl:text-lg pb-1 2xl:mt-[-50px]">
+            <p className="2xl:justify-self-center 2xl:text-lg pb-1 2xl:mt-[-52px]">
               No tienes una cuenta ?
             </p>
             <NavLink to="/registro">
