@@ -4,7 +4,10 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import type { MedicalRecord, Patient } from '../entities'
 import { MedicalAppointmentDatesStatus } from '../types/medical.appointment.dates.types'
-import type { MedicalRecordRepository } from '../types/medical.record.types'
+import type {
+  IMedicalRecordBody,
+  MedicalRecordRepository
+} from '../types/medical.record.types'
 import { AppError } from '../utils/app.error'
 import { EntityFactory } from './factory/entity.factory'
 
@@ -15,7 +18,11 @@ export class MedicalRecordService {
     this.entityFactory = new EntityFactory(medicalRecordRepository)
   }
 
-  async createMedicalRecord(data: any, doctorId: number, patientId: number) {
+  async createMedicalRecord(
+    data: IMedicalRecordBody,
+    doctorId: number,
+    patientId: number
+  ) {
     let patient: Patient | undefined
 
     try {
@@ -108,7 +115,7 @@ export class MedicalRecordService {
     )) as MedicalRecord | null
   }
 
-  async updateMedicalRecord(medicalRecordId: number, data: any) {
+  async updateMedicalRecord(medicalRecordId: number, data: IMedicalRecordBody) {
     try {
       // busco el medicalRecord por findOne mediante el id del medicalRecordSchema
       const medicalRecord = await this.entityFactory.findOne(

@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from 'express'
-import type { User } from '../entities'
-import type { HoursType } from '../types/medical.appointment.dates.types'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HTTPCODES } from '../constants/httpCodes'
 import { MESSAGES } from '../constants/msgs'
+import type { User } from '../entities'
 import { medicalAppointmentDatesService } from '../services'
+import type { HoursType } from '../types/medical.appointment.dates.types'
 import { AppError } from '../utils/app.error'
 
 export const createDates = async (
@@ -172,6 +172,5 @@ export const updateToCompletedDate = async (
       return
     }
     next(err)
-    return
   }
 }

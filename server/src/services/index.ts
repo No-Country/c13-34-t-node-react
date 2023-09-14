@@ -1,3 +1,7 @@
+/**
+ * Este archivo es responsable de configurar y proporcionar servicios relacionados con las entidades médicas
+ * y repositorios necesarios para acceder a la base de datos.
+ */
 import {
   Doctor,
   MedicalAppointment,
@@ -31,24 +35,20 @@ export let userService: UserService,
   medicalRecordService: MedicalRecordService,
   patientMedicalHistoryService: PatientMedicalHistoryService
 
+// Obtención de repositorios de la base de datos
 const userRepository: UserRepository = AppDataSrc.getRepository(User)
-
 const patientRepository: PatientRepository = AppDataSrc.getRepository(Patient)
-
 const doctorRepository: DoctorRepository = AppDataSrc.getRepository(Doctor)
-
 const medicalAppointmentDatesRespository: MedicalAppointmentDatesRepository =
   AppDataSrc.getRepository(MedicalAppointmentDates)
-
 const medicalAppointmentRepository: MedicalAppointmentRepository =
   AppDataSrc.getRepository(MedicalAppointment)
-
 const medicalRecordRepository: MedicalRecordRepository =
   AppDataSrc.getRepository(MedicalRecord)
-
 const patientMedicalHistoryRepository: PatientMedicalHistoryRepository =
   AppDataSrc.getRepository(PatientMedicalHistory)
 
+// Inicialización de servicios con repositorios
 ;(() => {
   userService = new UserService(userRepository)
   medicalAppointmentDatesService = new MedicalAppointmentDatesService(
