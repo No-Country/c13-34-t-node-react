@@ -6,10 +6,10 @@ export const SectionAbout1 = () => {
     <div className="flex flex-col px-6 2xl:grid 2xl:grid-cols-2 w-full gap-4 mb-[-20px]">
       <div className="flex flex-col w-full 2xl:order-1">
         <h1 className="text-2xl 2xl:text-3xl font-bold font-caudex max-sm:pt-4 pb-1 2xl:tracking-[1px]">
-          ENFOQUE EN EL CUIDADO DE LOS OJOS Y CIRUGÍA
+          ENFOCADOS EN TU BIENESTAR
         </h1>
         <h2 className="text-2xl 2xl:text-3xl font-bold font-caudex text-primary-green pb-5 2xl:tracking-[1px]">
-          Su Visión, Nuestra Misión
+          Nuestra misión, tu salud
         </h2>
 
         <p className="font-opensans 2xl:w-[550px] tracking-[1px] pb-1 2xl:pb-20 2xl:text-lg">
