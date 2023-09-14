@@ -196,10 +196,7 @@ export class MedicalAppointmentDatesService {
     )
 
     if (doctorExists === null) {
-      throw new AppError(
-        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
-        HTTPCODES.NOT_FOUND
-      )
+      return [[], 0]
     }
 
     const filters = {
@@ -230,10 +227,7 @@ export class MedicalAppointmentDatesService {
     )
 
     if (doctorExists === null) {
-      throw new AppError(
-        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
-        HTTPCODES.NOT_FOUND
-      )
+      return [[]]
     }
 
     const filters = {
