@@ -16,7 +16,7 @@ export const AboutUs = () => {
       <section className="py-4 px-4">
         <SectionAbout3 />
       </section>
-      <section className="p-4 pt-10 2xl:px-36">
+      <section className="p-6 pt-10 2xl:px-36">
         <SectionAbout4 />
       </section>
       <section className="py-4 px-36">

@@ -8,10 +8,10 @@ export const MedicalSpecialties = () => {
         Diversidad de especialidades médicas
       </h2>
 
-      <div className="2xl:flex mt-5 mb-">
+      <div className="2xl:flex mt-5">
         <div className="w-[90%] mx-auto 2xl:py-0 2xl:w-1/2 mt-2 2xl:text-lg 2xl:grid 2xl:p-32">
           <div className="2xl:justify-center">
-            <p className="text-justify 2xl:tracking-[1px]">
+            <p className="2xl:tracking-[1px]">
               En nuestra clínica de medicina integral, te presentamos a un
               equipo diverso de especialistas altamente capacitados en una
               amplia gama de áreas médicas. Reconocemos que cada paciente tiene

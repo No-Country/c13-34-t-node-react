@@ -3,9 +3,9 @@ export const SectionAbout4 = () => {
     <div className="flex flex-col 2xl:grid 2xl:grid-cols-2">
       <div className="flex flex-col">
         <h1 className="text-2xl 2xl:text-3xl font-caudex font-bold text-dark-blue pb-2 2xl:pb-5">
-          ¿Por qué las pacientes eligen nuestra clínica?
+          ¿Por qué los pacientes eligen nuestra clínica?
         </h1>
-        <p className="text-base 2xl:text-lg font-opensans 2xl:w-[700px] pb-8 tracking-[1px] text-justify">
+        <p className="text-base 2xl:text-lg font-opensans 2xl:w-[700px] pb-8 tracking-[1px]">
           En nuestra clínica, hemos establecido un legado de excelencia en el
           campo de la medicina en general. Nuestro compromiso con la atención de
           calidad y la innovación constante nos ha llevado a recibir
