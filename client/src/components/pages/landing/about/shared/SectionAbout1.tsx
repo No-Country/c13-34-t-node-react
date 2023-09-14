@@ -18,11 +18,11 @@ export const SectionAbout1 = () => {
           diagnósticos, terapéuticos y quirúrgicos para abordar sus necesidades
           de salud de manera completa. Nuestra dedicación a la medicina general
           y la atención de calidad nos impulsa a brindar el mejor cuidado
-          posible para su bienestar. 
+          posible para su bienestar.  Ofrecemos servicios médicos de atención primaria y preventiva para mantenerlo saludable y atender sus necesidades de atención médica preventiva.
         </p>
         <div className="hidden 2xl:w-[325px] 2xl:flex 2xl:flex-col">
-          <div className="grid">
-            <p className="2xl:justify-self-center 2xl:text-lg pb-1 2xl:mt-[-52px]">
+          <div className="grid 2xl:mt-[-54px]">
+            <p className="2xl:justify-self-center 2xl:text-lg pb-1">
               No tienes una cuenta ?
             </p>
             <NavLink to="/registro">
