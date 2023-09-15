@@ -84,6 +84,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
         logout();
         // toast.error("La sesión ha expirado")
       }
+      return Promise.reject(error);
     });
   }, []);
 

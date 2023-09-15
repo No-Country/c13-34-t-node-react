@@ -34,6 +34,7 @@ export const PatientBookAppointmentPage = () => {
           await AppointmentsService.createAppointment(dateId, +doctorId, {
             description,
           });
+
           resetForm();
           // redirigir al detalle de cita
           setMessage("Su cita se ha reservado exitosamente");
@@ -42,7 +43,8 @@ export const PatientBookAppointmentPage = () => {
           // mostrar error
           if (error instanceof AxiosError) {
             if (error.response) {
-              alert("Formulario Invalido");
+              setMessage(error.response.data.message ?? "Error del servidor");
+              setShowModal(true);
             } else {
               setMessage("No se pudo establecer conexión con el Servidor!");
               setShowModal(true);
