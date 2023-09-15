@@ -7,11 +7,12 @@ import useSWR from "swr";
 import { DoctorPatientsService } from "@/services/doctorPatients";
 import { TPatient } from "@/types/patients";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Error } from "../../shared/Error";
 
 const getDoctorPatients = "getDoctorPatients";
 
 export const DoctorPatientsPage = () => {
-  const { data, isLoading } = useSWR(
+  const { data, error, isLoading } = useSWR(
     getDoctorPatients,
     DoctorPatientsService.getDoctorPatients,
   );
@@ -24,7 +25,23 @@ export const DoctorPatientsPage = () => {
     }
   }, [data]);
 
-  return data ? (
+  if (isLoading)
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+
+  if (error || !data)
+    return (
+      <Error
+        message="USTED AUN NO TIENE PACIENTES"
+        linkText="Agende su cita Aquí"
+        linkTo="/plataforma/doctor/citas"
+      />
+    );
+
+  return (
     <div className="bg-gray-200">
       <div className="bg-dark-green h-52">
         <div className="text-white px-8 py-10 flex justify-between text-lg font-bold uppercase">
@@ -122,14 +139,6 @@ export const DoctorPatientsPage = () => {
           </div>
         </div>
       </div>
-    </div>
-  ) : isLoading ? (
-    <div className="h-full w-full flex items-center justify-center">
-      <LoadingSpinner />
-    </div>
-  ) : (
-    <div className="h-full w-full flex items-center justify-center">
-      <p>Ha ocurrido un error!</p>
     </div>
   );
 };
