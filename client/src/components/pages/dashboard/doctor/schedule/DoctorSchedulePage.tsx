@@ -1,38 +1,53 @@
 import { RiEdit2Fill } from "react-icons/ri";
 import useSWR from "swr";
 import { Modal } from "@/components/common/Modal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import clsx from "clsx";
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { TAppointment, TAppointmentDateStatus } from "@/types/appointments";
 import { AppointmentsService } from "@/services/appointments";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import { Error } from "../../shared/Error";
+import { useAuth } from "@/context/auth";
 
 const getDoctorSchedule = "getDoctorSchedule";
 
 export const DoctorSchedulePage = () => {
-  const { data, mutate, error } = useSWR(
-    getDoctorSchedule,
+  const { user } = useAuth();
+
+  const { data, mutate, error, isLoading } = useSWR(
+    user!.doctorId ? getDoctorSchedule : null,
     AppointmentsService.getDoctorSchedule,
   );
 
-  const [appointmentsData, setAppointmentsData] = useState<TAppointment[]>();
   const [selectedStatus, setSelectedStatus] = useState<
     TAppointmentDateStatus | "todos"
   >("todos");
 
-  useEffect(() => {
-    if (data) {
-      setAppointmentsData(data.dates);
-    }
-  }, [data]);
+  if (isLoading)
+    return (
+      <div className="h-full w-full flex items-center justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+
+  if (error || !data)
+    return (
+      <Error
+        message="USTED AUN NO TIENE CRONOGRAMA"
+        linkText="Agende su cita Aquí"
+        linkTo="/plataforma/doctor/citas"
+      />
+    );
+
+  const appointmentsData = data.dates;
 
   const filteredAppointments =
     selectedStatus !== "todos"
       ? appointmentsData?.filter((appoint) => appoint.status === selectedStatus)
       : appointmentsData;
 
-  return data ? (
+  return (
     <div className="bg-gray-200">
       <div className="bg-dark-green h-52">
         <div className="text-white px-8 pt-10 flex justify-between text-lg font-bold uppercase">
@@ -157,12 +172,6 @@ export const DoctorSchedulePage = () => {
           </div>
         </div>
       </div>
-    </div>
-  ) : error ? (
-    <div> Ha ocurrido un error</div>
-  ) : (
-    <div className="h-full w-full flex items-center justify-center">
-      <LoadingSpinner />
     </div>
   );
 };

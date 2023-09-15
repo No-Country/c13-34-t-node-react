@@ -29,7 +29,13 @@ export const PatientAppointmentsPage = () => {
 
   if (isLoading) return <Loading />;
   if (error || !appointments)
-    return <Error message={"USTED AUN NO TIENE UNA CITA"} />;
+    return (
+      <Error
+        message={"USTED AUN NO TIENE UNA CITA"}
+        linkText="Reserve su cita Aquí"
+        linkTo="/plataforma/paciente/reservar-cita"
+      />
+    );
 
   return (
     <div className="bg-gray-50">

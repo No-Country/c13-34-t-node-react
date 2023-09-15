@@ -16,7 +16,13 @@ export const PatientMedicalRecordsPage = () => {
 
   if (isLoading) return <Loading />;
   if (error || !data)
-    return <Error message="Usted aun no tiene registros médicos" />;
+    return (
+      <Error
+        message={"USTED AUN NO TIENE REGISTROS MÉDICOS"}
+        linkText="Reserve su cita Aquí"
+        linkTo="/plataforma/paciente/reservar-cita"
+      />
+    );
 
   const { patientInfo, medicalRecordInfo } = data;
 
