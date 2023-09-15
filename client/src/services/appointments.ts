@@ -13,10 +13,11 @@ type Hour = {
 
 async function createAppointment(
   dateId: number,
+  doctorId: number,
   newAppointment: TNewAppointment,
 ) {
   return client.post(
-    "/api/v1/patients/medical-appointment/" + dateId,
+    `/api/v1/patients/medical-appointment/${dateId}/${doctorId}`,
     newAppointment,
   );
 }

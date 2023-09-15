@@ -13,7 +13,7 @@ export const PatientBookAppointmentPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState("");
 
-  const doctorId = useMemo(() => {
+  const doctorIdFromUrl = useMemo(() => {
     const { searchParams } = new URL(location.href);
     return searchParams.get("doctorId") ?? "";
   }, []);
@@ -21,17 +21,19 @@ export const PatientBookAppointmentPage = () => {
   const { values, handleSubmit, handleChange, setFieldValue, resetForm } =
     useFormik({
       initialValues: {
-        doctorId,
+        doctorId: doctorIdFromUrl,
         description: "",
         date: "",
         hour: "",
       },
-      onSubmit: async ({ date, hour, description }) => {
+      onSubmit: async ({ date, hour, description, doctorId }) => {
         const dateId = selectedDoctor!.medicalAppointmentDates.find(
           (d) => d.date === date + " " + hour,
         )!.id;
         try {
-          await AppointmentsService.createAppointment(dateId, { description });
+          await AppointmentsService.createAppointment(dateId, +doctorId, {
+            description,
+          });
           resetForm();
           // redirigir al detalle de cita
           setMessage("Su cita se ha reservado exitosamente");
