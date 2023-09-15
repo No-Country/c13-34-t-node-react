@@ -7,15 +7,12 @@ import { DoctorPatientsService } from "@/services/doctorPatients";
 // import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
-import { useAuth } from "@/context/auth";
 
 const getDoctorPatients = "getDoctorPatients";
 
 export const DoctorPatientsPage = () => {
-  const { user } = useAuth();
-
   const { data, error, isLoading } = useSWR(
-    user!.doctorId ? getDoctorPatients : null,
+    getDoctorPatients,
     DoctorPatientsService.getDoctorPatients,
   );
 

@@ -11,19 +11,16 @@ import {
 } from "@/types/appointments";
 import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
-import { useAuth } from "@/context/auth";
 
 const getPatientAppointmentsKey = "getPatientAppointments";
 
 export const PatientAppointmentsPage = () => {
-  const { user } = useAuth();
-
   const {
     data: appointments,
     error,
     isLoading,
   } = useSWR(
-    user!.patientId ? getPatientAppointmentsKey : null,
+    getPatientAppointmentsKey,
     AppointmentsService.getPatientAppointments,
   );
 

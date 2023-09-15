@@ -2,16 +2,13 @@ import { PatientService } from "@/services/patient";
 import useSWR from "swr";
 import { Error } from "../../shared/Error";
 import { Loading } from "../../shared/Loading";
-import { useAuth } from "@/context/auth";
 
 const getPatientInfoKey = "getPatientInfo";
 
 export const PatientMedicalRecordsPage = () => {
-  const { user } = useAuth();
-
   const { data, error, isLoading } = useSWR(
-    user!.patientId ? getPatientInfoKey : null,
-    () => PatientService.getPatientInfo(user!.patientId),
+    getPatientInfoKey,
+    PatientService.getPatientInfo,
   );
 
   if (isLoading) return <Loading />;
@@ -35,7 +32,7 @@ export const PatientMedicalRecordsPage = () => {
         </div>
 
         {/* patientInfo */}
-        {patientInfo && (
+        {
           <div className="bg-white mx-4 2xl:mx-8 px-4 py-8 2xl:p-8 rounded-2xl shadow-xl">
             <h2 className="text-xl 2xl:text-2xl text-dark-green font-bold pb-4">
               Información personal del paciente
@@ -69,34 +66,36 @@ export const PatientMedicalRecordsPage = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  <tr className="bg-white">
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.id}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.firstName}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.lastName}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.email}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.dateOfBirth}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.telephone}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {patientInfo.user.genre}
-                    </td>
-                  </tr>
+                  {patientInfo && (
+                    <tr className="bg-white">
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.id}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.firstName}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.lastName}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.email}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.dateOfBirth}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.telephone}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {patientInfo.user.genre}
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
           </div>
-        )}
+        }
 
         {/* medicalRecordInfo */}
         <div className="bg-white mx-4 2xl:mx-8 px-4 py-8 2xl:p-8 rounded-2xl shadow-xl">
@@ -126,23 +125,25 @@ export const PatientMedicalRecordsPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                <tr className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {medicalRecordInfo.id}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {medicalRecordInfo.date}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {medicalRecordInfo.allergies}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {medicalRecordInfo.previousMedicalConditions}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    {medicalRecordInfo.familyMedicalHistory}
-                  </td>
-                </tr>
+                {medicalRecordInfo && (
+                  <tr className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {medicalRecordInfo.id}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {medicalRecordInfo.date}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {medicalRecordInfo.allergies}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {medicalRecordInfo.previousMedicalConditions}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {medicalRecordInfo.familyMedicalHistory}
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -188,7 +189,7 @@ export const PatientMedicalRecordsPage = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {data.patientMedicalHistories.patientMedicalHistoryInfo.map(
+                {data.patientMedicalHistories.patientMedicalHistoryInfo?.map(
                   (info) => (
                     <tr key={info.id} className="bg-white">
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">

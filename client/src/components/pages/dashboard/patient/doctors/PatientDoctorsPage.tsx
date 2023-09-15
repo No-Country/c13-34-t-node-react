@@ -12,9 +12,13 @@ import { Error } from "../../shared/Error";
 const getDoctorsKey = "getDoctors";
 
 export const PatientDoctorsPage = () => {
-  const { data, error } = useSWR(getDoctorsKey, UsersService.getDoctors);
+  const { data, error, isLoading } = useSWR(
+    getDoctorsKey,
+    UsersService.getDoctors,
+  );
 
-  if (error)
+  if (isLoading) return <Loading />;
+  if (error || !data)
     return (
       <Error
         message="Error al cargar"
@@ -22,7 +26,6 @@ export const PatientDoctorsPage = () => {
         linkTo="/plataforma/paciente/doctores"
       />
     );
-  if (!data) return <Loading />;
 
   const { doctors } = data;
 

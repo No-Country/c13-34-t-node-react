@@ -8,15 +8,12 @@ import { TAppointment, TAppointmentDateStatus } from "@/types/appointments";
 import { AppointmentsService } from "@/services/appointments";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Error } from "../../shared/Error";
-import { useAuth } from "@/context/auth";
 
 const getDoctorSchedule = "getDoctorSchedule";
 
 export const DoctorSchedulePage = () => {
-  const { user } = useAuth();
-
   const { data, mutate, error, isLoading } = useSWR(
-    user!.doctorId ? getDoctorSchedule : null,
+    getDoctorSchedule,
     AppointmentsService.getDoctorSchedule,
   );
 

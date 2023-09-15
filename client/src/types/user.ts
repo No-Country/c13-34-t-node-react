@@ -13,14 +13,9 @@ export type TUser = {
   role: TRole;
   status: TUserStatus;
   appointment: TAppointmentStatus;
-  patientId: number;
-  doctorId: number;
 };
 
-export type TNewUser = Omit<
-  TUser,
-  "id" | "status" | "appointment" | "patientId" | "doctorId"
-> & {
+export type TNewUser = Omit<TUser, "id" | "status" | "appointment"> & {
   password: string;
   confirmPassword: string;
 };
