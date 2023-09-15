@@ -17,6 +17,7 @@ export const createMedicalAppointment = async (
       await medicalAppointmentService.createMedicalAppointment(
         sessionUser as User,
         safeData?.params.id,
+        safeData?.params.doctorId,
         safeData?.body.description
       )
 

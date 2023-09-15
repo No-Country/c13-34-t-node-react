@@ -18,9 +18,30 @@ export class MedicalAppointmentService {
   async createMedicalAppointment(
     sessionUser: User,
     medicalAppoinmentDateId: number,
+    doctorId: number,
     description: string
   ): Promise<any> {
     // buscar la fecha de la cita y cambiar/actualizar su estado a selected
+    const medicalAppointmentsSelectedExists = await this.findMedicalAppointment(
+      {
+        patient: { user: { id: sessionUser.id } },
+        medicalAppoinmentDate: {
+          status: MedicalAppointmentDatesStatus.selected,
+          doctor: { id: doctorId }
+        }
+      },
+      false,
+      false,
+      false
+    )
+
+    if (medicalAppointmentsSelectedExists) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_SELECTED_EXISTS,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
+
     const medicalAppointmentDate =
       await medicalAppointmentDatesService.findMedicalAppointmentDate(
         {
