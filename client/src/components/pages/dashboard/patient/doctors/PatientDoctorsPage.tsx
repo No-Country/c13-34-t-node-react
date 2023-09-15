@@ -14,7 +14,14 @@ const getDoctorsKey = "getDoctors";
 export const PatientDoctorsPage = () => {
   const { data, error } = useSWR(getDoctorsKey, UsersService.getDoctors);
 
-  if (error) return <Error message="Error al cargar" />;
+  if (error)
+    return (
+      <Error
+        message="Error al cargar"
+        linkText="Recargar"
+        linkTo="/plataforma/paciente/doctores"
+      />
+    );
   if (!data) return <Loading />;
 
   const { doctors } = data;
