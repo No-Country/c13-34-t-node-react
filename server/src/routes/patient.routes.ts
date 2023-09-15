@@ -21,16 +21,6 @@ patientRouter.get('/doctors', getDoctors)
 patientRouter.get('/medical-appointment', getPatient)
 
 patientRouter.get(
-  '/get-patient-info',
-  (req, res, next) => {
-    const { id } = req.sessionUser as User // este id es el id del paciente
-    req.safeData = { params: { id } }
-    next()
-  },
-  patientInfo
-)
-
-patientRouter.get(
   '/get-patient-info/:id', // este id es el id del paciente
   schemaValidator(idSchema),
   patientInfo
