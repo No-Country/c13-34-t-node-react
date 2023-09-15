@@ -9,7 +9,10 @@ import {
 import { protect, restrictTo } from '../middlewares/auth.middleware'
 import { schemaValidator } from '../middlewares/schema.middleware'
 import { idSchema } from '../schema/id.schema'
-import { medicalAppointmentSchema } from '../schema/medical.appointment.schema'
+import {
+  doctorIdSchema,
+  medicalAppointmentSchema
+} from '../schema/medical.appointment.schema'
 import { UserRole } from '../types/user.types'
 import { User } from '../entities'
 
@@ -26,8 +29,9 @@ patientRouter.get(
   patientInfo
 )
 patientRouter.post(
-  '/medical-appointment/:id',
+  '/medical-appointment/:id/:doctorId',
   schemaValidator(idSchema),
+  schemaValidator(doctorIdSchema),
   schemaValidator(medicalAppointmentSchema),
   createMedicalAppointment
 )

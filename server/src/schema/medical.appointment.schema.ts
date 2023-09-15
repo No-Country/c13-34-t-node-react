@@ -39,3 +39,18 @@ export const medicalAppointmentsIdsSchema = z.object({
     })
   })
 })
+
+export const doctorIdSchema = z.object({
+  params: z.object({
+    doctorId: z.string().transform((doctorId, ctx) => {
+      const parsed = parseInt(doctorId)
+
+      if (isNaN(parsed))
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: ERROR_MSGS.ID_TYPE_MISMATCH
+        })
+      return parsed
+    })
+  })
+})
