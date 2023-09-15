@@ -2,35 +2,24 @@ import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { RiEyeFill } from "react-icons/ri";
 
-import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { DoctorPatientsService } from "@/services/doctorPatients";
-import { TPatient } from "@/types/patients";
-import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+// import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
+import { useAuth } from "@/context/auth";
 
 const getDoctorPatients = "getDoctorPatients";
 
 export const DoctorPatientsPage = () => {
+  const { user } = useAuth();
+
   const { data, error, isLoading } = useSWR(
-    getDoctorPatients,
+    user!.doctorId ? getDoctorPatients : null,
     DoctorPatientsService.getDoctorPatients,
   );
 
-  const [nextAppointments, setNextAppointments] = useState<TPatient[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      setNextAppointments(data.patients);
-    }
-  }, [data]);
-
-  if (isLoading)
-    return (
-      <div className="h-full w-full flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
-    );
+  if (isLoading) return <Loading />;
 
   if (error || !data)
     return (
@@ -61,82 +50,98 @@ export const DoctorPatientsPage = () => {
             </div>
           </div>
 
-          <div className="overflow-auto">
-            <table className="table-auto bg-white px-4 py-8 w-full">
-              <thead className="bg-white border-b-2 border-gray-200">
-                <tr>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    No.
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Nombres
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Apellidos
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Teléfono
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Correo
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Fecha de Nacimiento
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Genero
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Cita
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-center uppercase">
-                    Historial
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="divide-y divide-gray-100">
-                {nextAppointments?.map((nextAppointment) => (
-                  <tr key={nextAppointment.id} className="bg-white">
-                    <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.id}
-                    </td>
-                    <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.firstName}
-                    </td>
-                    <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.lastName}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.telephone}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.email}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.dateOfBirth}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                      {nextAppointment.user.genre === "male"
-                        ? "Masculino"
-                        : "Femenino"}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 font-bold whitespace-nowrap">
-                      {nextAppointment.user.appointment}
-                    </td>
-                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap flex justify-center">
-                      <NavLink
-                        to={`/plataforma/doctor/pacientes/${nextAppointment.id}`}
-                        className="text-blue-500 hover:text-blue-700 transition"
-                      >
-                        <RiEyeFill className="text-3xl" />
-                      </NavLink>
-                    </td>
+          {data.patients.length > 0 && (
+            <div className="overflow-auto">
+              <table className="table-auto bg-white px-4 py-8 w-full">
+                <thead className="bg-white border-b-2 border-gray-200">
+                  <tr>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      No.
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Nombres
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Apellidos
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Teléfono
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Correo
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Fecha de Nacimiento
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Genero
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                      Cita
+                    </th>
+                    <th className="p-3 text-sm font-semibold tracking-wide text-center uppercase">
+                      Historial
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody className="divide-y divide-gray-100">
+                  {data.patients.map((nextAppointment) => (
+                    <tr key={nextAppointment.id} className="bg-white">
+                      <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.id}
+                      </td>
+                      <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.firstName}
+                      </td>
+                      <td className="capitalize p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.lastName}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.telephone}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.email}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.dateOfBirth}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                        {nextAppointment.user.genre === "male"
+                          ? "Masculino"
+                          : "Femenino"}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 font-bold whitespace-nowrap">
+                        {nextAppointment.user.appointment}
+                      </td>
+                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap flex justify-center">
+                        <NavLink
+                          to={`/plataforma/doctor/pacientes/${nextAppointment.id}`}
+                          className="text-blue-500 hover:text-blue-700 transition"
+                        >
+                          <RiEyeFill className="text-3xl" />
+                        </NavLink>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {data.patients.length === 0 && (
+            <div className="flex flex-col items-center justify-center gap-6 2xl:px-4 py-16 text-gray-600 mx-auto">
+              <div className="uppercase text-lg 2xl:text-2xl font-semibold text-dark-green text-center">
+                USTED AUN NO TIENE PACIENTES
+              </div>
+              <NavLink
+                to="/plataforma/doctor/citas"
+                className="flex items-center justify-center bg-dark-green uppercase rounded-xl text-white hover:text-primary hover:bg-other-blue font-opensans font-medium border hover:border-primary w-64 py-2 transition duration-300"
+              >
+                Agende su cita Aquí
+              </NavLink>
+            </div>
+          )}
         </div>
       </div>
     </div>
