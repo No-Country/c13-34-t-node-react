@@ -5,11 +5,11 @@ export const SectionAbout2 = () => {
         <img
           src="/images/waves.png"
           alt="background waves design"
-          className="w-screen h-[500px] md:h-[800px]"
+          className="w-screen h-[450px] md:h-[680px]"
         />
       </div>
       <div className="md:w-[600px] md:mt-0 mt-24 flex flex-col gap-2 2xl:gap-12">
-        <p className="font-caudex text-center md:text-left text-2xl 2xl:text-3xl font-bold tracking-wide text-dark-green">
+        <p className="font-caudex text-center md:text-left text-2xl 2xl:text-3xl font-bold tracking-wide text-dark-green 2xl:mt-[-100px]">
           TECNOLOGIA DE VANGUARDIA
         </p>
         <p className="2xl:text-lg">

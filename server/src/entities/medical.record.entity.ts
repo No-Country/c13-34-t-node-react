@@ -3,10 +3,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { Patient } from './'
+import { Patient, PatientMedicalHistory } from './'
 
 @Entity({ name: 'medical_records' })
 export class MedicalRecord extends BaseEntity {
@@ -16,10 +17,22 @@ export class MedicalRecord extends BaseEntity {
   @Column({ type: 'date' })
   date: Date
 
-  @Column({ type: 'text' })
-  description: string
+  @Column({ type: 'varchar' })
+  allergies: string
 
-  @ManyToOne((_type) => Patient, (patient) => patient.medicalRecords)
+  @Column({ type: 'text', name: 'previous_medical_conditions' })
+  previousMedicalConditions: string
+
+  @Column({ type: 'text', name: 'family_medical_history' })
+  familyMedicalHistory: string
+
+  @OneToOne((_type) => Patient)
   @JoinColumn({ name: 'patient_id' })
   patient: Patient
+
+  @OneToMany(
+    (_type) => PatientMedicalHistory,
+    (patientMedicalHistory) => patientMedicalHistory.medicalRecord
+  )
+  patientMedicalHistory: PatientMedicalHistory[]
 }

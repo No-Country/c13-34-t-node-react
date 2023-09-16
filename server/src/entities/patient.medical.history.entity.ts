@@ -1,10 +1,10 @@
 import {
   BaseEntity,
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToOne,
-  JoinColumn
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
 } from 'typeorm'
 import { MedicalRecord } from '.'
 
@@ -28,7 +28,16 @@ export class PatientMedicalHistory extends BaseEntity {
   @Column({ type: 'varchar' })
   medication: string
 
-  @OneToOne((_type) => MedicalRecord)
+  @Column({ type: 'int' })
+  height: number
+
+  @Column({ type: 'text', name: 'blood_pressure' })
+  bloodPressure: string
+
+  @Column({ type: 'int' })
+  weight: number
+
+  @ManyToOne((_type) => MedicalRecord)
   @JoinColumn({ name: 'medical_record_id' })
   medicalRecord: number
 }

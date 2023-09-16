@@ -1,6 +1,6 @@
 export const SectionAbout3 = () => {
     return (
-      <div className="flex flex-col mt-12 pb-6">
+      <div className="flex flex-col mt-12 2xl:pb-4">
         <div className="text-center mb-6">
           <h1 className="text-2xl 2xl:text-3xl font-caudex font-bold mb-4">Qué hace que Meddyplus se destaque como una clínica de alta tecnología?</h1>
           <h3 className="text-primary-green text-xl 2xl:text-2xl font-bold">Primero y único con el equipamiento de atención más avanzado y un gran número de especialistas con mucha experiencia bajo un mismo techo.</h3>

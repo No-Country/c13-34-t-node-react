@@ -14,7 +14,6 @@ export const schemaValidator = (schema: AnyZodObject) => {
       body: req.body,
       params: req.params
     })
-
     if (!results.success) {
       const errors = results.error.issues.map((issue) => {
         if (issue.message === MESSAGES.DATE_OF_BIRTH_DEFAULT_ERROR) {
@@ -35,9 +34,8 @@ export const schemaValidator = (schema: AnyZodObject) => {
 
       req.safeData = results.data
 
-      if (params) req.safeData!.params = params
-
-      if (body) req.safeData!.body = body
+      if (params) req.safeData.params = { ...req.safeData?.params, ...params }
+      if (body) req.safeData.body = { ...req.safeData?.body, ...body }
     } else {
       req.safeData = results.data
     }

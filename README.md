@@ -1,8 +1,5 @@
-# MeddyPlus
-<h3>😁 Accede con el siguiente link -> <link> https://meddyplus.netlify.app/ </link></h3>
-
-## c13-34-t-node-react :hospital: Gestión de historias y citas médicas
-Aplicación web para administrar las citas médicas de los pacientes y registros medicos según disponibilidad de los doctores. Las tecnologias utilizadas en el frontend son **React**, **Tailwind** y para el frontend se utilizó, **Express**, **Nodejs**. También para ambos lados de la aplicación, se utilizó  **TypeScript**
+# c13-34-t-node-react :hospital: Gestión de historias y citas médicas
+Aplicación web para administrar las historias médicas de los pacientes y la asignación de citas según disponibilidad de los doctores.
 
 ## :file_folder: Estructura principal de carpetas
 - Para el lado del frontend, se usa una carpeta de nombre `client`.

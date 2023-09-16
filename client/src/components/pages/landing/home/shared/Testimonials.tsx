@@ -5,7 +5,7 @@ import image_testimonial_3 from "/images/doctor-testimonials3.png";
 
 export const Testimonials = () => {
   return (
-    <div className="my-16 mx-auto md:px-6 bg-lightest-green">
+    <div className="pb-14 2xl:pb-16 mt-8 2xl:mt-6 mx-auto md:px-6 bg-lightest-green">
       <p className="text-center font-caudex text-2xl 2xl:text-3xl text-primary-green font-bold pt-5">
         Que dicen nuestros pacientes
       </p>

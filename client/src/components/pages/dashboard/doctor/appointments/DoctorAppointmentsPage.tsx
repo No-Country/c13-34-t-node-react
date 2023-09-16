@@ -17,9 +17,12 @@ const hoursAvailable = [
 
 export const DoctorAppointmentsPage = () => {
   const [hoursSelected, setHoursSelected] = useState<string[]>([]);
+  const [unavailableHours, setUnavailableHours] = useState<string[]>([]);
   const [showError, setShowError] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [enableHours, setEnableHours] = useState(false);
   const [message, setMessage] = useState("");
+  const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleHourClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -34,7 +37,9 @@ export const DoctorAppointmentsPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!hoursSelected.length) return setShowError(true);
+    console.log("Submit!");
+
+    if (!hoursSelected.length && enableHours) return setShowError(true);
 
     if (loading) {
       return;
@@ -61,6 +66,26 @@ export const DoctorAppointmentsPage = () => {
     setLoading(false);
     setMessage("Horarios agendados con éxito!");
     setShowModal(true);
+    setHoursSelected([]);
+    setUnavailableHours([]);
+    setEnableHours(false);
+    setDate("");
+  };
+
+  const handleDateSelect = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    console.log("handleDateSelect!");
+
+    try {
+      const res = await AppointmentsService.getDoctorHoursFromDate(date);
+      const fetchedDates = res.hours.map((x) => x.hour);
+      setUnavailableHours(fetchedDates);
+    } catch (error) {
+      setUnavailableHours([]);
+    }
+    setEnableHours(true);
   };
 
   return (
@@ -71,18 +96,18 @@ export const DoctorAppointmentsPage = () => {
         message={message}
       />
       <div className="bg-dark-green h-52">
-        <h2 className="text-white text-lg font-bold uppercase px-8 pt-10 pb-10">
+        <h2 className="text-white text-center 2xl:text-lg font-bold uppercase px-8 pt-10 pb-10">
           Agendar Citas
         </h2>
 
-        <div className="bg-white mx-8 p-8 rounded-2xl shadow-xl">
-          <div className="text-2xl text-dark-green font-medium pb-10">
+        <div className="bg-white 2xl:mx-8 px-8 pt-8 pb-20 2xl:rounded-2xl shadow-xl">
+          <div className="text-2xl text-dark-green font-medium pb-10 text-center 2xl:text-justify">
             Agendar disponibilidad
           </div>
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
             <label
               htmlFor="date"
-              className="text-lg text-gray-400 font-semibold"
+              className="text-lg text-gray-400 font-semibold text-center 2xl:text-justify"
             >
               Fecha(s) de atención *
             </label>
@@ -90,34 +115,43 @@ export const DoctorAppointmentsPage = () => {
               name="date"
               id="date"
               type="date"
+              value={date}
+              onChange={(e) => {
+                setDate(e.target.value);
+                setEnableHours(false);
+                setUnavailableHours([]);
+              }}
               min={new Date().toISOString().split("T")[0]}
               required
               placeholder="Ingrese la fecha"
               className="ring-1 ring-gray-300 w-full rounded-xl px-4 py-3 mt-2 outline-none focus:ring-2 focus:ring-primary-gray"
             />
             <button
-              //onClick={() => setShow(true)}
-              className="hidden 2xl:w-48 text-sm bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium"
+              onClick={handleDateSelect}
+              className="2xl:w-48 text-sm bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium"
             >
               Seleccionar fecha
             </button>
 
             <label
               htmlFor="hoursAvailable"
-              className="w-fit text-lg text-gray-400 font-semibold"
+              className="2xl:w-fit text-lg text-gray-400 font-semibold text-center"
             >
               Horario de atención *
             </label>
-            <div className="flex gap-2">
+            <div className="flex flex-col 2xl:flex-row 2xl:w-44 gap-2">
               {hoursAvailable.map((hour, i) => (
                 <button
                   key={i}
                   name="hoursAvailable"
                   value={hour.value}
                   onClick={handleHourClick}
+                  disabled={
+                    !enableHours || unavailableHours.includes(hour.value)
+                  }
                   id="hoursAvailable"
                   className={clsx(
-                    "hover:bg-dark-green hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 px-4 rounded-full",
+                    "enabled:hover:bg-dark-green disabled:opacity-75 disabled:bg-[#cccccc] enabled:hover:text-white text-dark-green border-2 border-dark-green font-bold py-2 px-5 rounded-full",
                     hoursSelected.includes(hour.value) &&
                       "bg-dark-green text-white",
                   )}
@@ -129,8 +163,8 @@ export const DoctorAppointmentsPage = () => {
 
             <button
               type="submit"
-              disabled={loading}
-              className={`2xl:w-48 bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white hover:text-dark-green hover:bg-white border hover:border-dark-green uppercase transition font-medium`}
+              disabled={loading || !enableHours}
+              className={`2xl:w-48 disabled:bg-[#cccccc] bg-dark-green py-2 tracking-wider px-6 rounded-xl text-white enabled:hover:text-dark-green enabled:hover:bg-white border enabled:hover:border-dark-green uppercase transition font-medium`}
             >
               {loading ? <LoadingSpinner /> : "Agendar"}
             </button>

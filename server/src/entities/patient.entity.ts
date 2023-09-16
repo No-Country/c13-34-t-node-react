@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
-import { User, MedicalAppointment, MedicalRecord } from '.'
+import { User, MedicalAppointment } from '.'
 
 @Entity({ name: 'patients' })
 export class Patient extends BaseEntity {
@@ -22,7 +22,4 @@ export class Patient extends BaseEntity {
     (medicalApointment) => medicalApointment.patient
   )
   medicalAppointments: MedicalAppointment[]
-
-  @OneToMany((_type) => MedicalRecord, (medicalRecord) => medicalRecord.patient)
-  medicalRecords: MedicalRecord[]
 }

@@ -2,18 +2,30 @@ import { RiSearchLine } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { RiEyeFill } from "react-icons/ri";
 import { useState, useMemo } from "react";
-import { TDoctor, TStatus } from "@/types/doctor";
+import { TDoctor } from "@/types/doctor";
 import { Modal } from "@/components/common/Modal";
 import { UsersService } from "@/services/users";
 import useSWR from "swr";
+import { Loading } from "../../shared/Loading";
+import { Error } from "../../shared/Error";
 
 const getDoctorsKey = "getDoctors";
 
 export const PatientDoctorsPage = () => {
-  const { data, error } = useSWR(getDoctorsKey, UsersService.getDoctors);
+  const { data, error, isLoading } = useSWR(
+    getDoctorsKey,
+    UsersService.getDoctors,
+  );
 
-  if (error) return <div> Ha ocurrido un error</div>;
-  if (!data) return <div> Cargando...</div>;
+  if (isLoading) return <Loading />;
+  if (error || !data)
+    return (
+      <Error
+        message="Error al cargar"
+        linkText="Recargar"
+        linkTo="/plataforma/paciente/doctores"
+      />
+    );
 
   const { doctors } = data;
 
@@ -25,22 +37,22 @@ export const PatientDoctorsPage = () => {
           <h2>Notificación</h2>
         </div>
 
-        <div className="bg-white mx-8 p-4 rounded-tl-2xl rounded-tr-2xl shadow-xl">
-          <div className="p-4 flex justify-between gap-6 pr-6">
-            <h2 className="text-2xl text-dark-green font-medium">
+        <div className="bg-white mx-4 2xl:mx-8 p-4 rounded-2xl shadow-xl">
+          <div className="p-4 flex justify-between max-sm:gap-1">
+            <h2 className="text-xl 2xl:text-2xl text-dark-green font-medium">
               Lista de doctores disponibles
             </h2>
-            <button className="bg-other-blue py-2 tracking-wider px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border hover:border-other-blue uppercase transition text-xs font-medium">
+            <button className="bg-other-blue py-2 tracking-wider px-3 2xl:px-6 rounded-xl text-white hover:text-other-blue hover:bg-white border hover:border-other-blue uppercase transition text-xs font-medium">
               Ver Todo
             </button>
           </div>
           <div className="bg-gray-50 my-0 p-4 flex items-center gap-8 rounded-tl-2xl rounded-tr-2xl">
-            <form action="" className="relative">
+            <form action="" className="relative w-full">
               <RiSearchLine className="absolute text-gray-400 opacity-60 top-3 left-4 text-lg" />
               <input
                 type="text"
                 placeholder="Buscar doctores disponibles"
-                className="bg-white outline-none py-2 pl-12 pr-4 rounded-2xl text-lg text-gray-400 border border-gray-200 w-96"
+                className="bg-white outline-none py-2 pl-12 pr-4 rounded-2xl text-lg text-gray-400 border border-gray-200 w-full 2xl:w-96"
               />
             </form>
           </div>
@@ -61,7 +73,7 @@ export const PatientDoctorsPage = () => {
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                     Especialidad
                   </th>
-                  <th className="p-3 flex justify-end text-sm font-semibold tracking-wide text-left uppercase pr-6">
+                  <th className="p-3 flex justify-center 2xl:justify-end text-sm font-semibold tracking-wide uppercase 2xl:pr-16">
                     Opciones
                   </th>
                 </tr>
@@ -86,7 +98,7 @@ export const PatientDoctorsPage = () => {
                     <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                       {doctor.specialty}
                     </td>
-                    <td className="flex justify-end gap-3 pr-6">
+                    <td className="p-3 flex justify-end gap-3">
                       <DatesButton doctor={doctor} />
 
                       <NavLink
@@ -129,8 +141,8 @@ const DatesButton = ({ doctor }: { doctor: TDoctor }) => {
         showModal={show}
         onClose={() => setShow(false)}
         message={
-          <div className="flex flex-col items-center justify-center xl:w-[350px] bg-dark-green rounded-md shadow-2xl pb-6">
-            <h1 className="text-white pt-4 py-4 capitalize font-caudex text-2xl">
+          <div className="flex flex-col items-center justify-center max-sm:p-4 xl:w-[350px] bg-dark-green rounded-md shadow-2xl pb-6">
+            <h1 className="text-white py-2 2xl:py-4 capitalize font-caudex text-2xl">
               {doctor.user.firstName} {doctor.user.lastName}
             </h1>
             <table className="table-auto">
@@ -148,11 +160,11 @@ const DatesButton = ({ doctor }: { doctor: TDoctor }) => {
                   >
                     <td>{d.date}</td>
 
-                    <td>
-                      {d.status === TStatus.Selected ? (
-                        <span className="text-red-500">Ocupado</span>
-                      ) : (
+                    <td className="max-sm:text-lg">
+                      {d.status === "pending" ? (
                         <span className="text-green-500">Disponible</span>
+                      ) : (
+                        <span className="text-red-500">No Disponible</span>
                       )}
                     </td>
                   </tr>

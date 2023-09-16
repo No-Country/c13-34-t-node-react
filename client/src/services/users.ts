@@ -1,6 +1,6 @@
 import { TUser } from "@/types/user";
-import { client } from "../config/client";
 import { TDoctor } from "@/types/doctor";
+import { client } from "../config/client";
 // import { faker } from "@faker-js/faker";
 
 async function getHighLevelRolesUsers() {
@@ -76,7 +76,7 @@ async function deletedHighLevelRoleUser(userId: number) {
 
 export const UsersService = {
   getHighLevelRolesUsers,
+  getDoctors,
   acceptHighLevelRoleUser,
   deletedHighLevelRoleUser,
-  getDoctors,
 };

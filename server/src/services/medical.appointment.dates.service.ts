@@ -26,10 +26,11 @@ export class MedicalAppointmentDatesService {
     sessionUser: User,
     date: string,
     hours: string[]
-  ): Promise<MedicalAppointmentDates[]> {
+  ): Promise<any> {
     const unifiedDates = unifyDates(date, hours)
 
     let doctorCreated: Doctor | undefined
+    let doctorId: number | undefined
 
     const doctorExists = await doctorService.findDoctor(
       { user: { id: sessionUser.id } },
@@ -47,6 +48,11 @@ export class MedicalAppointmentDatesService {
           ERROR_MSGS.CREATE_DOCTOR_SERVICE_FAIL,
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
+      doctorId = doctorCreated.id
+    }
+
+    if (doctorExists) {
+      doctorId = doctorExists.id
     }
 
     const createDates = unifiedDates.map(async (date) => {
@@ -83,7 +89,10 @@ export class MedicalAppointmentDatesService {
       return dateFromDB
     })
 
-    return await Promise.all(createDates)
+    return {
+      medicalAppointmentDates: await Promise.all(createDates),
+      doctorId
+    }
   }
 
   async findMedicalAppointmentDate(
@@ -126,15 +135,22 @@ export class MedicalAppointmentDatesService {
       true
     )
 
-    if (date.doctor.id !== doctorExists.id) {
-      throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
-    }
-
     if (!date) {
       throw new AppError(
         ERROR_MSGS.MEDICAL_APPOINTMENT_DATES_DATE_INVALID_FORMAT,
         HTTPCODES.NOT_FOUND
       )
+    }
+
+    if (doctorExists === null) {
+      throw new AppError(
+        ERROR_MSGS.DOCTOR_WITHOUT_APPOINTMENTS,
+        HTTPCODES.NOT_FOUND
+      )
+    }
+
+    if (date.doctor.id !== doctorExists.id) {
+      throw new AppError(ERROR_MSGS.PERMISSION_DENIAD, HTTPCODES.BAD_REQUEST)
     }
 
     switch (date.status) {
@@ -148,8 +164,14 @@ export class MedicalAppointmentDatesService {
         date.status = MedicalAppointmentDatesStatus.cancelled
         break
     }
-
-    await this.updateMedicalAppointmentDate(date)
+    try {
+      await this.updateMedicalAppointmentDate(date)
+    } catch (error) {
+      throw new AppError(
+        ERROR_MSGS.TOGGLE_STATUS_MEDICAL_APPOINTMENT_DATE_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
   }
 
   async findMedicalAppointmentDates(
@@ -172,6 +194,10 @@ export class MedicalAppointmentDatesService {
       false,
       false
     )
+
+    if (doctorExists === null) {
+      return [[], 0]
+    }
 
     const filters = {
       doctor: { id: doctorExists.id },
@@ -200,6 +226,10 @@ export class MedicalAppointmentDatesService {
       false
     )
 
+    if (doctorExists === null) {
+      return [[]]
+    }
+
     const filters = {
       doctor: { id: doctorExists.id },
       status: In([
@@ -215,5 +245,23 @@ export class MedicalAppointmentDatesService {
       false,
       relationAttributes
     )
+  }
+
+  async completedAppointmentDate(
+    medicalAppoinmentDateId: number
+  ): Promise<void> {
+    const medicalAppoinmentDateToUpdate = {
+      id: medicalAppoinmentDateId,
+      status: MedicalAppointmentDatesStatus.completed
+    } as MedicalAppointmentDates
+
+    try {
+      await this.updateMedicalAppointmentDate(medicalAppoinmentDateToUpdate)
+    } catch (err) {
+      throw new AppError(
+        ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
+        HTTPCODES.INTERNAL_SERVER_ERROR
+      )
+    }
   }
 }

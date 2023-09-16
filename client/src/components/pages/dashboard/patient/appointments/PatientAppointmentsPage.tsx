@@ -1,21 +1,38 @@
 import { NavLink } from "react-router-dom";
-import { RiEyeFill } from "react-icons/ri";
-// import { TAppointmentStatus, TUser } from "@/types/user";
-// import { Modal } from "@/components/common/Modal";
-// import { useState } from "react";
+import { RiEyeFill, RiCloseCircleFill } from "react-icons/ri";
+import { Modal } from "@/components/common/Modal";
+import { useState } from "react";
+import { AppointmentsService } from "@/services/appointments";
+import useSWR, { useSWRConfig } from "swr";
+import {
+  TAppointmentDateStatus,
+  TMedicalAppointment,
+  TMedicalAppointmentDate,
+} from "@/types/appointments";
+import { Error } from "../../shared/Error";
+import { Loading } from "../../shared/Loading";
 
-// const getHighLevelRolesUsersKey = "getHighLevelRolesUsers";
+const getPatientAppointmentsKey = "getPatientAppointments";
 
 export const PatientAppointmentsPage = () => {
-  // const { data, error } = useSWR(
-  //   getHighLevelRolesUsersKey,
-  //   UsersService.getHighLevelRolesUsers,
-  // );
+  const {
+    data: appointments,
+    error,
+    isLoading,
+  } = useSWR(
+    getPatientAppointmentsKey,
+    AppointmentsService.getPatientAppointments,
+  );
 
-  // if (error) return <div> Ha ocurrido un error</div>;
-  // if (!data) return <div> Cargando...</div>;
-
-  // const { users } = data;
+  if (isLoading) return <Loading />;
+  if (error || !appointments)
+    return (
+      <Error
+        message={"USTED AUN NO TIENE UNA CITA"}
+        linkText="Reserve su cita Aquí"
+        linkTo="/plataforma/paciente/reservar-cita"
+      />
+    );
 
   return (
     <div className="bg-gray-50">
@@ -25,7 +42,7 @@ export const PatientAppointmentsPage = () => {
           <h2>Notificación</h2>
         </div>
 
-        <div className="bg-white mx-8 p-8 rounded-tl-2xl rounded-tr-2xl shadow-xl">
+        <div className="bg-white mx-4 2xl:mx-8 px-4 pt-8 pb-20 2xl:p-8 rounded-2xl shadow-xl">
           <div className="overflow-auto">
             <table className="table-auto bg-white px-4 py-8 w-full">
               <thead className="bg-white border-b-2 border-gray-200">
@@ -43,75 +60,76 @@ export const PatientAppointmentsPage = () => {
                     Especialidad
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Descripción
-                  </th>
-                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                     Teléfono
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                     Correo
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Estado
+                    Descripción
                   </th>
                   <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
-                    Prescripción
+                    Cita
+                  </th>
+                  <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    Acciones
                   </th>
                 </tr>
               </thead>
 
               <tbody className="divide-y divide-gray-100">
-                {/* {filteredAppointments.map((user) => ( */}
-                <tr className="bg-white">
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <NavLink
-                      to="/"
-                      className="font-bold text-blue-500 hover:underline"
-                    >
-                      001
-                      {/* {user.id} */}
-                    </NavLink>
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Jorge Luis
-                    {/* {user.firstName} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Villalva Rosales
-                    {/* {user.lastName} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    medicina general
-                    {/* {user.speciality} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Aqui va la descriptción medica del paciente 2023
-                    {/* {user.description} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    0123456789
-                    {/* {user.telephone} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    jorge@gmail.com
-                    {/* {user.email} */}
-                  </td>
-                  <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    Ver si esta: selected o pending
-                    {/* <StatusChip user={user} /> */}
-                  </td>
+                {appointments.map((appointment) => (
+                  <tr key={appointment.id} className="bg-white">
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <NavLink
+                        to="/"
+                        className="font-bold text-blue-500 hover:underline"
+                      >
+                        {appointment.id}
+                      </NavLink>
+                    </td>
 
-                  <td className="p-3 flex items-center justify-center gap-4">
-                    <NavLink
-                      to="/plataforma/paciente/registros-medicos"
-                      // to={`/plataforma/paciente/registros-medicos?prescriptionId=${user.id}`}
-                      className="text-blue-500 hover:text-blue-700 transition"
-                    >
-                      <RiEyeFill className="text-4xl" />
-                    </NavLink>
-                  </td>
-                </tr>
-                {/* ))} */}
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.medicalAppointmentDate.doctor.user.firstName}
+                    </td>
+
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.medicalAppointmentDate.doctor.user.lastName}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.medicalAppointmentDate.doctor.specialty}
+                    </td>
+
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.medicalAppointmentDate.doctor.user.telephone}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.medicalAppointmentDate.doctor.user.email}
+                    </td>
+
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {appointment.description}
+                    </td>
+                    <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      <StatusChip
+                        appointment={appointment.medicalAppointmentDate}
+                      />
+                    </td>
+
+                    <td className="p-3 flex items-center justify-center gap-4">
+                      <NavLink
+                        to={`/plataforma/paciente/registros-medicos?appointmentId=${appointment.id}`}
+                        className="hidden text-blue-500 hover:text-blue-700 transition"
+                      >
+                        <RiEyeFill className="text-4xl" />
+                      </NavLink>
+                      {appointment.medicalAppointmentDate.status !==
+                        "cancelled" && (
+                        <StatusCancelButton appointment={appointment} />
+                      )}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -121,80 +139,84 @@ export const PatientAppointmentsPage = () => {
   );
 };
 
-// const StatusChip = ({ user }: { user: TUser }) => {
-//   const statuses: Record<TAppointmentStatus, { name: string; color: string }> =
-//     {
-//       selected: {
-//         name: "selected",
-//         color: "#4FB783",
-//       },
-//       pending: {
-//         name: "pending",
-//         color: "#DC143C",
-//       },
-//     };
+const StatusChip = ({
+  appointment,
+}: {
+  appointment: TMedicalAppointmentDate;
+}) => {
+  const statuses: Record<
+    TAppointmentDateStatus,
+    { name: string; color: string }
+  > = {
+    pending: {
+      name: "Pendiente",
+      color: "#d8be48",
+    },
+    completed: {
+      name: "Completedo",
+      color: "#034561",
+    },
+    selected: {
+      name: "Reservado",
+      color: "#4FB783",
+    },
+    cancelled: {
+      name: "Cancelado",
+      color: "gray",
+    },
+  };
 
-//   const current = statuses[user.status];
+  const current = statuses[appointment.status];
 
-//   return (
-//     <div
-//       className="px-3 py-1 text-sm uppercase tracking-wider rounded-lg text-white inline-flex items-center gap-2"
-//       style={{ backgroundColor: current.color }}
-//     >
-//       <span>{current.name}</span>
-//       <StatusChipAcceptRejectButton user={user} />
-//       {/* {user.status === "pending" && (
-//       )} */}
-//     </div>
-//   );
-// };
+  return (
+    <div
+      className="px-3 py-1 text-sm uppercase tracking-wider rounded-lg text-white inline-flex items-center gap-2"
+      style={{ backgroundColor: current.color }}
+    >
+      <span>{current.name}</span>
+    </div>
+  );
+};
 
-// const StatusChipAcceptRejectButton = ({ user }: { user: TUser }) => {
-//   const [show, setShow] = useState(false);
-//   const { mutate } = useSWRConfig();
+const StatusCancelButton = ({
+  appointment,
+}: {
+  appointment: TMedicalAppointment;
+}) => {
+  const [show, setShow] = useState(false);
+  const { mutate } = useSWRConfig();
 
-//   return (
-//     <>
-//       <button
-//         onClick={() => setShow(true)}
-//         className="bg-white rounded-full aspect-square p-[2px]"
-//       >
-//         <RiEdit2Fill className="text-blue-500" />
-//       </button>
+  return (
+    <>
+      <button onClick={() => setShow(true)}>
+        <RiCloseCircleFill className="text-4xl text-other-red hover:text-[#940622]" />
+      </button>
 
-//       <Modal
-//         showModal={show}
-//         onClose={() => setShow(false)}
-//         message={
-//           <div className="text-center">
-//             <p className="mb-4">
-//               ¿Qué desea hacer con el usuario {user.firstName}?
-//             </p>
-//             <div className="flex gap-2 justify-center">
-//               <button
-//                 className="bg-red-600 text-white rounded-xl py-1 px-2"
-//                 onClick={async () => {
-//                   await UsersService.deletedHighLevelRoleUser(user.id);
-//                   await mutate(getHighLevelRolesUsersKey);
-//                   setShow(false);
-//                 }}
-//               >
-//                 Rechazar
-//               </button>
-//               <button
-//                 className="bg-green-600 text-white rounded-xl py-1 px-2"
-//                 onClick={async () => {
-//                   await UsersService.acceptHighLevelRoleUser(user.id);
-//                   await mutate(getHighLevelRolesUsersKey);
-//                   setShow(false);
-//                 }}
-//               >
-//                 Aceptar
-//               </button>
-//             </div>
-//           </div>
-//         }
-//       />
-//     </>
-//   );
-// };
+      <Modal
+        showModal={show}
+        onClose={() => setShow(false)}
+        message={
+          <div className="text-center">
+            <p className="mb-4">
+              ¿Seguro que desea cancelar esta cita No. {appointment.id}?
+            </p>
+            <div className="flex gap-2 justify-center">
+              <button
+                className="bg-green-600 text-white rounded-xl py-1 px-8"
+                onClick={async () => {
+                  await AppointmentsService.canceledAppointmentPatient(
+                    appointment.medicalAppointmentDate.id,
+                  );
+                  await mutate(getPatientAppointmentsKey);
+                  setShow(false);
+                }}
+              >
+                Si
+              </button>
+            </div>
+          </div>
+        }
+      />
+    </>
+  );
+};

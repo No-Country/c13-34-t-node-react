@@ -15,7 +15,7 @@ export const createDates = async (
   try {
     const { sessionUser } = req
     const { date, hours } = req.safeData?.body
-    const medicalAppointmentDates =
+    const { medicalAppointmentDates, doctorId } =
       await medicalAppointmentDatesService.createMedicalAppointmentDates(
         sessionUser as User,
         date,
@@ -25,7 +25,8 @@ export const createDates = async (
     return res.status(HTTPCODES.CREATED).json({
       status: MESSAGES.SUCCESS,
       message: MESSAGES.MEDICAL_APPOINTMENT_DATE_CREATED,
-      medicalAppointmentDates
+      medicalAppointmentDates,
+      doctorId
     })
   } catch (err) {
     if (!(err instanceof AppError)) {
@@ -52,7 +53,7 @@ export const toggleStatusMedicalAppointmentDate = async (
       id,
       req?.sessionUser as User
     )
-    res.status(HTTPCODES.NO_CONTENT).json({
+    return res.status(HTTPCODES.NO_CONTENT).json({
       status: MESSAGES.SUCCESS
     })
   } catch (err) {
@@ -78,7 +79,7 @@ export const getAllDatesByDoctor = async (
     const { id } = req.sessionUser as User
     const [dates, count] =
       await medicalAppointmentDatesService.getAllMedicalAppoitmentDates(id)
-    res.status(HTTPCODES.OK).json({
+    return res.status(HTTPCODES.OK).json({
       status: MESSAGES.SUCCESS,
       dates,
       count
@@ -128,7 +129,7 @@ export const getAllHoursByDoctorDate = async (
         return obj
       })
 
-      res.status(HTTPCODES.OK).json({
+      return res.status(HTTPCODES.OK).json({
         status: MESSAGES.SUCCESS,
         hours
       })
@@ -138,6 +139,33 @@ export const getAllHoursByDoctorDate = async (
       next(
         new AppError(
           ERROR_MSGS.GET_HOURS_FROM_SPECIFIC_DOCTOR_DATE_FAIL,
+          HTTPCODES.INTERNAL_SERVER_ERROR
+        )
+      )
+      return
+    }
+    next(err)
+  }
+}
+
+export const updateToCompletedDate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.safeData?.params
+
+    await medicalAppointmentDatesService.completedAppointmentDate(id)
+
+    return res.status(HTTPCODES.NO_CONTENT).json({
+      status: MESSAGES.SUCCESS
+    })
+  } catch (err) {
+    if (!(err instanceof AppError)) {
+      next(
+        new AppError(
+          ERROR_MSGS.MEDICAL_APPOINTMENT_DATE_UPDATE_FAIL,
           HTTPCODES.INTERNAL_SERVER_ERROR
         )
       )
